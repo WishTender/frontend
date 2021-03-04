@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
-export default function Logout() {
-  const { register, handleSubmit, errors } = useForm();
+import Button from "@material-ui/core/Button";
+
+export default function LogoutButton() {
   const [loggedOut, setLoggedOut] = useState(false);
-  const onSubmit = (data) => {
+  const logout = (data) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
@@ -25,11 +25,9 @@ export default function Logout() {
       });
   };
   return (
-    <div>
+    <Button onClick={logout}>
       {loggedOut && <Redirect to="/" />}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="submit" value="Logout" />
-      </form>
-    </div>
+      Logout
+    </Button>
   );
 }
