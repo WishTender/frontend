@@ -5,9 +5,8 @@ import { CountryContext } from "./contexts/CountryContext";
 import { LocaleContext } from "./contexts/LocaleContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import useTraceUpdate from "./scripts/useTraceUpdate";
-import TestPrice from "./TestPrice";
 // import React from 'react';
-// import './App.css';
+// import './App.css'
 import {
   clientCurrency,
   parsedCookies,
@@ -21,7 +20,7 @@ import CustomizedMenus from "./components/nav/menu.js";
 import LandingPageMenu from "./components/LandingPage/LandingPageMenu.js";
 import Cart from "./components/Cart/Cart.js";
 import Login from "./components/Login/Login.js";
-import Logout from "./components/Logout/Logout.js";
+import Logout from "./components/nav/LogoutButton/LogoutButton.js";
 import WishTracker from "./components/WishTracker/WishTracker.js";
 import ConnectSetup from "./components/ConnectSetup/ConnectSetup";
 import ConfirmationEmail from "./components/ConfirmationEmail/ConfirmationEmail";
@@ -68,150 +67,141 @@ function App(props) {
     <ThemeProvider theme={theme}>
       <div className="App">
         <Router>
-          <Switch>
-            <Route path="/" exact>
-              <LandingPageMenu />
-            </Route>
-            <Route path="/">
-              <CustomizedMenus />
-            </Route>
-          </Switch>
-          <Switch>
-            <Route
-              path="/"
-              exact
-              render={(props) => {
-                return (
-                  <div>
-                    <LandingPage />
-                  </div>
-                );
-              }}
-            />
-            <Route
-              path="/betathankyou"
-              exact
-              render={(props) => {
-                return (
-                  <div>
-                    <ThankYou />
-                  </div>
-                );
-              }}
-            />
+          {/* <Switch> */}
+          {/* needs to render differently if not accessed from redirect */}
+          {user !== undefined && (
+            <LocaleContext.Provider value={JSON.parse(cookies.locale).locale}>
+              <CountryContext.Provider
+                value={JSON.parse(cookies.locale).countryCode}
+              >
+                <CurrencyContext.Provider value={clientCurrency(user)}>
+                  <UserContext.Provider value={{ user, setUser, getUser }}>
+                    <Switch>
+                      <Route path="/" exact>
+                        <LandingPageMenu />
+                      </Route>
+                      <Route path="/">
+                        <CustomizedMenus />
+                      </Route>
+                    </Switch>
+                    <Switch>
+                      <Route
+                        path="/betathankyou"
+                        exact
+                        render={(props) => {
+                          return (
+                            <div>
+                              <ThankYou />
+                            </div>
+                          );
+                        }}
+                      />
 
-            <Route
-              path="/demo"
-              exact
-              render={(props) => {
-                return (
-                  <div>
-                    <HomePage />
-                  </div>
-                );
-              }}
-            />
-            <Route
-              path="/sign-up"
-              exact
-              render={(props) => {
-                return (
-                  <div>
-                    <SignUp />
-                  </div>
-                );
-              }}
-            />
+                      <Route
+                        path="/demo"
+                        exact
+                        render={(props) => {
+                          return (
+                            <div>
+                              <HomePage />
+                            </div>
+                          );
+                        }}
+                      />
 
-            <Route
-              path="/demo/wishlist"
-              render={(props) => {
-                return (
-                  <div>
-                    <WishlistPage user={user} />
-                  </div>
-                );
-              }}
-            />
+                      <Route
+                        path="/demo/wishlist"
+                        render={(props) => {
+                          return (
+                            <div>
+                              <WishlistPage user={user} />
+                            </div>
+                          );
+                        }}
+                      />
+                      <Route
+                        path="/"
+                        exact
+                        render={(props) => {
+                          return (
+                            <div>
+                              <LandingPage />
+                            </div>
+                          );
+                        }}
+                      />
+                      <Route path="/sign-up" exact>
+                        <SignUp />
+                      </Route>
+                      <Route path="/wishlist-setup">
+                        <SetUp />
+                      </Route>
+                      <Route
+                        path="/order"
+                        render={(props) => {
+                          return <CheckOutSuccess />;
+                        }}
+                      />
+                      <Route path="/login">
+                        <Login />
+                      </Route>
+                      <Route path="/logout">
+                        <Logout />
+                      </Route>
+                      <Route
+                        path="/cart"
+                        render={(props) => {
+                          return <Cart cart={props?.location?.props?.cart} />;
+                        }}
+                      />
+                      <Route
+                        path="/connect-setup"
+                        exact
+                        render={(props) => {
+                          return (
+                            <div>
+                              <ConnectSetup />
+                            </div>
+                          );
+                        }}
+                      />
+                      <Route
+                        path="/connect-success"
+                        exact
+                        render={(props) => {
+                          return (
+                            <div>
+                              <ConnectSuccess />
+                            </div>
+                          );
+                        }}
+                      />
+                      <Route
+                        path="/wish-tracker"
+                        render={(props) => {
+                          return <WishTracker />;
+                        }}
+                      />
+                      <Route path="/confirmation-email">
+                        <ConfirmationEmail />
+                      </Route>
+                      <Route path="/confirm-email">
+                        <ConfirmEmail />
+                      </Route>
 
-            {/* needs to render differently if not accessed from redirect */}
-            {user !== undefined && (
-              <LocaleContext.Provider value={JSON.parse(cookies.locale).locale}>
-                <CountryContext.Provider
-                  value={JSON.parse(cookies.locale).countryCode}
-                >
-                  <CurrencyContext.Provider value={clientCurrency(user)}>
-                    <UserContext.Provider value={{ user, setUser, getUser }}>
-                      <Switch>
-                        <Route path="/wishlist-setup">
-                          <SetUp />
-                        </Route>
-                        <Route
-                          path="/order"
-                          render={(props) => {
-                            return <CheckOutSuccess />;
-                          }}
-                        />
-                        <Route path="/login">
-                          <Login />
-                        </Route>
-                        <Route path="/logout">
-                          <Logout />
-                        </Route>
-                        <Route
-                          path="/cart"
-                          render={(props) => {
-                            return <Cart cart={props?.location?.props?.cart} />;
-                          }}
-                        />
-                        <Route
-                          path="/connect-setup"
-                          exact
-                          render={(props) => {
-                            return (
-                              <div>
-                                <ConnectSetup />
-                              </div>
-                            );
-                          }}
-                        />
-                        <Route
-                          path="/connect-success"
-                          exact
-                          render={(props) => {
-                            return (
-                              <div>
-                                <ConnectSuccess />
-                              </div>
-                            );
-                          }}
-                        />
-                        <Route
-                          path="/wish-tracker"
-                          render={(props) => {
-                            return <WishTracker />;
-                          }}
-                        />
-                        <Route path="/confirmation-email">
-                          <ConfirmationEmail />
-                        </Route>
-                        <Route path="/confirm-email">
-                          <ConfirmEmail />
-                        </Route>
-
-                        <Route
-                          path="/:alias"
-                          render={(props) => {
-                            return <WishlistPage />;
-                          }}
-                        />
-                      </Switch>
-                    </UserContext.Provider>
-                  </CurrencyContext.Provider>
-                </CountryContext.Provider>
-              </LocaleContext.Provider>
-            )}
-          </Switch>
+                      <Route
+                        path="/:alias"
+                        render={(props) => {
+                          return <WishlistPage />;
+                        }}
+                      />
+                    </Switch>
+                  </UserContext.Provider>
+                </CurrencyContext.Provider>
+              </CountryContext.Provider>
+            </LocaleContext.Provider>
+          )}
+          {/* </Switch> */}
         </Router>
       </div>
     </ThemeProvider>
