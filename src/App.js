@@ -37,7 +37,7 @@ import SetUp from "./components/SetUp/SetUp";
 import theme from "./theme";
 import StyledDialog from "./components/common/StyledDialog/StyledDialog";
 import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
-import WishForm from "./components/wishlistpage/AddWish/WishForm/WishForm";
+// import WishForm from "./components/wishlistpage/AddWish/WishForm/WishForm";
 import ConnectSuccess from "./components/ConnectSuccess/ConnectSucess";
 const currentUser = async () => {
   let user = await fetch("/api/users/current", {
