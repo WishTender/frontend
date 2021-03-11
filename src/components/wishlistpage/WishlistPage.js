@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import ProfileSection from "./ProfileSection/ProfileSection";
 import { UserContext } from "../../contexts/UserContext";
+import { RouteContext } from "../../contexts/RouteContext";
 import { fetchGet } from "../../scripts/fetchHelper";
 import { useParams } from "react-router-dom";
 import useTraceUpdate from "../../scripts/useTraceUpdate";
@@ -19,6 +20,7 @@ function WishlistPage(props) {
   const [wishlist, setWishlist] = useState(null);
   const [refreshWishlist, setRefreshWishlist] = useState(null);
   const { user: currentUser } = useContext(UserContext);
+  const { setIsCurrentUsersProfile } = useContext(RouteContext);
   let { alias: aliasPath } = useParams();
 
   const states = {
@@ -38,6 +40,9 @@ function WishlistPage(props) {
           item.price = parsedPrice;
         });
       }
+      setIsCurrentUsersProfile(
+        currentUser?.aliases.includes(alias?._id) || false
+      );
       setAlias(alias);
     });
   }, [aliasPath, currentUser]);

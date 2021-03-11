@@ -9,7 +9,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "@welldone-software/why-did-you-render": "^6.0.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.3",
     "country-data": "0.0.31",
     "deep-diff": "^1.0.2",
