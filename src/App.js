@@ -65,8 +65,8 @@ function App(props) {
       }
     });
   }, []);
-  const Routes = (
-    <>
+  const SwitchRoutes = (
+    <Switch>
       <Route
         path="/betathankyou"
         exact
@@ -174,10 +174,18 @@ function App(props) {
       <Route path="/:alias">
         <WishlistPage />;
       </Route>
-    </>
+    </Switch>
   );
 
-  const routesArray = Routes.props.children.map((child) => child.props.path);
+  const routesArray = SwitchRoutes.props.children.map(
+    (child) => child.props.path
+  );
+  routesArray.push(
+    routesArray.splice(
+      routesArray.findIndex((r) => r === "/"),
+      1
+    )[0]
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -207,7 +215,7 @@ function App(props) {
                           <CustomizedMenus />
                         </Route>
                       </Switch>
-                      <Switch>{Routes}</Switch>
+                      {SwitchRoutes}
                     </RouteContext.Provider>
                   </UserContext.Provider>
                 </CurrencyContext.Provider>

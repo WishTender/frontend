@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import { RouteContext } from "../../../contexts/RouteContext";
 
 import Tabs from "@material-ui/core/Tabs";
@@ -16,10 +16,12 @@ import {
 console.log(Router, Route);
 
 export default function AccountTabs(props) {
-  const [activeTab, setActiveTab] = useState(null);
+  const [activeTab, setActiveTab] = useState(false);
   const routeContext = useContext(RouteContext);
-  const match = useRouteMatch(routeContext.allRoutes.slice(0, -1));
-  const isProfileRoute = !match.exact;
+  const match = useRouteMatch(
+    routeContext.allRoutes.filter((route) => route !== "/:alias")
+  );
+  const isProfileRoute = !match.isExact;
   const handleChange = (event, newValue) => {
     setActiveTab(newValue);
   };
@@ -27,23 +29,32 @@ export default function AccountTabs(props) {
     let val;
     if (isProfileRoute && routeContext.isCurrentUsersProfile) {
       val = 0;
-    } else if (match.path === "wishlist") {
+    } else if (match.path === "/wish-tracker") {
       val = 1;
+    } else {
+      val = false;
     }
     setActiveTab(val);
-  }, []);
+  }, [isProfileRoute, match.path, routeContext.isCurrentUsersProfile]);
   return (
     <div>
-      <Link
+      <Tabs
         value={activeTab}
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
         centered
       >
-        <Tab icon={<ListAltIcon />} label="wishlist" />
+        <Tab
+          component={Link}
+          to="/dadasheshe1"
+          icon={<ListAltIcon />}
+          label="dut"
+        />
 
         <Tab
+          component={Link}
+          to="/wish-tracker"
           icon={
             <Badge badgeContent={1} color="error">
               <RedeemIcon />

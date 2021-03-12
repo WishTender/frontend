@@ -45,7 +45,7 @@ function WishlistPage(props) {
       );
       setAlias(alias);
     });
-  }, [aliasPath, currentUser]);
+  }, [aliasPath, currentUser, setIsCurrentUsersProfile]);
 
   useEffect(() => {
     if (refreshWishlist) {
