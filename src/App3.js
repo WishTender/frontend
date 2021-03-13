@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, memo } from "react";
 import { UserContext } from "./contexts/UserContext";
-import { RouteContext } from "./contexts/RouteContext";
 import { CurrencyContext } from "./contexts/CurrencyContext";
 import { CountryContext } from "./contexts/CountryContext";
 import { LocaleContext } from "./contexts/LocaleContext";
@@ -51,9 +50,8 @@ const currentUser = async () => {
 };
 
 function App(props) {
-  const { getUser } = useContext(UserContext);
+  const { user: user0, setUser: setUser0, getUser } = useContext(UserContext);
   const [user, setUser] = useState();
-  const [isCurrentUsersProfile, setIsCurrentUsersProfile] = useState();
   const cookies = parsedCookies();
   useTraceUpdate(App.name, props, { user });
 
@@ -65,8 +63,8 @@ function App(props) {
       }
     });
   }, []);
-  const SwitchRoutes = (
-    <Switch>
+  const Routes = (
+    <>
       <Route
         path="/betathankyou"
         exact
@@ -174,18 +172,10 @@ function App(props) {
       <Route path="/:alias">
         <WishlistPage />;
       </Route>
-    </Switch>
+    </>
   );
 
-  const routesArray = SwitchRoutes.props.children.map(
-    (child) => child.props.path
-  );
-  routesArray.push(
-    routesArray.splice(
-      routesArray.findIndex((r) => r === "/"),
-      1
-    )[0]
-  );
+  const routes = Routes.props.children.map((child) => child.props.path);
 
   return (
     <ThemeProvider theme={theme}>
@@ -200,23 +190,15 @@ function App(props) {
               >
                 <CurrencyContext.Provider value={clientCurrency(user)}>
                   <UserContext.Provider value={{ user, setUser, getUser }}>
-                    <RouteContext.Provider
-                      value={{
-                        isCurrentUsersProfile,
-                        setIsCurrentUsersProfile,
-                        allRoutes: routesArray,
-                      }}
-                    >
-                      <Switch>
-                        <Route path="/" exact>
-                          <LandingPageMenu />
-                        </Route>
-                        <Route path="/">
-                          <CustomizedMenus />
-                        </Route>
-                      </Switch>
-                      {SwitchRoutes}
-                    </RouteContext.Provider>
+                    <Switch>
+                      <Route path="/" exact>
+                        <LandingPageMenu />
+                      </Route>
+                      <Route path="/">
+                        <CustomizedMenus routes={routes} />
+                      </Route>
+                    </Switch>
+                    <Switch>{Routes}</Switch>
                   </UserContext.Provider>
                 </CurrencyContext.Provider>
               </CountryContext.Provider>
