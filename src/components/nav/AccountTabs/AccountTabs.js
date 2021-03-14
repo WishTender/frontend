@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, Redirect, useRouteMatch } from "react-router-dom"; // a comment (can be deleted)
 import { RouteContext } from "../../../contexts/RouteContext";
+import { UserContext } from "../../../contexts/UserContext";
 
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -13,11 +14,14 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import { SettingsApplicationsSharp } from "@material-ui/icons";
 console.log(Router, Route);
 
 export default function AccountTabs(props) {
   const [activeTab, setActiveTab] = useState(false);
+  const [alias, setAlias] = useState(false);
   const routeContext = useContext(RouteContext);
+  const userContext = useContext(UserContext);
   const match = useRouteMatch(
     routeContext.allRoutes.filter((route) => route !== "/:alias")
   );
@@ -38,6 +42,7 @@ export default function AccountTabs(props) {
   }, [isProfileRoute, match.path, routeContext.isCurrentUsersProfile]);
   return (
     <div>
+      {alias && <Redirect to={`/${alias}`} />}
       <Tabs
         value={activeTab}
         onChange={handleChange}
@@ -47,9 +52,17 @@ export default function AccountTabs(props) {
       >
         <Tab
           component={Link}
-          to="/dadasheshe1"
+          // to="/my_profile"
+          onClick={async () => {
+            const res = await fetch(
+              `/api/aliases?user=${userContext.user._id}`
+            );
+            const json = await res.json();
+            setAlias(json.handle);
+            setAlias(false);
+          }}
           icon={<ListAltIcon />}
-          label="dut"
+          label="Wishlist"
         />
 
         <Tab
