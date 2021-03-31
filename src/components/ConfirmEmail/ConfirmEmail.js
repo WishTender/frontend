@@ -1,4 +1,3 @@
-import { SettingsBackupRestoreOutlined } from "@material-ui/icons";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 
@@ -28,7 +27,6 @@ export default function ConfirmEmail() {
   const confirm = (email, token) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    // send the country code to the server where we will also detect the browser's preferred language located in the acceptsLanguages request header
     fetch("/api/confirmation/confirm", {
       method: "PATCH",
       body: JSON.stringify({ email, token }),
@@ -39,7 +37,7 @@ export default function ConfirmEmail() {
         if (res.status === 410) setExpired(true);
         setMessage(json.message);
       }
-      if (res.status === 201) setSuccess(true);
+      if (res.status === 200) setSuccess(true);
     });
   };
 
