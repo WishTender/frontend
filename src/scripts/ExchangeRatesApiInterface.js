@@ -54,4 +54,4 @@ class ExchangeRateApiInterface {
   }
 }
 
-module.exports = ExchangeRateApiInterface;
+export default ExchangeRateApiInterface;
