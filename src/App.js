@@ -208,9 +208,9 @@ function App(props) {
                       }}
                     >
                       <Switch>
-                        <Route path="/" exact>
+                        {/* <Route path="/" exact>
                           <LandingPageMenu />
-                        </Route>
+                        </Route> */}
                         <Route path="/">
                           <CustomizedMenus />
                         </Route>

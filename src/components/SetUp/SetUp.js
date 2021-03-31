@@ -24,7 +24,7 @@ export default function Login() {
         console.log();
         return;
       }
-      if (res.status === 200 || res.status === 200) {
+      if (res.status === 200 || res.status === 201) {
         const json = await res.json();
         setUser(await getUser());
         setHandle(json.handle);
