@@ -150,7 +150,7 @@ const fetchGet = async (route, cb) => {
     });
 };
 
-const obj = {
+export {
   fetchGet,
   fetchPatchImage,
   fetchPostJson,
@@ -158,4 +158,3 @@ const obj = {
   fetchPatchMulti,
   fetchDelete,
 };
-export default obj;
