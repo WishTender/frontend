@@ -6,12 +6,7 @@ import { fetchGet } from "../../scripts/fetchHelper";
 import { useParams } from "react-router-dom";
 import useTraceUpdate from "../../scripts/useTraceUpdate";
 import Wishlist from "./Wishlist";
-import {
-  unitToStandard,
-  toCurrencyDecimals,
-  parsedCookies,
-  parsePrice,
-} from "../../scripts/helpers";
+import { unitToStandard, parsePrice } from "../../scripts/helpers";
 
 const handleRoute = "/api/aliases?handle_lowercased=";
 
@@ -57,7 +52,7 @@ function WishlistPage(props) {
         setRefreshWishlist(false);
       });
     }
-  }, [refreshWishlist, wishlist?._id]);
+  }, [alias.wishlists, refreshWishlist, wishlist._id]);
 
   const showWishlist =
     (alias && alias.activated) ||

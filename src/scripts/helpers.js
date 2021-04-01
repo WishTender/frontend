@@ -1,5 +1,3 @@
-import { InfoRounded } from "@material-ui/icons";
-import { currencies } from "country-data";
 import getCurrencies from "./getCurrencies";
 
 const fetchUser = (callback) => {
