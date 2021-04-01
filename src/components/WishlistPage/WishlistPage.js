@@ -52,7 +52,7 @@ function WishlistPage(props) {
         setRefreshWishlist(false);
       });
     }
-  }, [alias.wishlists, refreshWishlist, wishlist._id]);
+  }, [refreshWishlist]);
 
   const showWishlist =
     (alias && alias.activated) ||

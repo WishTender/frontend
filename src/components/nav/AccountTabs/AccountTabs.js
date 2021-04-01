@@ -45,8 +45,6 @@ export default function AccountTabs(props) {
         centered
       >
         <Tab
-          component={Link}
-          // to="/my_profile"
           onClick={async () => {
             const res = await fetch(
               `/api/aliases?user=${userContext.user._id}`
