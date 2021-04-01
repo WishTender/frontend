@@ -4,7 +4,7 @@
 
 // Convert a Base64-encoded string to a File object
 export function base64StringtoFile(base64String, filename) {
-  var arr = base64String.split(','),
+  var arr = base64String.split(","),
     mime = arr[0].match(/:(.*?);/)[1],
     bstr = atob(arr[1]),
     n = bstr.length,
@@ -14,15 +14,6 @@ export function base64StringtoFile(base64String, filename) {
   }
   return new File([u8arr], filename, { type: mime });
 }
-// create the image with a src of the base64 string
-const createImage = (url) =>
-  new Promise((resolve, reject) => {
-    const image = new Image();
-    image.addEventListener('load', () => resolve(image));
-    image.addEventListener('error', (error) => reject(error));
-    image.setAttribute('crossOrigin', 'anonymous');
-    image.src = url;
-  });
 
 async function getImage(imgSrc) {
   var img = new Image();
@@ -37,20 +28,30 @@ async function getImage(imgSrc) {
 
 export const getCroppedImg = async (imageSrc, crop, dimensions) => {
   const image = await getImage(imageSrc);
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
 
   /* setting canvas width & height allows us to 
     resize from the original image resolution */
   canvas.width = dimensions.width;
   canvas.height = dimensions.height;
   const ext = extractImageFileExtensionFromBase64(imageSrc);
-  ctx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(
+    image,
+    crop.x,
+    crop.y,
+    crop.width,
+    crop.height,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 
   return new Promise((resolve) => {
     canvas.toBlob((blob) => {
       resolve(blob);
-    }, 'image/' + ext);
+    }, "image/" + ext);
   });
 };
 
@@ -67,7 +68,10 @@ export async function getImageDimensions(imgSrc) {
 
 // Extract an Base64 Image's File Extension
 export function extractImageFileExtensionFromBase64(base64Data) {
-  return base64Data.substring('data:image/'.length, base64Data.indexOf(';base64'));
+  return base64Data.substring(
+    "data:image/".length,
+    base64Data.indexOf(";base64")
+  );
 }
 
 // Base64 Image to Canvas with a Crop
@@ -75,12 +79,12 @@ export function image64toCanvasRef(
   canvasRef,
   image64,
   pixelCrop,
-  callback = () => console.log('image loaded')
+  callback = () => console.log("image loaded")
 ) {
   const canvas = canvasRef; // document.createElement('canvas');
   canvas.width = pixelCrop.width;
   canvas.height = pixelCrop.height;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   const image = new Image();
   image.src = image64;
   image.onload = function () {
@@ -102,11 +106,12 @@ export function image64toCanvasRef(
 export function dataURItoBlob(dataURI) {
   // convert base64/URLEncoded data component to raw binary data held in a string
   var byteString;
-  if (dataURI.split(',')[0].indexOf('base64') >= 0) byteString = atob(dataURI.split(',')[1]);
-  else byteString = unescape(dataURI.split(',')[1]);
+  if (dataURI.split(",")[0].indexOf("base64") >= 0)
+    byteString = atob(dataURI.split(",")[1]);
+  else byteString = unescape(dataURI.split(",")[1]);
 
   // separate out the mime component
-  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
 
   // write the bytes of the string to a typed array
   var ia = new Uint8Array(byteString.length);
@@ -123,7 +128,7 @@ export async function blobToImage64(blob) {
     const reader = new FileReader();
 
     reader.addEventListener(
-      'load',
+      "load",
       () => {
         resolve(reader.result);
       },

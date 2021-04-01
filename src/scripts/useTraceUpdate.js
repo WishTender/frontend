@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react";
 import _ from "lodash";
 
-const stringify = (data) =>
-  typeof data === "object" ? JSON.stringify(data) : data;
-
 /**
  * tracks component renders
  * @param {String} component component name ex: App.name

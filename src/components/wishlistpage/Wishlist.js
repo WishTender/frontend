@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import WishItem from "./WishItem";
 import { Button } from "@material-ui/core";
-import AddWish from "./addwish/AddWish";
+import AddWish from "./Addwish/AddWish";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import EditWishForm from "./EditWishForm/EditWishForm";
 import { CurrencyContext } from "../../contexts/CurrencyContext";

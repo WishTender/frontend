@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import IconButton from "@material-ui/core/IconButton";
 import "./ProductImages.css";
-import { Button, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import EasyCrop from "../../common/Crop/ReactEasyCrop/EasyCrop";
-import Cropper from "react-easy-crop";
 import { useTheme } from "@material-ui/core/styles";
 
 /**

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Search from "./Search.js";
 import filterOutSmallImages from "./filterImages";
@@ -6,9 +6,8 @@ import WishForm from "./WishForm/WishForm";
 import "./AddWish.css";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
-import { Container, Typography } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import EditWishForm from "../EditWishForm/EditWishForm";
 const fetchPostJson = async (data, route, callback) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");

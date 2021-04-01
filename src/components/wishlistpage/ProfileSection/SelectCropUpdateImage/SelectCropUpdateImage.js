@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import StyledDialog from "../../../common/StyledDialog/StyledDialog";
 import Crop from "../../../common/Crop/Crop";
-import StyledIconButton from "../../../common/StyledIconButton/StyledIconButton";
-import PhotoSizeSelectActual from "@material-ui/icons/PhotoSizeSelectActual";
-import FileInputWrapper from "../../../common/FileInputWrapper/FileInputWrapper"
+import FileInputWrapper from "../../../common/FileInputWrapper/FileInputWrapper";
 /**
  * Renders a <UpdateImage /> component
  * @param  props

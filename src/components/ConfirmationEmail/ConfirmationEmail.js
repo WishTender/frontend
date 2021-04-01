@@ -1,12 +1,9 @@
-import { Button } from "@material-ui/core";
-import { set } from "lodash";
 import React, { useState } from "react";
 
 export default function ConfirmationEmail() {
   const [message, setMessage] = useState(null);
   const url = new URLSearchParams(window.location.search);
   const email = url.get("email");
-  const error = url.get("error");
   const send = () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -28,9 +25,10 @@ export default function ConfirmationEmail() {
     <div>
       <>
         <>{`A confirmation has been sent to ${email}. Please confirm your email.`}</>
-        ;
+
         <div>
           <button onClick={send}>Resend Link to {email}</button>
+          {message && message}
         </div>
       </>
     </div>

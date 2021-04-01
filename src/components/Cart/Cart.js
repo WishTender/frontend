@@ -143,7 +143,6 @@ export default function Cart(props) {
                         })}
                         id={`note-for-${a}`}
                         name="note"
-                        name="note"
                         rows="4"
                         cols="50"
                       ></textarea>

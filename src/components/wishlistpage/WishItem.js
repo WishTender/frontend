@@ -1,27 +1,11 @@
 import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { LocaleContext } from "../../contexts/LocaleContext";
-import {
-  displayCurrency,
-  displayConversion,
-  currencyInfo,
-  displayPrice,
-} from "../../scripts/helpers";
-import { currencies } from "country-data";
-
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
-});
+import { displayPrice } from "../../scripts/helpers";
 
 export default function MediaCard(props) {
   const clientCurrency = useContext(CurrencyContext);
@@ -44,6 +28,7 @@ export default function MediaCard(props) {
           }}
         >
           <img
+            alt={props.itemName}
             src={props.imageUrl}
             style={{ position: "absolute", width: "100%" }}
           />

@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Button, TextField, Tooltip, Typography } from "@material-ui/core";
+import { Button, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ChooseImage from "../ChooseImage";
 import PriceInput from "../../PriceInput";
 import { CurrencyContext } from "../../../../contexts/CurrencyContext";
 import {
-  getSymbol,
   isValidPrice,
-  toCurrencyDecimals,
   currencyInfo,
-  toDotDecimal,
   toSmallestUnit,
 } from "../../../../scripts/helpers";
 
