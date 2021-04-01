@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PriceInput from "./components/wishlistpage/PriceInput";
+import PriceInput from "./components/WishlistPage/PriceInput";
 
 export default function TestPrice() {
   const [price, setPrice] = useState("");
