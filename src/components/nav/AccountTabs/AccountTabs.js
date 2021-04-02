@@ -8,13 +8,7 @@ import Tab from "@material-ui/core/Tab";
 import RedeemIcon from "@material-ui/icons/Redeem";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import Badge from "@material-ui/core/Badge";
-import {
-  NavLink,
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import { SettingsApplicationsSharp } from "@material-ui/icons";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 console.log(Router, Route);
 
 export default function AccountTabs(props) {
@@ -51,8 +45,6 @@ export default function AccountTabs(props) {
         centered
       >
         <Tab
-          component={Link}
-          // to="/my_profile"
           onClick={async () => {
             const res = await fetch(
               `/api/aliases?user=${userContext.user._id}`

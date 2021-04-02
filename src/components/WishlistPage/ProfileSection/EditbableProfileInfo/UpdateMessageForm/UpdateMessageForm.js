@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { makeStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import IconButton from '@material-ui/core/IconButton';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import React from "react";
+import { useForm } from "react-hook-form";
+import { makeStyles } from "@material-ui/core/styles";
+import { TextField } from "@material-ui/core";
+import CheckIcon from "@material-ui/icons/Check";
+import IconButton from "@material-ui/core/IconButton";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const useStyles = makeStyles({
   root: {
-    padding: '0',
-    '& .MuiInputBase-input': {
-      padding: '5px 13px ',
+    padding: "0",
+    "& .MuiInputBase-input": {
+      padding: "5px 13px ",
     },
   },
 });
@@ -29,8 +29,8 @@ export default function UpdateMessageForm({
   onClose,
 }) {
   const { register, handleSubmit, errors } = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
   const classes = useStyles();
@@ -45,10 +45,13 @@ export default function UpdateMessageForm({
         className={classes.root}
         defaultValue={wishlistMessage}
         variant="outlined"
-        style={{ width: '60%' }}
+        style={{ width: "60%" }}
         spellCheck="false"
         inputRef={register({
-          maxLength: { value: 29, message: 'message must be less than 30 characters' },
+          maxLength: {
+            value: 29,
+            message: "message must be less than 30 characters",
+          },
         })}
       />
 
@@ -56,7 +59,9 @@ export default function UpdateMessageForm({
         <CheckIcon />
       </IconButton>
       {errors.message?.message && (
-        <FormHelperText id="handle-helper-text">{errors.message?.message}</FormHelperText>
+        <FormHelperText id="handle-helper-text">
+          {errors.message?.message}
+        </FormHelperText>
       )}
     </form>
   );

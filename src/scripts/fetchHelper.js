@@ -149,7 +149,8 @@ const fetchGet = async (route, cb) => {
       console.log(`couldn't get route: ${route}, ${err}`);
     });
 };
-module.exports = {
+
+export {
   fetchGet,
   fetchPatchImage,
   fetchPostJson,

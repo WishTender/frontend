@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 export default function CheckOutSuccess() {
   const params = new URLSearchParams(window.location.search);

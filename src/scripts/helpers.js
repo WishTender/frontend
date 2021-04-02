@@ -1,5 +1,3 @@
-import { InfoRounded } from "@material-ui/icons";
-import { currencies } from "country-data";
 import getCurrencies from "./getCurrencies";
 
 const fetchUser = (callback) => {
@@ -181,7 +179,7 @@ const isValidPrice = (value, decimalPlaces) => {
     value.split(/([,||.])/g).reverse()[0].length === decimalPlaces;
   const commasNumbersPeriods =
     /^(0|[1-9][0-9]{0,2}(?:(,[0-9]{3})*|[0-9]*))(\.[0-9]+){0,1}$/.test(value) ||
-    /^(0|[1-9][0-9]{0,2}(?:(.[0-9]{3})*|[0-9]*))(\,[0-9]+){0,1}$/.test(value);
+    /^(0|[1-9][0-9]{0,2}(?:(.[0-9]{3})*|[0-9]*))(,[0-9]+){0,1}$/.test(value);
 
   return correctDecimalPlaces && commasNumbersPeriods;
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, memo } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { RouteContext } from "./contexts/RouteContext";
 import { CurrencyContext } from "./contexts/CurrencyContext";
@@ -18,7 +18,7 @@ import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage/LandingPage";
 import ThankYou from "./components/LandingPage/ThankYou";
 import CustomizedMenus from "./components/nav/menu.js";
-import LandingPageMenu from "./components/LandingPage/LandingPageMenu.js";
+import Image from "./components/common/S3Image/Image";
 import Cart from "./components/Cart/Cart.js";
 import Login from "./components/Login/Login.js";
 import Logout from "./components/nav/LogoutButton/LogoutButton.js";
@@ -28,27 +28,16 @@ import ConfirmationEmail from "./components/ConfirmationEmail/ConfirmationEmail"
 import ConfirmEmail from "./components/ConfirmEmail/ConfirmEmail";
 
 import { ThemeProvider } from "@material-ui/styles";
-import WishlistPage from "./components/wishlistpage/WishlistPage";
-import EditWishForm from "./components/wishlistpage/EditWishForm/EditWishForm";
+import WishlistPage from "./components/WishlistPage/WishlistPage";
 
 // import AddWish from "./components/wishlistpage/addwish1/AddWish.js";
 import SignUp from "./components/SignUp/SignUp";
 import SetUp from "./components/SetUp/SetUp";
 // import './Styles/App.css';
 import theme from "./theme";
-import StyledDialog from "./components/common/StyledDialog/StyledDialog";
 import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
 // import WishForm from "./components/wishlistpage/AddWish/WishForm/WishForm";
 import ConnectSuccess from "./components/ConnectSuccess/ConnectSucess";
-const currentUser = async () => {
-  let user = await fetch("/api/users/current", {
-    credentials: "include",
-  }).then((res) => {
-    if (res.status === 204) return Promise.resolve(null);
-    return res.json();
-  });
-  return user;
-};
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -64,7 +53,7 @@ function App(props) {
         chooseCurrency(JSON.parse(parsedCookies().locale));
       }
     });
-  }, []);
+  }, [getUser]);
   const SwitchRoutes = (
     <Switch>
       <Route
@@ -169,6 +158,9 @@ function App(props) {
       </Route>
       <Route path="/confirm-email">
         <ConfirmEmail />
+      </Route>
+      <Route path="/image">
+        <Image />
       </Route>
 
       <Route path="/:alias">

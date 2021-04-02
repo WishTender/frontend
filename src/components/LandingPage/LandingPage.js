@@ -40,7 +40,7 @@ function fourPointExplanation() {
       <Grid item xs={12} sm={6} md={3}>
         <Paper className="point">
           <div className="icon">
-            <img src="images/icon_wishlist.png" />
+            <img src="images/icon_wishlist.png" alt="wishlist icon" />
           </div>
           <h3>One Stop Wishlist</h3>
           <p>
@@ -52,7 +52,7 @@ function fourPointExplanation() {
       <Grid item xs={12} sm={6} md={3}>
         <Paper className="point">
           <div className="icon">
-            <img src="images/icon_secure_address.png" />
+            <img src="images/icon_secure_address.png" alt="security icon" />
           </div>
           <h3>Hide Shipping Address</h3>
           <p>
@@ -64,7 +64,10 @@ function fourPointExplanation() {
       <Grid item xs={12} sm={6} md={3}>
         <Paper className="point">
           <div className="icon">
-            <img src="images/icon_control_orders.png" />
+            <img
+              src="images/icon_control_orders.png"
+              alt="control orders icon"
+            />
           </div>
           <h3>Control Orders</h3>
           <p>
@@ -75,7 +78,7 @@ function fourPointExplanation() {
       <Grid item xs={12} sm={6} md={3}>
         <Paper className="point">
           <div className="icon">
-            <img src="images/icon_integration.png" />
+            <img src="images/icon_integration.png" alt="integration icon" />
           </div>
           <h3>Easy Integration</h3>
           <p>

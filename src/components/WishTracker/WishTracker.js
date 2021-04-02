@@ -2,19 +2,14 @@ import React, { useEffect, useState, useContext } from "react";
 import { fetchGet, fetchPostJson } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 import {
-  displayCurrency,
   parseAliasCartPrices,
   parsePrice,
   displayPrice,
   clientCurrency,
-  currencyInfo,
 } from "../../scripts/helpers";
 import { LocaleContext } from "../../contexts/LocaleContext";
 
 const displayOrder = (order, currency, locale, setReply) => {
-  const sendReply = () => {
-    fetchPostJson();
-  };
   let items = Object.keys(order.cart.items);
   items = items.map((itemId) => {
     return (

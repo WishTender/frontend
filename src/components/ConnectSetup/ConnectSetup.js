@@ -1,14 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { CountryContext } from "../../contexts/CountryContext";
-import { Redirect } from "react-router-dom";
 import CountryOptions from "../CountryOptions/CountryOptions";
 
 export default function ConnectSetup() {
-  const { register, handleSubmit, errors } = useForm();
-  const [onboardLink, setOnboardLink] = useState(0);
+  const { register, handleSubmit } = useForm();
   const [error, setError] = useState(null);
-  const clientCountry = useContext(CountryContext);
 
   useEffect(() => {
     // get account info- was stripe setup?
@@ -96,8 +92,6 @@ export default function ConnectSetup() {
 
   return (
     <>
-      {onboardLink ? <Redirect to={onboardLink} /> : ""}
-
       <form onSubmit={handleSubmit(onSubmit)}>
         Account Country:{" "}
         <select

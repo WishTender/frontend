@@ -14,15 +14,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import PriceInput from "../PriceInput";
 import { fetchPatchMulti, fetchDelete } from "../../../scripts/fetchHelper";
 import StyledDialog from "../../common/StyledDialog/StyledDialog";
-import CurrencyContext from "../../../contexts/CurrencyContext";
 
 import {
-  getSymbol,
-  toCurrencyDecimals,
   toSmallestUnit,
   currencyInfo,
   isValidPrice,
-  toDotDecimal,
 } from "../../../scripts/helpers";
 
 const useStyles = makeStyles((theme) => {

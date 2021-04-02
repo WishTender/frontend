@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 export default function Login() {
   const [profile, setProfile] = useState(null);
   const { setUser, getUser } = useContext(UserContext);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");

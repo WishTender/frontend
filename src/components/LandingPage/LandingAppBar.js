@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ScrollTop(props) {
-  const { children, window } = props;
+  const { children } = props;
   const classes = useStyles();
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
@@ -77,7 +77,6 @@ export default function BackToTop(props) {
 
     return () => window.removeEventListener("scroll", listenScrollEvent);
   }, []);
-  const classes = useStyles();
 
   return (
     <React.Fragment>
@@ -88,6 +87,7 @@ export default function BackToTop(props) {
           <div className="logo container">
             <a href="/">
               <img
+                alt="logo"
                 className="logo"
                 src="/images/logo.png"
                 style={{ height: "68px", top: "-3px", position: "relative" }}
