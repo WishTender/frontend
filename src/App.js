@@ -18,6 +18,7 @@ import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage/LandingPage";
 import ThankYou from "./components/LandingPage/ThankYou";
 import CustomizedMenus from "./components/nav/menu.js";
+import Image from "./components/common/S3Image/Image";
 import Cart from "./components/Cart/Cart.js";
 import Login from "./components/Login/Login.js";
 import Logout from "./components/nav/LogoutButton/LogoutButton.js";
@@ -157,6 +158,9 @@ function App(props) {
       </Route>
       <Route path="/confirm-email">
         <ConfirmEmail />
+      </Route>
+      <Route path="/image">
+        <Image />
       </Route>
 
       <Route path="/:alias">
