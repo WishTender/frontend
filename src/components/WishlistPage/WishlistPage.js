@@ -52,7 +52,7 @@ function WishlistPage(props) {
         setRefreshWishlist(false);
       });
     }
-  }, [refreshWishlist]);
+  }, [refreshWishlist, alias.wishlists]); // do we need both of these? why not just set alias.wishlists when the wishlist is updated
 
   const showWishlist =
     (alias && alias.activated) ||
