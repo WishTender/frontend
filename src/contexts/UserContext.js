@@ -6,6 +6,7 @@ export const UserContext = createContext({
     let user = await fetch("/api/users/current", {
       credentials: "include",
     }).then((res) => {
+      console.log(res);
       if (res.status === 204) return Promise.resolve(null);
       return res.json();
     });
