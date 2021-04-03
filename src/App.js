@@ -222,17 +222,27 @@ import React, { useState, useEffect, useContext } from "react";
 
 function App(props) {
   const fetch7 = () => {
-    fetch("/api/k", {
+    fetch("http://localhost:4000/api/k", {
       credentials: "include",
     }).then(async (res) => {
       console.log("status", res.status);
+      console.log("res", res);
+    });
+  };
+  const fetch8 = () => {
+    fetch("https://wishtender.herokuapp.com/api/users/current", {
+      credentials: "include",
+    }).then(async (res) => {
+      console.log("status", res.status);
+      console.log("res", res);
       const p = await res.json();
-      console.log("json", p);
+      console.log("user", p);
     });
   };
   return (
     <div>
       <button onClick={fetch7}>fetch</button>
+      <button onClick={fetch8}>fetch2</button>
     </div>
   );
 }
