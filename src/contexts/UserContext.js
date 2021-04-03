@@ -5,11 +5,10 @@ export const UserContext = createContext({
   getUser: async () => {
     let user = await fetch("/api/users/current", {
       credentials: "include",
-    }).then((res) => {
-      console.log(res);
-      console.log(res.body);
+    }).then(async (res) => {
       if (res.status === 204) return Promise.resolve(null);
-      return res.json();
+      const p = await res.json();
+      console.log("json", p);
     });
     return user || null;
   },
