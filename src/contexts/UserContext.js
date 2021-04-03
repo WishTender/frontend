@@ -7,6 +7,7 @@ export const UserContext = createContext({
       credentials: "include",
     }).then((res) => {
       console.log(res);
+      console.log(res.body);
       if (res.status === 204) return Promise.resolve(null);
       return res.json();
     });
