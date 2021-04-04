@@ -8,7 +8,9 @@ export default function ConnectSetup() {
 
   useEffect(() => {
     // get account info- was stripe setup?
-    fetch("/api/connectAccount/currentAccount").then(async (res) => {
+    fetch(
+      process.env.REACT_APP_BASE_URL + "/api/connectAccount/currentAccount"
+    ).then(async (res) => {
       const json = await res.json();
       alert(JSON.stringify(json));
     });
@@ -17,11 +19,14 @@ export default function ConnectSetup() {
   const correctCurrency = (data) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    fetch("/api/connectAccount/correctCurrency", {
-      method: "PATCH",
-      body: JSON.stringify(data),
-      headers,
-    })
+    fetch(
+      process.env.REACT_APP_BASE_URL + "/api/connectAccount/correctCurrency",
+      {
+        method: "PATCH",
+        body: JSON.stringify(data),
+        headers,
+      }
+    )
       .then(async (res) => {
         if (res.status >= 200 && res.status < 300) {
           return alert("You're account is ready to set up.");
@@ -36,11 +41,14 @@ export default function ConnectSetup() {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     // send the country code to the server where we will also detect the browser's preferred language located in the acceptsLanguages request header
-    fetch("/api/connectAccount/createConnect", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers,
-    })
+    fetch(
+      process.env.REACT_APP_BASE_URL + "/api/connectAccount/createConnect",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers,
+      }
+    )
       .then(async (response) => {
         if (response.status === 500) {
           let responseText = await response.text();

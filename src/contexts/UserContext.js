@@ -3,13 +3,16 @@ export const UserContext = createContext({
   user: null,
   setUser: () => {},
   getUser: async () => {
-    let user = await fetch("http://localhost:4000/api/users/current", {
-      credentials: "include",
-    }).then(async (res) => {
+    let user = await fetch(
+      process.env.REACT_APP_BASE_URL + "/api/users/current",
+      {
+        credentials: "include",
+      }
+    ).then(async (res) => {
       console.log(res);
       if (res.status === 204) return Promise.resolve(null);
-      const p = await res.json();
-      console.log("json", p);
+      const user = await res.json();
+      return user;
     });
     return user || null;
   },

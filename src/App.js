@@ -182,9 +182,13 @@ function App(props) {
           {/* <Switch> */}
           {/* needs to render differently if not accessed from redirect */}
           {user !== undefined && (
-            <LocaleContext.Provider value={JSON.parse(cookies.locale).locale}>
+            <LocaleContext.Provider
+              value={cookies.locale ? JSON.parse(cookies.locale).locale : null}
+            >
               <CountryContext.Provider
-                value={JSON.parse(cookies.locale).countryCode}
+                value={
+                  cookies.locale ? JSON.parse(cookies.locale).countryCode : null
+                }
               >
                 <CurrencyContext.Provider value={clientCurrency(user)}>
                   <UserContext.Provider value={{ user, setUser, getUser }}>
@@ -221,27 +225,22 @@ export default App;
 // import React, { useState, useEffect, useContext } from "react";
 
 // function App(props) {
-//   const fetch7 = () => {
-//     fetch("http://localhost:4000/api/k", {
-//       credentials: "include",
-//     }).then(async (res) => {
-//       console.log("status", res.status);
-//       console.log("res", res);
-//     });
-//   };
 //   const fetch8 = () => {
-//     fetch("https://wishtender.herokuapp.com/api/users/current", {
+//     // https://wishtender.herokuapp.com
+//     fetch(`${process.env.REACT_APP_BASE_URL}/api/k`, {
 //       credentials: "include",
 //     }).then(async (res) => {
 //       console.log("status", res.status);
+//       // const l = await res.json();
+//       const l = await res.text();
+
+//       console.log("body", l);
 //       console.log("res", res);
-//       const p = await res.json();
-//       console.log("user", p);
+//       console.log("Pk", process.env.REACT_APP_BASE_URL);
 //     });
 //   };
 //   return (
 //     <div>
-//       <button onClick={fetch7}>fetch</button>
 //       <button onClick={fetch8}>fetch2</button>
 //     </div>
 //   );

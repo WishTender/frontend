@@ -12,7 +12,7 @@ export default function ConfirmEmail() {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     // send the country code to the server where we will also detect the browser's preferred language located in the acceptsLanguages request header
-    fetch("/api/confirmation/resend", {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/confirmation/resend", {
       method: "POST",
       body: JSON.stringify({ email }),
       headers,
@@ -27,7 +27,7 @@ export default function ConfirmEmail() {
   const confirm = (email, token) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    fetch("/api/confirmation/confirm", {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/confirmation/confirm", {
       method: "PATCH",
       body: JSON.stringify({ email, token }),
       headers,

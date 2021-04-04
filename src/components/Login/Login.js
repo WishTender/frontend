@@ -11,7 +11,7 @@ export default function Login() {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    fetch("/api/users/login", {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/users/login", {
       method: "POST",
       body: JSON.stringify(data),
       headers,

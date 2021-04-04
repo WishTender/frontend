@@ -27,8 +27,8 @@
     "sc-color": "^0.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "startlocal": "BACKENDLOCAL=true react-scripts start",
+    "start": "REACT_APP_BASE_URL=https://wishtender.herokuapp.com react-scripts start",
+    "startlocal": "BACKENDLOCAL=true REACT_APP_BASE_URL= react-scripts start",
     "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
