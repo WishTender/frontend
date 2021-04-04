@@ -3,7 +3,7 @@ export const UserContext = createContext({
   user: null,
   setUser: () => {},
   getUser: async () => {
-    let user = await fetch("/api/users/current", {
+    let user = await fetch("http://localhost:4000/api/k", {
       credentials: "include",
     }).then(async (res) => {
       console.log(res);
