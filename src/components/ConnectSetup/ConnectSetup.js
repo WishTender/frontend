@@ -9,7 +9,8 @@ export default function ConnectSetup() {
   useEffect(() => {
     // get account info- was stripe setup?
     fetch(
-      process.env.REACT_APP_BASE_URL + "/api/connectAccount/currentAccount"
+      process.env.REACT_APP_BASE_URL + "/api/connectAccount/currentAccount",
+      { credentials: "include" }
     ).then(async (res) => {
       const json = await res.json();
       alert(JSON.stringify(json));
@@ -22,6 +23,8 @@ export default function ConnectSetup() {
     fetch(
       process.env.REACT_APP_BASE_URL + "/api/connectAccount/correctCurrency",
       {
+        credentials: "include",
+
         method: "PATCH",
         body: JSON.stringify(data),
         headers,
@@ -44,6 +47,8 @@ export default function ConnectSetup() {
     fetch(
       process.env.REACT_APP_BASE_URL + "/api/connectAccount/createConnect",
       {
+        credentials: "include",
+
         method: "POST",
         body: JSON.stringify(data),
         headers,

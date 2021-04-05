@@ -1,7 +1,9 @@
 import getCurrencies from "./getCurrencies";
 
 const fetchUser = (callback) => {
-  return fetch(process.env.REACT_APP_BASE_URL + "/api/users/current")
+  return fetch(process.env.REACT_APP_BASE_URL + "/api/users/current", {
+    credentials: "include",
+  })
     .then((res) => {
       if (res.status === 204) return null;
       return res.json();

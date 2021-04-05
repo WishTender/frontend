@@ -8,6 +8,7 @@ export default function ActivateAccount() {
     fetch(
       process.env.REACT_APP_BASE_URL + "/api/connectAccount/createConnect",
       {
+        credentials: "include",
         method: "POST",
         headers,
       }

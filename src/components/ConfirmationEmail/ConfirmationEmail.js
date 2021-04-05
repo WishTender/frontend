@@ -9,6 +9,8 @@ export default function ConfirmationEmail() {
     headers.append("Content-Type", "application/json");
     // send the country code to the server where we will also detect the browser's preferred language located in the acceptsLanguages request header
     fetch(process.env.REACT_APP_BASE_URL + "/api/confirmation/resend", {
+      credentials: "include",
+
       method: "POST",
       body: JSON.stringify({ email }),
       headers,

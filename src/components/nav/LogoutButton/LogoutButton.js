@@ -9,6 +9,8 @@ export default function LogoutButton() {
     headers.append("Content-Type", "application/json");
 
     fetch(process.env.REACT_APP_BASE_URL + "/api/users/logout", {
+      credentials: "include",
+
       method: "POST",
     })
       .then(async (res) => {

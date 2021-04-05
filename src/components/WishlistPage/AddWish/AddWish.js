@@ -12,6 +12,7 @@ const fetchPostJson = async (data, route, callback) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   await fetch(route, {
+    credentials: "include",
     method: "POST",
     body: JSON.stringify(data),
     headers,

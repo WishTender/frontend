@@ -13,6 +13,8 @@ export default function Login() {
 
     fetch(process.env.REACT_APP_BASE_URL + "/api/users/login", {
       method: "POST",
+      credentials: "include",
+
       body: JSON.stringify(data),
       headers,
     })

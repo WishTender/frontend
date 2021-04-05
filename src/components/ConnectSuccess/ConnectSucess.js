@@ -8,6 +8,8 @@ export default function CheckOutSuccess() {
     fetch(
       process.env.REACT_APP_BASE_URL + "/api/connectAccount/correctCurrency",
       {
+        credentials: "include",
+
         method: "PATCH",
         body: JSON.stringify(data),
         headers,
@@ -26,6 +28,8 @@ export default function CheckOutSuccess() {
     fetch(
       process.env.REACT_APP_BASE_URL + "/api/connectAccount/activateConnect",
       {
+        credentials: "include",
+
         method: "PATCH",
       }
     )
