@@ -12,6 +12,7 @@ const fetchPostJson = async (data, route, callback) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   await fetch(route, {
+    credentials: "include",
     method: "POST",
     body: JSON.stringify(data),
     headers,
@@ -77,8 +78,10 @@ function AddWish(props) {
     wishInfo.url = url;
     wishInfo.currency = props.currency;
     wishInfo.wishlist = props.wishlist;
-    fetchPostJson(wishInfo, "/api/wishlistItems", () =>
-      props.afterAddWish(wishInfo)
+    fetchPostJson(
+      wishInfo,
+      process.env.REACT_APP_BASE_URL + "/api/wishlistItems",
+      () => props.afterAddWish(wishInfo)
     );
   };
 

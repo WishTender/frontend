@@ -20,7 +20,7 @@ export default function Cart(props) {
   useEffect(() => {
     if (props.cart) parseCartPrices(props.cart);
     if (!props.cart && !cart) {
-      fetchGet("/api/cart", (crt) => {
+      fetchGet(process.env.REACT_APP_BASE_URL + "/api/cart", (crt) => {
         parseCartPrices(crt);
         setCart(crt);
       });
@@ -48,7 +48,7 @@ export default function Cart(props) {
           noteToWisher: data.note,
         },
       },
-      "/api/checkout",
+      process.env.REACT_APP_BASE_URL + "/api/checkout",
       (data) => {
         goToCheckout(data.checkoutSessionId);
       }

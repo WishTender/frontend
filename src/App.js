@@ -182,9 +182,13 @@ function App(props) {
           {/* <Switch> */}
           {/* needs to render differently if not accessed from redirect */}
           {user !== undefined && (
-            <LocaleContext.Provider value={JSON.parse(cookies.locale).locale}>
+            <LocaleContext.Provider
+              value={cookies.locale ? JSON.parse(cookies.locale).locale : null}
+            >
               <CountryContext.Provider
-                value={JSON.parse(cookies.locale).countryCode}
+                value={
+                  cookies.locale ? JSON.parse(cookies.locale).countryCode : null
+                }
               >
                 <CurrencyContext.Provider value={clientCurrency(user)}>
                   <UserContext.Provider value={{ user, setUser, getUser }}>
@@ -218,3 +222,28 @@ function App(props) {
 }
 
 export default App;
+// import React, { useState, useEffect, useContext } from "react";
+
+// function App(props) {
+//   const fetch8 = () => {
+//     // https://wishtender.herokuapp.com
+//     fetch(`${process.env.REACT_APP_BASE_URL}/api/k`, {
+//       credentials: "include",
+//     }).then(async (res) => {
+//       console.log("status", res.status);
+//       // const l = await res.json();
+//       const l = await res.text();
+
+//       console.log("body", l);
+//       console.log("res", res);
+//       console.log("Pk", process.env.REACT_APP_BASE_URL);
+//     });
+//   };
+//   return (
+//     <div>
+//       <button onClick={fetch8}>fetch2</button>
+//     </div>
+//   );
+// }
+
+// export default App;

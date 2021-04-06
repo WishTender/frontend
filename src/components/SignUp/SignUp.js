@@ -14,7 +14,8 @@ export default function SignUp() {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     // send the country code to the server where we will also detect the browser's preferred language located in the acceptsLanguages request header
-    fetch("/api/users/registration", {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/users/registration", {
+      credentials: "include",
       method: "POST",
       body: JSON.stringify(data),
       headers,

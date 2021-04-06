@@ -8,13 +8,17 @@ export default function AddToCart(props) {
   const handleClickAddAndShop = () => {
     fetchPostJson(
       { itemId: props.item._id },
-      "/api/cart/add-to-cart",
+      process.env.REACT_APP_BASE_URL + "/api/cart/add-to-cart",
       console.log
     );
     props.onClose();
   };
   const handleClickAddAndCheckOut = () => {
-    fetchPostJson({ itemId: props.item._id }, "/api/cart/add-to-cart", setCart);
+    fetchPostJson(
+      { itemId: props.item._id },
+      process.env.REACT_APP_BASE_URL + "/api/cart/add-to-cart",
+      setCart
+    );
   };
   return (
     <div>

@@ -8,7 +8,8 @@ import useTraceUpdate from "../../scripts/useTraceUpdate";
 import Wishlist from "./Wishlist";
 import { unitToStandard, parsePrice } from "../../scripts/helpers";
 
-const handleRoute = "/api/aliases?handle_lowercased=";
+const handleRoute =
+  process.env.REACT_APP_BASE_URL + "/api/aliases?handle_lowercased=";
 
 function WishlistPage(props) {
   const [alias, setAlias] = useState(null);
