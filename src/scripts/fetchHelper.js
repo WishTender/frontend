@@ -9,6 +9,7 @@ const fetchPatchImage = (image, fileName, route, callback) => {
   var fd = new FormData();
   fd.append(fileName, image);
   fetch(route, {
+    credentials: "include",
     method: "PATCH",
     body: fd,
     // mode: "cors",
@@ -39,6 +40,7 @@ const fetchPatchMulti = (data, route, callback) => {
   const dataArray = Object.entries(data);
   dataArray.forEach((datum) => fd.append(datum[0], datum[1]));
   fetch(route, {
+    credentials: "include",
     method: "PATCH",
     body: fd,
     // mode: "cors",
@@ -66,6 +68,7 @@ const fetchPatchMulti = (data, route, callback) => {
  */
 const fetchDelete = (route, callback) => {
   fetch(route, {
+    credentials: "include",
     method: "DELETE",
   })
     .then(async (response) => {
@@ -94,6 +97,7 @@ const fetchPostJson = async (data, route, callback) => {
   headers.append("Content-Type", "application/json");
   await fetch(route, {
     method: "POST",
+    credentials: "include",
     body: JSON.stringify(data),
     headers,
   })
@@ -119,6 +123,7 @@ const fetchPatchJson = async (data, route, callback) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   await fetch(route, {
+    credentials: "include",
     method: "PATCH",
     body: JSON.stringify(data),
     headers,
@@ -138,7 +143,7 @@ const fetchPatchJson = async (data, route, callback) => {
  * @param cb  callback function
  */
 const fetchGet = async (route, cb) => {
-  await fetch(route)
+  await fetch(route, { credentials: "include" })
     .then((res) => {
       return res.json();
     })

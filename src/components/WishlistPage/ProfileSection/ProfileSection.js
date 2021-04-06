@@ -64,7 +64,9 @@ function ProfileSection(props) {
   };
 
   const handleCheckHandleAvailability = async (handle) => {
-    const available = await fetch(`${handleRoute}${handle.toLowerCase()}`)
+    const available = await fetch(`${handleRoute}${handle.toLowerCase()}`, {
+      credentials: "include",
+    })
       .then((res) => {
         return res.status === 204 ? true : false;
       })

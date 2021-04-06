@@ -152,6 +152,8 @@ export default function ImageInput(props) {
     var fd = new FormData();
     fd.append("image", myNewCroppedFile);
     fetch("http://localhost:4000/image", {
+      credentials: "include",
+
       method: "POST",
       body: fd,
       mode: "cors",
