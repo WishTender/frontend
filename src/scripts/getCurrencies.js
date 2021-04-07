@@ -1,4 +1,4 @@
-const countryData = require('country-data');
+const countryData = require("country-data");
 /**
  * Get currencies
  * @param {String} country code

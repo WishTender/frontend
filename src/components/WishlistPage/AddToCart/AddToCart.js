@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "@material-ui/core";
-import { fetchPostJson } from "../../../scripts/fetchHelper";
+import { fetchPatchJson } from "../../../scripts/fetchHelper";
 import { Redirect } from "react-router-dom";
 
 export default function AddToCart(props) {
   const [cart, setCart] = useState(false);
   const handleClickAddAndShop = () => {
-    fetchPostJson(
+    fetchPatchJson(
       { itemId: props.item._id },
       process.env.REACT_APP_BASE_URL + "/api/cart/add-to-cart",
       console.log
@@ -14,7 +14,7 @@ export default function AddToCart(props) {
     props.onClose();
   };
   const handleClickAddAndCheckOut = () => {
-    fetchPostJson(
+    fetchPatchJson(
       { itemId: props.item._id },
       process.env.REACT_APP_BASE_URL + "/api/cart/add-to-cart",
       setCart
