@@ -46,7 +46,9 @@ class ExchangeRateApiInterface {
   async getAllExchangeRates(baseCurrency) {
     const exchangeRate = await axios
       .get(`${this.baseURI}/latest?base=${baseCurrency}`)
-      .then((x) => x.data.rates)
+      .then((x) => {
+        return x.data.rates;
+      })
       .catch((response) => {
         throw new Error(`Error: ${response.response.data.error}`);
       });

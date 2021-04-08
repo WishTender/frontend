@@ -128,10 +128,12 @@ const fetchPatchJson = async (data, route, callback) => {
     body: JSON.stringify(data),
     headers,
   })
-    .then((res) => {
-      if (res.status === 200) callback();
+    .then(async (res) => {
+      if (res.status >= 200 && res.status < 300) {
+        const json = await res.json();
+        callback(json);
+      }
       if (res.status === 500) console.log("500: couldn't patch");
-      res.json();
     })
     .catch((err) => {
       console.log(`couldn't patch json: ${err}`);

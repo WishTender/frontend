@@ -3,10 +3,10 @@ import { fetchGet, fetchPostJson } from "../../scripts/fetchHelper";
 import { displayPrice, parseCartPrices } from "../../scripts/helpers";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { LocaleContext } from "../../contexts/LocaleContext";
-import ExchangeRateApiInterface from "../../scripts/ExchangeRatesApiInterface";
+// import ExchangeRateApiInterface from "../../scripts/RatesAPI";
 import { useForm } from "react-hook-form";
 
-const ratesApi = new ExchangeRateApiInterface();
+// const ratesApi = new ExchangeRateApiInterface();
 
 export default function Cart(props) {
   const [cart, setCart] = useState(null);
@@ -29,7 +29,17 @@ export default function Cart(props) {
 
   useEffect(() => {
     if (clientCurrency) {
-      ratesApi.getAllExchangeRates(clientCurrency).then(setExchangeRates);
+      const fetchData = async () => {
+        const response = await fetch(
+          `/api/exchange/all?base=${clientCurrency}`
+        );
+
+        const rates = await response.json();
+        setExchangeRates(rates.rates);
+      };
+
+      fetchData();
+      // ratesApi.getAllExchangeRates(clientCurrency).then(setExchangeRates);
     }
   }, [clientCurrency]);
 

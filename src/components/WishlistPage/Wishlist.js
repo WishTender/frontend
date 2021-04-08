@@ -7,10 +7,10 @@ import AddWish from "./AddWish/AddWish";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import EditWishForm from "./EditWishForm/EditWishForm";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
-import ExchangeRateApiInterface from "../../scripts/ExchangeRatesApiInterface";
+// import ExchangeRateApiInterface from "../../scripts/RatesAPI";
 import useTraceUpdate from "../../scripts/useTraceUpdate";
 import AddToCart from "./AddToCart/AddToCart";
-const ratesApi = new ExchangeRateApiInterface();
+// const ratesApi = new ExchangeRateApiInterface();
 
 function Wishlist(props) {
   const [selectWish, setSelectWish] = useState(null);
@@ -26,9 +26,18 @@ function Wishlist(props) {
 
   useEffect(() => {
     if (clientCurrency !== props.currency && props.currency) {
-      ratesApi
-        .getExchangeRateSync(props.currency, clientCurrency)
-        .then(setConvertRate);
+      const fetchData = async () => {
+        const response = await fetch(
+          `/api/exchange?base=${props.currency}&symbols=${clientCurrency}`
+        );
+        let rate = await response.json();
+        setConvertRate(rate.rate);
+      };
+
+      fetchData();
+      // ratesApi
+      //   .getExchangeRateSync(props.currency, clientCurrency)
+      //   .then(setConvertRate);
     }
   }, [clientCurrency, props.currency]);
 
