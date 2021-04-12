@@ -183,11 +183,11 @@ function App(props) {
           {/* needs to render differently if not accessed from redirect */}
           {user !== undefined && (
             <LocaleContext.Provider
-              value={cookies.locale ? JSON.parse(cookies.locale).locale : null}
+              value={cookies.locale ? JSON.parse(cookies.locale).locale : "en"}
             >
               <CountryContext.Provider
                 value={
-                  cookies.locale ? JSON.parse(cookies.locale).countryCode : null
+                  cookies.locale ? JSON.parse(cookies.locale).countryCode : "US"
                 }
               >
                 <CurrencyContext.Provider value={clientCurrency(user)}>
