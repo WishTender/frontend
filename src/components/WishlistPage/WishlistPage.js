@@ -10,7 +10,6 @@ import { unitToStandard, parsePrice } from "../../scripts/helpers";
 
 const handleRoute =
   process.env.REACT_APP_BASE_URL + "/api/aliases?handle_lowercased=";
-
 function WishlistPage(props) {
   const [alias, setAlias] = useState(null);
   const [wishlist, setWishlist] = useState(null);
@@ -45,13 +44,16 @@ function WishlistPage(props) {
 
   useEffect(() => {
     if (refreshWishlist) {
-      fetchGet(`/api/wishlists/${alias.wishlists[0]._id}`, (wishlist) => {
-        wishlist.wishlistItems.forEach(
-          (item) => (item.price = unitToStandard(item.price, item.currency))
-        );
-        setWishlist(wishlist);
-        setRefreshWishlist(false);
-      });
+      fetchGet(
+        `${process.env.REACT_APP_BASE_URL}/api/wishlists/${alias.wishlists[0]._id}`,
+        (wishlist) => {
+          wishlist.wishlistItems.forEach(
+            (item) => (item.price = unitToStandard(item.price, item.currency))
+          );
+          setWishlist(wishlist);
+          setRefreshWishlist(false);
+        }
+      );
     }
   }, [refreshWishlist]); // do we need both of these? why not just set alias.wishlists when the wishlist is updated
 

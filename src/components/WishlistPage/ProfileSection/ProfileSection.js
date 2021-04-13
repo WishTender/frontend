@@ -58,7 +58,7 @@ function ProfileSection(props) {
     fetchPatchImage(
       image,
       "image",
-      `/api/aliases/${aliasId}`,
+      `${process.env.REACT_APP_BASE_URL}/api/aliases/${aliasId}`,
       setProfilePicture
     );
   };
