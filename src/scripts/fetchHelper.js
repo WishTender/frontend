@@ -147,6 +147,7 @@ const fetchPatchJson = async (data, route, callback) => {
 const fetchGet = async (route, cb) => {
   await fetch(route, { credentials: "include" })
     .then((res) => {
+      console.log(res);
       return res.json();
     })
     .then((json) => {
