@@ -160,7 +160,7 @@ function App(props) {
       </Route>
 
       <Route path="/:alias">
-        <WishlistPage />;
+        <WishlistPage />
       </Route>
     </Switch>
   );
