@@ -10,7 +10,6 @@ import { unitToStandard, parsePrice } from "../../scripts/helpers";
 
 const handleRoute =
   process.env.REACT_APP_BASE_URL + "/api/aliases?handle_lowercased=";
-console.log("route", handleRoute);
 function WishlistPage(props) {
   const [alias, setAlias] = useState(null);
   const [wishlist, setWishlist] = useState(null);
@@ -29,7 +28,6 @@ function WishlistPage(props) {
 
   useEffect(() => {
     fetchGet(`${handleRoute}${aliasPath.toLowerCase()}`, (alias) => {
-      console.log("route", handleRoute);
       const wl = alias.wishlists[0];
       if (wl) {
         wl.wishlistItems.forEach((item) => {
