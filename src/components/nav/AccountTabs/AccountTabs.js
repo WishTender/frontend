@@ -47,7 +47,8 @@ export default function AccountTabs(props) {
         <Tab
           onClick={async () => {
             const res = await fetch(
-              `/api/aliases?user=${userContext.user._id}`
+              `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${userContext.user._id}`,
+              { credentials: "include" }
             );
             const json = await res.json();
             setAlias(json.handle);

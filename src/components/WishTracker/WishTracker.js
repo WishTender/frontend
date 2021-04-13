@@ -82,14 +82,17 @@ export default function WishTracker() {
 
   useEffect(() => {
     if (currentUser || (refreshOrders && currentUser))
-      fetchGet(`/api/orders/${currentUser.aliases[0]}`, (orders) => {
-        orders.map((order) => {
-          parseAliasCartPrices(order.cart);
-          return order;
-        });
-        setOrders(orders);
-        if (refreshOrders) setRefreshOrders(false);
-      });
+      fetchGet(
+        `${process.env.REACT_APP_BASE_URL}/api/orders/${currentUser.aliases[0]}`,
+        (orders) => {
+          orders.map((order) => {
+            parseAliasCartPrices(order.cart);
+            return order;
+          });
+          setOrders(orders);
+          if (refreshOrders) setRefreshOrders(false);
+        }
+      );
   }, [currentUser, refreshOrders]);
 
   return (
