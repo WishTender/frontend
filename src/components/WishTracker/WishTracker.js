@@ -133,7 +133,7 @@ export default function WishTracker() {
                 {
                   message: "test reply text",
                 },
-                `/api/orders/reply/${reply._id}`,
+                `${process.env.REACT_APP_BASE_URL}/api/orders/reply/${reply._id}`,
                 (res) => {
                   if (res.messageSent) setRefreshOrders(true);
                 }

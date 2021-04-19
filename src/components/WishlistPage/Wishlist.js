@@ -28,7 +28,7 @@ function Wishlist(props) {
     if (clientCurrency !== props.currency && props.currency) {
       const fetchData = async () => {
         const response = await fetch(
-          `/api/exchange?base=${props.currency}&symbols=${clientCurrency}`
+          `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${props.currency}&symbols=${clientCurrency}`
         );
         let rate = await response.json();
         setConvertRate(rate.rate);
