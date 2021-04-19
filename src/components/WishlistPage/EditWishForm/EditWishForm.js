@@ -77,7 +77,7 @@ export default function EditWishForm(props) {
     if (data.price)
       data.price = toSmallestUnit(data.price, props.info.currency);
     if (Object.keys(data).length) {
-      fetchPatchMulti(data, `/wishlistItems/${props.id}`, () => {
+      fetchPatchMulti(data, `/api/wishlistItems/${props.id}`, () => {
         props.onClose({ refresh: true });
       });
     } else {
