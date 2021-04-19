@@ -88,7 +88,7 @@ export default function EditWishForm(props) {
     setImageFile(img);
   };
   const deleteWish = () => {
-    fetchDelete(`/api/wishlistItems/${props.id}`, () =>
+    fetchDelete(`${process.env.BASE_URL}/api/wishlistItems/${props.id}`, () =>
       props.onClose({ refresh: true })
     );
   };
