@@ -79,7 +79,7 @@ export default function EditWishForm(props) {
     if (Object.keys(data).length) {
       fetchPatchMulti(
         data,
-        `${process.env.BASE_URL}/api/wishlistItems/${props.id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/wishlistItems/${props.id}`,
         () => {
           props.onClose({ refresh: true });
         }
@@ -92,8 +92,9 @@ export default function EditWishForm(props) {
     setImageFile(img);
   };
   const deleteWish = () => {
-    fetchDelete(`${process.env.BASE_URL}/api/wishlistItems/${props.id}`, () =>
-      props.onClose({ refresh: true })
+    fetchDelete(
+      `${process.env.REACT_APP_BASE_URL}/api/wishlistItems/${props.id}`,
+      () => props.onClose({ refresh: true })
     );
   };
   return (

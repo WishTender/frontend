@@ -85,7 +85,7 @@ function ProfileSection(props) {
     fetchPatchImage(
       image,
       "image",
-      `/api/wishlists/${wishlistId}`,
+      `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlistId}`,
       setCoverImage
     );
   };
