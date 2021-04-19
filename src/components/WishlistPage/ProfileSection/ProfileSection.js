@@ -76,9 +76,13 @@ function ProfileSection(props) {
     return available;
   };
   const handleUpdateHandle = (handle) => {
-    fetchPatchJson({ handle }, `/api/aliases/${aliasId}`, () => {
-      setHandle(handle);
-    });
+    fetchPatchJson(
+      { handle },
+      `${process.env.REACT_APP_BASE_URL}/api/aliases/${aliasId}`,
+      () => {
+        setHandle(handle);
+      }
+    );
   };
 
   const handleUpdateCoverImage = (image) => {
@@ -90,15 +94,23 @@ function ProfileSection(props) {
     );
   };
   const handleUpdateWishlistMessage = (wishlistMessage) => {
-    fetchPatchJson({ wishlistMessage }, `/api/wishlists/${wishlistId}`, () => {
-      setWishlistMessage(wishlistMessage);
-    });
+    fetchPatchJson(
+      { wishlistMessage },
+      `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlistId}`,
+      () => {
+        setWishlistMessage(wishlistMessage);
+      }
+    );
   };
 
   const handleUpdateWishlistName = (wishlistName) => {
-    fetchPatchJson({ wishlistName }, `/api/wishlists/${wishlistId}`, () => {
-      setWishlistName(wishlistName);
-    });
+    fetchPatchJson(
+      { wishlistName },
+      `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlistId}`,
+      () => {
+        setWishlistName(wishlistName);
+      }
+    );
   };
 
   return (

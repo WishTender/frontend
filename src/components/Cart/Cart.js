@@ -31,7 +31,7 @@ export default function Cart(props) {
     if (clientCurrency) {
       const fetchData = async () => {
         const response = await fetch(
-          `/api/exchange/all?base=${clientCurrency}`
+          `${process.env.REACT_APP_BASE_URL}/api/exchange/all?base=${clientCurrency}`
         );
 
         const rates = await response.json();
