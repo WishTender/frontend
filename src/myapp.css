@@ -581,7 +581,6 @@ header.MuiPaper-elevation4.shadow {
 }
 .main_menu {
   /* display: block; */
-  position: fixed;
   z-index: 901;
   background: white;
   width: 100%;
