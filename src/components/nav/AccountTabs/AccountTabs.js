@@ -55,7 +55,7 @@ export default function AccountTabs(props) {
             setAlias(false);
           }}
           icon={<ListAltIcon />}
-          label="Wishlist"
+          label={props.screen === "xs" ? null : "Wishlist"}
         />
 
         <Tab
@@ -67,7 +67,7 @@ export default function AccountTabs(props) {
             </Badge>
           }
           aria-label="Wish Tracker"
-          label="wish-tracker"
+          label={props.screen === "xs" ? null : "wish-tracker"}
         />
       </Tabs>
     </div>

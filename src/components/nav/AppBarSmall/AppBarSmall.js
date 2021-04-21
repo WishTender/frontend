@@ -5,9 +5,9 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Zoom from "@material-ui/core/Zoom";
-import { UserContext } from "../../contexts/UserContext";
-import LogoutButton from "./LogoutButton/LogoutButton";
-import SignupButton from "./SignupButton/SignupButton";
+import { UserContext } from "../../../contexts/UserContext";
+import LogoutButton from "../LogoutButton/LogoutButton";
+import SignupButton from "../SignupButton/SignupButton";
 
 // app bar
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,7 +15,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import AccountTabs from "./AccountTabs/AccountTabs";
+import AccountTabs from "../AccountTabs/AccountTabs";
+import "./AppBarSmall.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,23 +91,43 @@ export default function BackToTop(props) {
       {/* app bar */}
       <AppBar className={scrolledStyle}>
         <Toolbar style={{ width: "100%", height: "100%" }}>
-          <IconButton
-            onClick={props.openMenu}
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
+          {props.screen === "xs" && (
+            <IconButton
+              onClick={props.openMenu}
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
 
           <div className="logo container">
             <a href="/">
               <img
                 alt="WishTender logo"
                 className="logo"
-                src="/images/logo.png"
-                style={{ height: "68px", top: "-3px", position: "relative" }}
+                src={
+                  props.screen === "xs"
+                    ? "/images/icon_logo.png"
+                    : "/images/logo.png"
+                }
+                style={
+                  props.screen === "xs"
+                    ? {
+                        height: "35px",
+                        top: "0px",
+                        top: "-3px",
+                        position: "relative",
+                      }
+                    : {
+                        maxHeight: "68px",
+                        maxWidth: "100%",
+                        top: "-3px",
+                        position: "relative",
+                      }
+                }
               />
             </a>
           </div>
@@ -119,8 +140,8 @@ export default function BackToTop(props) {
             </>
           ) : (
             <>
-              <AccountTabs />
-              <LogoutButton />
+              <AccountTabs screen={props.screen} />
+              {props.screen !== "xs" && <LogoutButton />}
             </>
           )}
         </Toolbar>
