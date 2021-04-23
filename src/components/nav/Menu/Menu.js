@@ -3,12 +3,13 @@ import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import AppBar from "./AppBar";
+import AppBar from "../AppBar/AppBar";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import "./Menu.css";
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -21,7 +22,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function CustomizedMenus(props) {
+export default function Menu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [headerHeight, setHeaderHeight] = React.useState(null);
 

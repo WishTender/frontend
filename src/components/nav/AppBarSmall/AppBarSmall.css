@@ -1,0 +1,73 @@
+/* Header.js */
+header.custom {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header.custom .container {
+  margin: auto;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+header.custom img {
+  vertical-align: center;
+}
+.logo {
+}
+
+.menu_button {
+  font-size: xx-large;
+}
+
+header .container > * {
+}
+
+/* AppBar */
+
+header {
+  height: 72px;
+  display: grid;
+  align-items: center;
+}
+
+body {
+  padding-top: 72px;
+}
+header.MuiAppBar-colorPrimary {
+  color: #000;
+  background-color: #fff;
+  /* z-index: 800; */
+}
+
+.logo.container {
+  flex-grow: 1;
+}
+
+.MuiToolbar-root .logo {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+header.MuiPaper-elevation4 {
+  box-shadow: none;
+}
+header.MuiPaper-elevation4.shadow {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+@media only screen and (min-width: 600px) {
+}
+/* AppBar BackToTop */
+
+.back_to_top .MuiFab-secondary {
+  color: #fff;
+  background-color: #02bff2;
+}
+
+.back_to_top .MuiFab-secondary:hover {
+  background-color: #03b0e0;
+}

@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 export default function SignupButton() {
   return (
     <Link to="/sign-up">
-      <Button>Signup</Button>
+      <Button variant="contained" color="primary">
+        Signup
+      </Button>
     </Link>
   );
 }
