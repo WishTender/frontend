@@ -38,6 +38,8 @@ const styles = (theme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       width: "-webkit-fill-available",
+      marginLeft: 0,
+      marginRight: 0,
     },
   },
 });
@@ -151,7 +153,11 @@ function Wishlist(props) {
                 setAddWishVisible(true);
               }}
               className={
-                customClasses.gradient + " " + customClasses.addWishButton
+                customClasses.gradient +
+                " " +
+                customClasses.addWishButton +
+                " " +
+                customClasses.margin
               }
               color="primary"
               variant="contained"

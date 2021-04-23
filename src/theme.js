@@ -44,12 +44,11 @@ const theme = createMuiTheme({
   // spacing: { spacing: 4 },
 });
 theme.overrides = {
-  MuiTypography: {
-    root: { margin: theme.spacing(1) },
-  },
+  MuiTypography: {},
   MuiButton: {
-    root: { borderRadius: 50, margin: theme.spacing(1) },
+    root: { borderRadius: 50 },
   },
+
   MuiTab: {
     root: {
       minHeight: "72px",
@@ -62,6 +61,7 @@ theme.overrides = {
     indicator: {
       height: "8px",
       borderRadius: "4px 4px 0 0",
+      background: theme.palette.primary.mainGradient,
     },
   },
 };

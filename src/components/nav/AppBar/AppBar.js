@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+import AccountIcon from "@material-ui/icons/AccountBox";
+
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
@@ -8,6 +10,8 @@ import Zoom from "@material-ui/core/Zoom";
 import { UserContext } from "../../../contexts/UserContext";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import SignupButton from "../SignupButton/SignupButton";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCartOutlined";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // app bar
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,8 +20,10 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountTabs from "../AccountTabs/AccountTabs";
+import "./AppBar.css";
+import useCustomStyles from "../../../themeStyles";
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   root: {
     position: "fixed",
     bottom: theme.spacing(2),
@@ -31,11 +37,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-}));
+});
 
 function ScrollTop(props) {
   const { children } = props;
-  const classes = useStyles();
+  const classes = useCustomStyles(props);
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,
@@ -64,7 +70,7 @@ function ScrollTop(props) {
   );
 }
 
-export default function BackToTop(props) {
+function BackToTop(props) {
   const { user } = useContext(UserContext);
 
   const [scrolledStyle, setscrolledStyle] = useState("noShadow");
@@ -82,45 +88,90 @@ export default function BackToTop(props) {
 
     return () => window.removeEventListener("scroll", listenScrollEvent);
   }, []);
-  const classes = useStyles();
-
+  const classes = useCustomStyles(props);
+  const ShoppingCartButton = (
+    <IconButton component={Link} to="/cart" color="primary">
+      <ShoppingCartIcon></ShoppingCartIcon>
+    </IconButton>
+  );
   return (
     <React.Fragment>
-      <CssBaseline />
       {/* app bar */}
       <AppBar className={scrolledStyle}>
         <Toolbar style={{ width: "100%", height: "100%" }}>
-          <IconButton
-            onClick={props.openMenu}
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
+          {props.screen === "xs" && (
+            <IconButton
+              onClick={props.openMenu}
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
 
           <div className="logo container">
             <a href="/">
               <img
                 alt="WishTender logo"
                 className="logo"
-                src="/images/logo.png"
-                style={{ height: "68px", top: "-3px", position: "relative" }}
+                src={
+                  props.screen === "xs"
+                    ? "/images/icon_logo.png"
+                    : "/images/logo.png"
+                }
+                style={
+                  props.screen === "xs"
+                    ? {
+                        maxHeight: "35px",
+                        maxWidth: "100%",
+                        top: "-3px",
+                        position: "relative",
+                      }
+                    : {
+                        maxHeight: "68px",
+                        maxWidth: "100%",
+                        top: "-3px",
+                        position: "relative",
+                      }
+                }
               />
             </a>
           </div>
           {!user ? (
-            <>
-              <Button color="inherit" href="/login">
-                Login
-              </Button>
-              <SignupButton />
-            </>
+            props.screen !== "xs" ? (
+              <>
+                {ShoppingCartButton}
+                <Button
+                  component={Link}
+                  to="/login"
+                  color="primary"
+                  href="/login"
+                  className={classes.margin}
+                >
+                  Login
+                </Button>
+                <SignupButton />
+              </>
+            ) : (
+              <> {ShoppingCartButton}</>
+            )
           ) : (
             <>
-              <AccountTabs />
-              <LogoutButton />
+              <AccountTabs screen={props.screen} />
+              {/* {ShoppingCartButton} */}
+              {props.screen !== "xs" && (
+                <>
+                  <LogoutButton>
+                    <Tooltip title="Log Out">
+                      <IconButton aria-label="logout">
+                        <AccountIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </LogoutButton>
+                </>
+              )}
             </>
           )}
         </Toolbar>
@@ -136,3 +187,4 @@ export default function BackToTop(props) {
     </React.Fragment>
   );
 }
+export default withStyles(styles)(BackToTop);
