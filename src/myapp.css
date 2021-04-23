@@ -31,80 +31,6 @@ a {
   color: #02bff2;
 }
 
-/* Header.js */
-header.custom {
-  min-height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-header.custom .container {
-  margin: auto;
-  width: 90%;
-  display: flex;
-  justify-content: space-between;
-}
-
-header.custom img {
-  vertical-align: center;
-}
-.logo {
-}
-
-.menu_button {
-  font-size: xx-large;
-}
-
-header .container > * {
-}
-
-/* AppBar */
-
-header {
-  height: 72px;
-  display: grid;
-  align-items: center;
-}
-
-body {
-  padding-top: 72px;
-}
-header.MuiAppBar-colorPrimary {
-  color: #000;
-  background-color: #fff;
-  /* z-index: 800; */
-}
-
-.logo.container {
-  flex-grow: 1;
-}
-
-.MuiToolbar-root .logo {
-  max-width: 100%;
-  vertical-align: middle;
-}
-
-header.MuiPaper-elevation4 {
-  box-shadow: none;
-}
-header.MuiPaper-elevation4.shadow {
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-}
-@media only screen and (min-width: 600px) {
-}
-/* AppBar BackToTop */
-
-.back_to_top .MuiFab-secondary {
-  color: #fff;
-  background-color: #02bff2;
-}
-
-.back_to_top .MuiFab-secondary:hover {
-  background-color: #03b0e0;
-}
-
 /* Home Page------------------ */
 .wishtender_4point_explanation .title {
   text-align: center;
@@ -183,124 +109,6 @@ header.MuiPaper-elevation4.shadow {
   }
 }
 
-/* Profile Page------------------ */
-
-/* ProfileSection.js  */
-
-/* .profile_section {
-}
-
-.profile_section .banner_image {
-  height: 30vw;
-  width: 100%;
-  background-size: cover;
-  overflow: hidden;
-  position: absolute;
-  background: #000;
-}
-.profile_section .banner_image img {
-  width: 100%;
-  opacity: 0.78;
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-}
-
-.profile_section .info {
-  position: relative;
-  border-bottom: 1px solid rgb(224, 224, 224);
-  padding: 4%;
-  padding-top: 20vw;
-}
-
-.profile_section .profile_picture.container {
-  width: 25%;
-}
-.profile_section .profile_picture .picture {
-  background-size: cover;
-  position: relative;
-  -webkit-box-shadow: 0 0 0 5px #fff;
-  border-radius: 50%;
-  width: 100%;
-  padding-bottom: 100%;
-}
-.profile_section .wishlist_name {
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-.profile_section .user_name {
-  font-size: 0.9rem;
-  color: gray;
-  padding-bottom: 2%;
-}
-.profile_section .profile_message {
-  font-size: 0.9rem;
-  font-style: italic;
-}
-
-@media only screen and (min-width: 600px) {
-  .profile_section .info .container.flex {
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .profile_section .profile_picture.container {
-    width: 20%;
-    transform: translateY(50%);
-  }
-
-  .profile_section .container.name {
-    flex-grow: 1;
-  }
-
-  .profile_section .info {
-    padding-top: 10vw;
-  }
-
-  .profile_section .wishlist_name {
-    font-size: 3rem;
-    font-weight: 700;
-  }
-
-  .profile_section .profile_message {
-    margin-left: 25%;
-    font-size: 1.3rem;
-  }
-
-  .profile_section .user_name,
-  .profile_section .wishlist_name {
-    padding-left: 8%;
-    color: white;
-    width: 100%;
-  }
-  .profile_section .user_name {
-    font-size: 1.3rem;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
-  .profile_section .profile_message {
-    padding-top: 3%;
-  }
-}
-
-@media only screen and (min-width: 960px) {
-  .profile_section .profile_picture.container {
-    width: 15%;
-    transform: translateY(40%);
-  }
-
-  .profile_section .banner_image {
-    height: 25vw;
-  }
-  .profile_section .profile_message {
-    margin-left: 18%;
-  }
-  .profile_section .info {
-    padding-bottom: 2%;
-  }
-} */
-
 /* Wishlist */
 
 .wishlist {
@@ -328,10 +136,10 @@ header.MuiPaper-elevation4.shadow {
 
 /* add a wish button */
 
-.wrapper.add_a_wish {
+/* .wrapper.add_a_wish {
   padding: 2%;
-}
-.button.add_a_wish {
+} */
+/* .button.add_a_wish {
   font-weight: 900;
   border-radius: 0;
   border: 4px solid #02bff2;
@@ -339,10 +147,10 @@ header.MuiPaper-elevation4.shadow {
   transition: none;
   color: white;
   background-color: #02bff2;
-}
+} */
 
 @media only screen and (min-width: 450px) {
-  .wrapper.add_a_wish {
+  /* .wrapper.add_a_wish {
     padding: 2%;
   }
 
@@ -355,7 +163,7 @@ header.MuiPaper-elevation4.shadow {
   .button.add_a_wish:hover {
     color: white;
     background-color: #02bff2;
-  }
+  } */
 }
 
 /* 4 point explanation */
@@ -428,7 +236,7 @@ header.MuiPaper-elevation4.shadow {
   background-position-x: -16vw;
 }
 
-.hero_section button,
+/* .hero_section button,
 .hero_section .button {
   color: #fff;
   background-color: #02bff2;
@@ -436,12 +244,12 @@ header.MuiPaper-elevation4.shadow {
   font-weight: bolder;
   box-shadow: none;
   border-radius: 0;
-}
+} */
 
-.hero_section button:hover,
+/* .hero_section button:hover,
 .hero_section .button:hover {
   background-color: #03b0e0;
-}
+} */
 .hero_section .text {
   position: relative;
   padding: 6%;
@@ -548,85 +356,6 @@ header.MuiPaper-elevation4.shadow {
     border-top: 65vw solid;
     border-top-color: #afefff;
   }
-}
-
-/* main_menu______________________- */
-
-/* The animation code */
-@keyframes comeIn {
-  from {
-    left: -100%;
-  }
-  to {
-    left: 0px;
-  }
-}
-@keyframes goOut {
-  from {
-    left: 0%;
-  }
-  to {
-    left: -100%;
-  }
-}
-
-.container_for_main_menu {
-  display: block;
-  position: fixed;
-  z-index: 9000;
-  /* background: white; */
-  width: 100%;
-  height: 100%;
-  top: 0;
-}
-.main_menu {
-  /* display: block; */
-  z-index: 901;
-  background: white;
-  width: 100%;
-  height: 100%;
-}
-
-.m-fadeOut {
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s linear 300ms, opacity 300ms;
-  animation-name: goOut;
-  animation-duration: 300ms;
-}
-.m-fadeIn {
-  visibility: visible;
-  opacity: 1;
-  transition: visibility 0s linear 0ms, opacity 300ms;
-  animation-name: comeIn;
-  animation-duration: 300ms;
-}
-
-.main_menu .MuiListItem-button {
-  border-bottom: 1px solid #e6e6e6;
-}
-.main_menu li:first-of-type {
-  border-top: 1px solid #e6e6e6;
-}
-.container_for_main_menu button.close {
-  background-color: #c7f8ff;
-  margin-left: 0;
-}
-.container_for_main_menu .flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-/* drop down for larg screens----- */
-.main_menu .dropdown_small {
-  /* display: block; */
-  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  z-index: 901;
-  background: white;
-  width: auto;
-  height: auto;
 }
 
 /* ProductInfo----- */

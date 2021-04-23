@@ -1,10 +1,12 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import useStyles from "../../themeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
 
-function heroSection() {
+const heroSection = (props) => {
   return (
     <div className="hero_section_container">
       <div className="hero_section">
@@ -19,7 +21,8 @@ function heroSection() {
           <a href="https://www.twitter.com/DashBarkHuss">@DashBarkHuss</a> on
           twitter for more information. */}
           <Button
-            className="button"
+            className={props.classes.gradient}
+            style={{ fontWeight: 600, marginLeft: 0 }}
             href="https://landing.mailerlite.com/webforms/landing/k3y1m6"
             variant="contained"
           >
@@ -29,7 +32,7 @@ function heroSection() {
       </div>
     </div>
   );
-}
+};
 
 function fourPointExplanation() {
   return (
@@ -91,10 +94,12 @@ function fourPointExplanation() {
   );
 }
 
-function LandingPage() {
+function LandingPage(props) {
+  const classes = useStyles(props);
+
   return (
     <div>
-      {heroSection()}
+      {heroSection({ classes })}
       {fourPointExplanation()}
       <Grid container spacing={3} className="large_explanation">
         <Grid item xs={12} m={6}>

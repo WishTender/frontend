@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect, useRouteMatch } from "react-router-dom"; // a comment (can be deleted)
 import { RouteContext } from "../../../contexts/RouteContext";
 import { UserContext } from "../../../contexts/UserContext";
-
+import theme from "../../../theme";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import RedeemIcon from "@material-ui/icons/Redeem";
@@ -55,7 +55,7 @@ export default function AccountTabs(props) {
             setAlias(false);
           }}
           icon={<ListAltIcon />}
-          label="Wishlist"
+          label={props.screen === "xs" ? null : "Wishlist"}
         />
 
         <Tab
@@ -67,7 +67,7 @@ export default function AccountTabs(props) {
             </Badge>
           }
           aria-label="Wish Tracker"
-          label="wish-tracker"
+          label={props.screen === "xs" ? null : "wish-tracker"}
         />
       </Tabs>
     </div>
