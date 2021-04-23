@@ -8,9 +8,37 @@ import Tab from "@material-ui/core/Tab";
 import RedeemIcon from "@material-ui/icons/Redeem";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import Badge from "@material-ui/core/Badge";
+import Tooltip from "@material-ui/core/Tooltip";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { withStyles, makeStyles } from "@material-ui/core";
 console.log(Router, Route);
-
+// const useStyles = makeStyles({
+//   top: "10px",
+//   border: "1px solid blue",
+//   tabToolTip: {
+//     "$.MuiTooltip-tooltip": {
+//       top: "10px",
+//       border: "1px solid red",
+//     },
+//     "$ .MuiTooltip-tooltip": {
+//       top: "10px",
+//       border: "1px solid red",
+//     },
+//     "$..MuiTooltip-popper": {
+//       top: "10px",
+//       border: "1px solid red",
+//     },
+//     "$ .MuiTooltip-popper": {
+//       top: "10px",
+//       border: "1px solid red",
+//     },
+//   },
+// });
+const TabTooltip = withStyles({
+  tooltip: {
+    margin: 2,
+  },
+})(Tooltip);
 export default function AccountTabs(props) {
   const [activeTab, setActiveTab] = useState(false);
   const [alias, setAlias] = useState(false);
@@ -44,31 +72,34 @@ export default function AccountTabs(props) {
         textColor="primary"
         centered
       >
-        <Tab
-          onClick={async () => {
-            const res = await fetch(
-              `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${userContext.user._id}`,
-              { credentials: "include" }
-            );
-            const json = await res.json();
-            setAlias(json.handle);
-            setAlias(false);
-          }}
-          icon={<ListAltIcon />}
-          label={props.screen === "xs" ? null : "Wishlist"}
-        />
-
-        <Tab
-          component={Link}
-          to="/wish-tracker"
-          icon={
-            <Badge badgeContent={1} color="error">
-              <RedeemIcon />
-            </Badge>
-          }
-          aria-label="Wish Tracker"
-          label={props.screen === "xs" ? null : "wish-tracker"}
-        />
+        <TabTooltip title="Wishlist">
+          <Tab
+            onClick={async () => {
+              const res = await fetch(
+                `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${userContext.user._id}`,
+                { credentials: "include" }
+              );
+              const json = await res.json();
+              setAlias(json.handle);
+              setAlias(false);
+            }}
+            icon={<ListAltIcon />}
+            // label={props.screen === "xs" ? null : "Wishlist"}
+          />
+        </TabTooltip>
+        <TabTooltip title="Wish-Tracker">
+          <Tab
+            component={Link}
+            to="/wish-tracker"
+            icon={
+              <Badge badgeContent={1} color="error">
+                <RedeemIcon />
+              </Badge>
+            }
+            aria-label="Wish Tracker"
+            // label={props.screen === "xs" ? null : "wish-tracker"}
+          />
+        </TabTooltip>
       </Tabs>
     </div>
   );

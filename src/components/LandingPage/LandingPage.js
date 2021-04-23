@@ -2,8 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import useStyles from "../../themeStyles";
-import { makeStyles } from "@material-ui/core/styles";
-
+// import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
 const heroSection = (props) => {
@@ -16,17 +15,16 @@ const heroSection = (props) => {
           <h2>
             What you love. <br /> From your fans.
           </h2>
-          <h3>Coming Soon!</h3>
           {/*Contact{" "}
           <a href="https://www.twitter.com/DashBarkHuss">@DashBarkHuss</a> on
           twitter for more information. */}
           <Button
-            className={props.classes.gradient}
+            className={props.classes.gradient + " " + props.classes.margin}
             style={{ fontWeight: 600, marginLeft: 0 }}
             href="https://landing.mailerlite.com/webforms/landing/k3y1m6"
             variant="contained"
           >
-            Get Early Access
+            Create Your Free Wishlist
           </Button>
         </div>
       </div>

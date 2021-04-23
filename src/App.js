@@ -18,7 +18,6 @@ import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage/LandingPage";
 import ThankYou from "./components/LandingPage/ThankYou";
 import Menu from "./components/nav/Menu/Menu.js";
-import MenuSmall from "./components/nav/MenuSmall/MenuSmall.js";
 import Cart from "./components/Cart/Cart.js";
 import Login from "./components/Login/Login.js";
 import Logout from "./components/nav/LogoutButton/LogoutButton.js";
@@ -207,7 +206,7 @@ function App(props) {
                           <LandingPageMenu />
                         </Route> */}
                         <Route path="/">
-                          <MenuSmall />
+                          <Menu />
                         </Route>
                       </Switch>
                       {SwitchRoutes}
