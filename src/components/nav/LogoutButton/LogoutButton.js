@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 
-export default function LogoutButton() {
+export default function LogoutButton(props) {
   const [loggedOut, setLoggedOut] = useState(false);
   const logout = (data) => {
     const headers = new Headers();
@@ -16,6 +17,7 @@ export default function LogoutButton() {
       .then(async (res) => {
         if (res.status === 201) {
           alert("Logout successful");
+          if (props.callBack) props.callBack();
           setLoggedOut(true);
           return;
         }
@@ -27,9 +29,18 @@ export default function LogoutButton() {
       });
   };
   return (
-    <Button onClick={logout}>
-      {loggedOut && <Redirect to="/" />}
-      Logout
-    </Button>
+    <>
+      {props.children ? (
+        <div onClick={logout}>
+          {props.children} {loggedOut && <Redirect to="/" />}
+        </div>
+      ) : (
+        <Button color="primary" onClick={logout}>
+          {/* <AccountBoxIcon fontSize="medium" /> */}
+          Log Out
+          {loggedOut && <Redirect to="/" />}
+        </Button>
+      )}
+    </>
   );
 }
