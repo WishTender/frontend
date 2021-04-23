@@ -38,6 +38,7 @@ import theme from "./theme";
 import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
 // import WishForm from "./components/wishlistpage/AddWish/WishForm/WishForm";
 import ConnectSuccess from "./components/ConnectSuccess/ConnectSucess";
+import { CssBaseline } from "@material-ui/core";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -178,6 +179,7 @@ function App(props) {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <div className="App">
         <Router>
           {/* <Switch> */}

@@ -1,22 +1,22 @@
 import React, { useContext } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import AccountBoxSharpIcon from "@material-ui/icons/AccountBoxSharp";
+import Typography from "@material-ui/core/Typography";
 import BorderColorRoundedIcon from "@material-ui/icons/BorderColorRounded";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import AccountBoxOutlinedIcon from "@material-ui/icons/AccountBoxOutlined";
 import ListItemText from "@material-ui/core/ListItemText";
-import AppBar from "../AppBar/AppBar";
 import AppBarSmall from "../AppBarSmall/AppBarSmall";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import "./MenuSmall.css";
 import { UserContext } from "../../../contexts/UserContext";
-
+import theme from "../../../theme";
+import { Button } from "@material-ui/core";
+import useCustomStyles from "../../../themeStyles";
+import { Link } from "react-router-dom";
+import LogoutButton from "../LogoutButton/LogoutButton";
 const StyledMenuItem = withStyles((theme) => ({
   root: {
     "&:focus": {
@@ -28,8 +28,20 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
+const useStyles = makeStyles({
+  close: {
+    backgroundColor: theme.palette.primary.extraLight,
+    marginLeft: 0,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.extraLight,
+    },
+  },
+});
+
 export default function Menu(props) {
   const { user } = useContext(UserContext);
+  const classes = useStyles(props);
+  const customClasses = useCustomStyles(props);
 
   const breakpoint = 600;
   const [smallScreen, setSmallScreen] = React.useState(
@@ -72,7 +84,7 @@ export default function Menu(props) {
   };
 
   return (
-    <div>
+    <div id="menu">
       {smallScreen ? (
         <AppBarSmall openMenu={handleClick} screen="xs" />
       ) : (
@@ -81,6 +93,7 @@ export default function Menu(props) {
       {smallScreen && (
         <div>
           <div
+            // className={`container_for_main_menu`}
             className={`container_for_main_menu ${
               anchorEl ? "m-fadeIn" : "m-fadeOut"
             }`}
@@ -89,27 +102,75 @@ export default function Menu(props) {
               className="flex"
               style={{ height: buttonHeight, width: buttonWidth }}
             >
-              <IconButton edge="start" onClick={handleClick} className="close">
+              <IconButton
+                edge="start"
+                onClick={handleClick}
+                className={classes.close}
+              >
                 <CloseIcon />
               </IconButton>
             </div>
-
             <div className={`main_menu `} style={{ top: headerHeight }}>
               {!user && (
-                <StyledMenuItem style={{ background: "#ffdf5769" }}>
+                <StyledMenuItem
+                  component={Link}
+                  to="/sign-up"
+                  onClick={() => {
+                    setAnchorEl(false);
+                  }}
+                  color="primary"
+                >
                   <ListItemIcon>
-                    <BorderColorRoundedIcon fontSize="small" />
+                    <BorderColorRoundedIcon color="primary" fontSize="small" />
                   </ListItemIcon>
-                  <ListItemText primary="Sign Up" />
+                  <ListItemText
+                    disableTypography
+                    primary={
+                      <Typography className={customClasses.gradient}>
+                        Sign Up
+                      </Typography>
+                    }
+                    // primary="Sign Up"
+                  />
                 </StyledMenuItem>
               )}
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <AccountBoxIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={!user ? "Log In" : "Log Out"} />
-              </StyledMenuItem>
-              <StyledMenuItem>
+              {!user ? (
+                <StyledMenuItem
+                  component={Link}
+                  to="/login"
+                  onClick={() => {
+                    setAnchorEl(false);
+                  }}
+                >
+                  <ListItemIcon>
+                    <AccountBoxIcon fontSize="small" />
+                  </ListItemIcon>
+
+                  <ListItemText primary="Log In" />
+                </StyledMenuItem>
+              ) : (
+                <LogoutButton
+                  callBack={() => {
+                    setAnchorEl(false);
+                  }}
+                >
+                  <StyledMenuItem>
+                    <ListItemIcon>
+                      <AccountBoxIcon fontSize="small" />
+                    </ListItemIcon>
+
+                    <ListItemText primary="Log Out" />
+                  </StyledMenuItem>
+                </LogoutButton>
+              )}
+
+              <StyledMenuItem
+                component={Link}
+                to="/cart"
+                onClick={() => {
+                  setAnchorEl(false);
+                }}
+              >
                 <ListItemIcon>
                   <ShoppingCartOutlinedIcon fontSize="small" />
                 </ListItemIcon>

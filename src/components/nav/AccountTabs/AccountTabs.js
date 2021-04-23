@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect, useRouteMatch } from "react-router-dom"; // a comment (can be deleted)
 import { RouteContext } from "../../../contexts/RouteContext";
 import { UserContext } from "../../../contexts/UserContext";
-
+import theme from "../../../theme";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import RedeemIcon from "@material-ui/icons/Redeem";

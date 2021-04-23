@@ -1,4 +1,5 @@
-The animation code @keyframes comeIn {
+/* The animation code  */
+@keyframes comeIn {
   from {
     left: -100%;
   }
@@ -26,6 +27,8 @@ The animation code @keyframes comeIn {
 }
 .main_menu {
   /* display: block; */
+  /* position: fixed; */
+
   z-index: 901;
   background: white;
   width: 100%;
@@ -54,7 +57,7 @@ The animation code @keyframes comeIn {
   border-top: 1px solid #e6e6e6;
 }
 .container_for_main_menu button.close {
-  background-color: #c7f8ff;
+  /* background-color: #c7f8ff; */
   margin-left: 0;
 }
 .container_for_main_menu .flex {
