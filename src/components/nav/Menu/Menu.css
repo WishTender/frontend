@@ -50,12 +50,6 @@
   animation-duration: 300ms;
 }
 
-.main_menu .MuiListItem-button {
-  border-bottom: 1px solid #e6e6e6;
-}
-.main_menu li:first-of-type {
-  border-top: 1px solid #e6e6e6;
-}
 .container_for_main_menu button.close {
   /* background-color: #c7f8ff; */
   margin-left: 0;
