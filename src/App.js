@@ -5,6 +5,7 @@ import { CurrencyContext } from "./contexts/CurrencyContext";
 import { CountryContext } from "./contexts/CountryContext";
 import { LocaleContext } from "./contexts/LocaleContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import AccountSettings from "./components/AccountSettings/AccountSettings";
 import useTraceUpdate from "./scripts/useTraceUpdate";
 // import React from 'react';k
 // import './App.css';
@@ -158,6 +159,9 @@ function App(props) {
       </Route>
       <Route path="/confirm-email">
         <ConfirmEmail />
+      </Route>
+      <Route path="/account-settings">
+        <AccountSettings />
       </Route>
 
       <Route path="/:alias">

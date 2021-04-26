@@ -19,6 +19,10 @@ import { Link } from "react-router-dom";
 import LogoutButton from "../LogoutButton/LogoutButton";
 const StyledMenuItem = withStyles((theme) => ({
   root: {
+    borderBottom: "1px solid #e6e6e6",
+    "&:first-of-type": {
+      borderTop: "1px solid #e6e6e6",
+    },
     "&:focus": {
       backgroundColor: theme.palette.primary.main,
       "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
@@ -165,13 +169,11 @@ export default function Menu(props) {
               )}
 
               <StyledMenuItem
-                component={Link}
-                to="/cart"
                 onClick={() => {
                   setAnchorEl(false);
                 }}
               >
-                <ListItemIcon>
+                <ListItemIcon component={Link} to="/cart">
                   <ShoppingCartOutlinedIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary="Shopping Cart" />
