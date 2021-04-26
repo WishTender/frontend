@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import AccountIcon from "@material-ui/icons/AccountBox";
-
+import PopUpMenu from "../../common/PopUpMenu/PopUpMenu";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
@@ -22,6 +23,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountTabs from "../AccountTabs/AccountTabs";
 import "./AppBar.css";
 import useCustomStyles from "../../../themeStyles";
+import { MenuItem } from "@material-ui/core";
 
 const styles = (theme) => ({
   root: {
@@ -29,6 +31,9 @@ const styles = (theme) => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     zIndex: 900,
+  },
+  doubleIconButton: {
+    "&:hover": { background: "none" },
   },
 
   menuButton: {
@@ -72,8 +77,16 @@ function ScrollTop(props) {
 
 function BackToTop(props) {
   const { user } = useContext(UserContext);
+  const [menuAnchor, setMenuAnchor] = useState(null);
 
   const [scrolledStyle, setscrolledStyle] = useState("noShadow");
+  const toggleMenu = (event) => {
+    if (menuAnchor) {
+      setMenuAnchor(null);
+    } else {
+      setMenuAnchor(event.currentTarget);
+    }
+  };
 
   const listenScrollEvent = (event) => {
     if (window.scrollY < 70) {
@@ -163,13 +176,36 @@ function BackToTop(props) {
               {/* {ShoppingCartButton} */}
               {props.screen !== "xs" && (
                 <>
-                  <LogoutButton>
-                    <Tooltip title="Log Out">
-                      <IconButton aria-label="logout">
-                        <AccountIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </LogoutButton>
+                  <Tooltip title="Account" aria-label="account">
+                    <IconButton
+                      className={classes.doubleIconButton}
+                      onClick={toggleMenu}
+                      aria-label="logout"
+                    >
+                      <AccountIcon />
+                      <ExpandMoreIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <PopUpMenu
+                    onClose={() => setMenuAnchor(null)}
+                    anchorEl={menuAnchor}
+                    open={menuAnchor}
+                  >
+                    <MenuItem
+                      component={Link}
+                      to="/account-settings"
+                      color="primary"
+                      href="/account-settings"
+                      onClick={() => setMenuAnchor(null)}
+                    >
+                      Account Settings
+                    </MenuItem>
+                    <LogoutButton>
+                      <MenuItem onClick={() => setMenuAnchor(null)}>
+                        Log out
+                      </MenuItem>
+                    </LogoutButton>
+                  </PopUpMenu>
                 </>
               )}
             </>

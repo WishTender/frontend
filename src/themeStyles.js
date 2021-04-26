@@ -50,6 +50,7 @@ const gradientStyles = (gradient, hoverGradient) => {
 
 const styles = makeStyles({
   margin: { margin: theme.spacing(1) },
+
   gradient: gradientStyles(
     theme.palette.primary.mainGradient,
     theme.palette.primary.darkGradient

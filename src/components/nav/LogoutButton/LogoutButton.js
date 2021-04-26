@@ -5,6 +5,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 
 export default function LogoutButton(props) {
   const [loggedOut, setLoggedOut] = useState(false);
+
   const logout = (data) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -28,12 +29,13 @@ export default function LogoutButton(props) {
         console.log(err);
       });
   };
+  const clone = props.children
+    ? React.cloneElement(props.children, { onClick: logout })
+    : null;
   return (
     <>
       {props.children ? (
-        <div onClick={logout}>
-          {props.children} {loggedOut && <Redirect to="/" />}
-        </div>
+        <> {clone}</>
       ) : (
         <Button color="primary" onClick={logout}>
           {/* <AccountBoxIcon fontSize="medium" /> */}
