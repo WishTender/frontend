@@ -22,7 +22,7 @@ import AccountSettings from "../../AccountSettings/AccountSettings";
 const StyledMenuItem = withStyles((theme) => ({
   root: {
     borderBottom: "1px solid #e6e6e6",
-    "&:first-of-type": {
+    "&:first-child": {
       borderTop: "1px solid #e6e6e6",
     },
     "&:focus": {
