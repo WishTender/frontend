@@ -75,7 +75,19 @@ const parseCartPrices = (cart) => {
   const aliases = Object.keys(cart.aliasCarts);
   aliases.forEach((alias) => {
     const aliasCart = cart.aliasCarts[alias];
-    parseOrderPrices(aliasCart);
+    parseAliasCartPrices(aliasCart);
+  });
+};
+
+const parseAliasCartPrices = (aliasCart) => {
+  aliasCart.totalPrice = parsePrice(
+    aliasCart.totalPrice,
+    aliasCart.alias.currency
+  );
+  const items = Object.keys(aliasCart.items);
+  items.forEach((item) => {
+    const itemObj = aliasCart.items[item];
+    itemObj.price = parsePrice(itemObj.price, aliasCart.alias.currency);
   });
 };
 const parseOrderPrices = (order) => {
@@ -84,6 +96,7 @@ const parseOrderPrices = (order) => {
     order.tender.afterConversion,
     order.tender.currency
   );
+
   const gifts = order.gifts;
   gifts.forEach((gift) => {
     const itemObj = gift.item;
