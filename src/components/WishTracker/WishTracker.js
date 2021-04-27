@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { fetchGet, fetchPostJson } from "../../scripts/fetchHelper";
+import { fetchGet, fetchPatchJson } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 import {
   parseAliasCartPrices,
@@ -129,7 +129,7 @@ export default function WishTracker() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              fetchPostJson(
+              fetchPatchJson(
                 {
                   message: "test reply text",
                 },
