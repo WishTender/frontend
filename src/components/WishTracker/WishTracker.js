@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { fetchGet, fetchPatchJson } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 import {
-  parseAliasCartPrices,
+  parseAliasCartPrices as parseOrderPrices,
   parsePrice,
   displayPrice,
   clientCurrency,
@@ -10,39 +10,29 @@ import {
 import { LocaleContext } from "../../contexts/LocaleContext";
 
 const displayOrder = (order, currency, locale, setReply) => {
-  let items = Object.keys(order.cart.items);
-  items = items.map((itemId) => {
+  let gifts = order.gifts;
+  gifts = gifts.map((gift) => {
     return (
-      <li key={order._id + "-" + order.cart.items[itemId].item._id}>
-        <img
-          src={order.cart.items[itemId].item.itemImage}
-          alt={order.cart.items[itemId].item.itemName}
-        />
-        {order.cart.items[itemId].item.itemName} <br />
-        QTY: {order.cart.items[itemId].qty} <br />
-        total:{" "}
-        {displayPrice(
-          order.cart.items[itemId].price,
-          currency,
-          currency,
-          1,
-          locale
-        )}
-        <br /> Purchase this wish: {order.cart.items[itemId].item.url}
+      <li key={order._id + "-" + gift.item._id}>
+        <img src={gift.item.itemImage} alt={gift.item.itemName} />
+        {gift.item.itemName} <br />
+        QTY: {gift.qty} <br />
+        total: {displayPrice(gift.price, currency, currency, 1, locale)}
+        <br /> Purchase this wish: {gift.item.url}
       </li>
     );
   });
   return (
     <div id={`order-${order._id}`}>
-      <ul>{items}</ul>total:{" "}
-      {displayPrice(order.cart.totalPrice, currency, currency, 1, locale)}
+      <ul>{gifts}</ul>total:{" "}
+      {displayPrice(order.tender.amount, currency, currency, 1, locale)}
       <br />
-      {order.convertedCart && (
+      {order.tender.afterConversion && (
         <>
           {" "}
           You received{" "}
           {displayPrice(
-            parsePrice(order.cashFlow.toConnect.amount, currency),
+            parsePrice(order.tender.afterConversion, currency),
             currency,
             currency,
             1,
@@ -54,7 +44,7 @@ const displayOrder = (order, currency, locale, setReply) => {
         </>
       )}
       <br />
-      Tender: {order.buyerInfo.fromLine || "Anonymous"}
+      Tender: {order.fromLine || "Anonymous"}
       <br />
       {order.noteToWisher
         ? `Tender's Note: 
@@ -86,7 +76,7 @@ export default function WishTracker() {
         `${process.env.REACT_APP_BASE_URL}/api/orders/${currentUser.aliases[0]}`,
         (orders) => {
           orders.map((order) => {
-            parseAliasCartPrices(order.cart);
+            parseOrderPrices(order);
             return order;
           });
           setOrders(orders);
