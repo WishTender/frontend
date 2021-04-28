@@ -9,13 +9,16 @@ import {
 } from "../../scripts/helpers";
 import { LocaleContext } from "../../contexts/LocaleContext";
 import { Link } from "react-router-dom"; // a comment (can be deleted)
-
+import confetti from "canvas-confetti";
+import theme from "../../theme";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {
+  InputAdornment,
+  Tooltip,
   Button,
   Container,
   Grid,
@@ -33,6 +36,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import UpIcon from "@material-ui/icons/KeyboardArrowUp";
+import HelpIcon from "@material-ui/icons/Help";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,13 +53,79 @@ const useStyles = makeStyles((theme) => ({
     borderLeft: `1px solid ${theme.palette.primary.light}`,
     borderTop: `0px`,
   },
+  openButton: {
+    background: "white",
+    fontWeight: "900",
+    color: theme.palette.primary.main,
+  },
   new: {
+    margin: "4px 0",
     boxShadow:
       "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
     background: theme.palette.primary.mainGradient,
   },
 }));
-const DisplayOrder = ({ order, currency, locale, setReply, classes }) => {
+
+const DisplayOrder = ({
+  setRefreshOrders,
+  order,
+  currency,
+  locale,
+  setReply,
+  classes,
+}) => {
+  const openGift = async (e, callback) => {
+    const { clientHeight, clientWidth } = document.documentElement;
+    const eTop = window.pageYOffset + e.target.getBoundingClientRect().top;
+    const eFromLeft =
+      window.pageXOffset + e.target.getBoundingClientRect().left;
+    let vel;
+    if (clientWidth <= 850) {
+      vel = (clientWidth / 850) * 45;
+    } else {
+      vel = 45;
+    }
+    let ang;
+    if (vel < 45) {
+      ang = (vel / 45) * 80 + 80;
+    } else {
+      ang = 160;
+    }
+
+    confetti({
+      zIndex: 9000,
+      angle: ang,
+      startVelocity: vel,
+      colors: [
+        theme.palette.primary.main,
+        theme.palette.primary.light,
+        theme.palette.secondary.main,
+        theme.palette.primary.light,
+      ],
+      origin: {
+        x: eFromLeft / clientWidth,
+        y: eTop / clientHeight,
+      },
+    });
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    const res = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/orders/seen/${order._id}`,
+      {
+        credentials: "include",
+        method: "PATCH",
+        headers,
+      }
+    )
+      .then(async (res) => {
+        if (res.status >= 200 && res.status < 300) {
+          callback();
+        } else {
+          console.log(res.status);
+        }
+      })
+      .catch(console.log);
+  };
   const [open, setOpen] = useState(false);
   let gifts = order.gifts;
   gifts = gifts.map((gift) => {
@@ -108,24 +178,27 @@ const DisplayOrder = ({ order, currency, locale, setReply, classes }) => {
             />
             <Button
               variant="contained"
+              className={classes.openButton}
               aria-label="expand row"
               size="small"
-              onClick={() => {
-                setOpen(!open);
-              }}
+              onClick={
+                !open
+                  ? (e) => {
+                      openGift(e, () => {
+                        setOpen(!open);
+                      });
+                    }
+                  : () => {
+                      setOpen(!open);
+                      setRefreshOrders(true);
+                    }
+              }
             >
               {open ? "Close" : "Open"}
             </Button>
           </ListItem>
         ) : (
           <ListItem button divider className={open && classes.highlight}>
-            <IconButton
-              aria-label="expand row"
-              size="small"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <UpIcon /> : <DownIcon />}
-            </IconButton>
             <ListItemText
               primary={`From: ${order.fromLine}`}
               secondary={new Date(order.paidOn).toLocaleString()}
@@ -138,6 +211,13 @@ const DisplayOrder = ({ order, currency, locale, setReply, classes }) => {
                   : "No reply sent"
               }
             />
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <UpIcon /> : <DownIcon />}
+            </IconButton>
           </ListItem>
         )}
 
@@ -163,32 +243,34 @@ const DisplayOrder = ({ order, currency, locale, setReply, classes }) => {
                   <TableCell rowSpan={3} />
                   <TableCell colSpan={2}>Total Tender Received</TableCell>
                   <TableCell align="right">
-                    {order.tender.afterConversion
-                      ? order.tender.afterConversion
-                      : order.tender.amount}
+                    {order.tender.afterConversion ? (
+                      <>
+                        {order.tender.afterConversion}
+                        <Tooltip
+                          title={`You received ${order.tender.afterConversion} instead of ${order.tender.amount} because there
+                      was a currency conversion. Sometimes our predicted
+                      exchange rates aren't the same as our payment processor's
+                      exchange rates so you may get a different amount. Please
+                      text Dash (founder of WishTender) if you would like a
+                      better solution 773-425-800.`}
+                        >
+                          <HelpIcon aria-label="pricing information" />
+                        </Tooltip>
+                      </>
+                    ) : (
+                      order.tender.amount
+                    )}
                   </TableCell>
                 </TableRow>
-                total: <br />
-                {order.tender.afterConversion && (
-                  <>
-                    {" "}
-                    You received {order.tender.afterConversion}
-                    because there was a currency conversion. Sometimes our
-                    predicted exchange rates aren't the same as our payment
-                    processor's exchange rates so you may get a different
-                    amount.
-                  </>
-                )}
-                <br />
                 Tender: {order.fromLine || "Anonymous"}
                 <br />
                 {order.noteToWisher
                   ? `Tender's Note: 
-                  ${order.noteToWisher}`
-                  : "The wish tender didn't leave a note"}
+                  ${order.noteToWisher.message}`
+                  : "The tender didn't leave a note"}
                 <br></br>
                 {order.noteToTender ? (
-                  `Your Thank You Note: ${order.noteToTender}`
+                  `Your Thank You Note: ${order.noteToTender.message}`
                 ) : (
                   <>
                     <br></br>
@@ -219,7 +301,7 @@ export default function WishTracker() {
       fetchGet(
         `${process.env.REACT_APP_BASE_URL}/api/orders/${currentUser.aliases[0]}`,
         (orders) => {
-          orders.map((order) => {
+          orders.reverse().map((order) => {
             parseOrderPrices(order, clientLocale);
             return order;
           });
@@ -247,6 +329,7 @@ export default function WishTracker() {
           orders.map((order) => {
             return (
               <DisplayOrder
+                setRefreshOrders={setRefreshOrders}
                 order={order}
                 currency={clientCurrency(currentUser)}
                 locale={clientLocale}
