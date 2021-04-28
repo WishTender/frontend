@@ -1,75 +1,208 @@
 import React, { useEffect, useState, useContext } from "react";
-import { fetchGet, fetchPostJson } from "../../scripts/fetchHelper";
+import { fetchGet, fetchPatchJson } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 import {
-  parseAliasCartPrices,
+  parseOrderPrices,
   parsePrice,
   displayPrice,
   clientCurrency,
 } from "../../scripts/helpers";
 import { LocaleContext } from "../../contexts/LocaleContext";
+import { Link } from "react-router-dom"; // a comment (can be deleted)
 
-const displayOrder = (order, currency, locale, setReply) => {
-  let items = Object.keys(order.cart.items);
-  items = items.map((itemId) => {
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import {
+  Button,
+  Container,
+  Grid,
+  TableBody,
+  TableContainer,
+  Accordion,
+  AccordianSummary,
+  List,
+  ListItem,
+  Divider,
+  Collapse,
+  ListItemText,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import UpIcon from "@material-ui/icons/KeyboardArrowUp";
+import DownIcon from "@material-ui/icons/KeyboardArrowDown";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  highlight: {
+    background: theme.palette.primary.light,
+    "&:hover": {
+      background: theme.palette.primary.light,
+    },
+  },
+  collapse: {
+    border: "1px solid " + theme.palette.primary.main,
+    borderLeft: `1px solid ${theme.palette.primary.light}`,
+    borderTop: `0px`,
+  },
+  new: {
+    boxShadow:
+      "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
+    background: theme.palette.primary.mainGradient,
+  },
+}));
+const DisplayOrder = ({ order, currency, locale, setReply, classes }) => {
+  const [open, setOpen] = useState(false);
+  let gifts = order.gifts;
+  gifts = gifts.map((gift) => {
     return (
-      <li key={order._id + "-" + order.cart.items[itemId].item._id}>
-        <img
-          src={order.cart.items[itemId].item.itemImage}
-          alt={order.cart.items[itemId].item.itemName}
-        />
-        {order.cart.items[itemId].item.itemName} <br />
-        QTY: {order.cart.items[itemId].qty} <br />
-        total:{" "}
-        {displayPrice(
-          order.cart.items[itemId].price,
-          currency,
-          currency,
-          1,
-          locale
-        )}
-        <br /> Purchase this wish: {order.cart.items[itemId].item.url}
-      </li>
+      <TableRow key={order._id + "-" + gift.item._id}>
+        <TableCell>
+          <img width="60" src={gift.item.itemImage} alt={gift.item.itemName} />
+          <p>{gift.item.itemName}</p>
+        </TableCell>
+        <TableCell>
+          <Button
+            size="small"
+            color="primary"
+            // variant="contained"
+            component={Link}
+            disableElevation
+            to={gift.item.url}
+          >
+            Purchase
+          </Button>
+        </TableCell>
+        <TableCell>{gift.qty} </TableCell>
+        <TableCell>{gift.price}</TableCell>
+      </TableRow>
     );
   });
   return (
-    <div id={`order-${order._id}`}>
-      <ul>{items}</ul>total:{" "}
-      {displayPrice(order.cart.totalPrice, currency, currency, 1, locale)}
-      <br />
-      {order.convertedCart && (
-        <>
-          {" "}
-          You received{" "}
-          {displayPrice(
-            parsePrice(order.cashFlow.toConnect.amount, currency),
-            currency,
-            currency,
-            1,
-            locale
-          )}{" "}
-          because there was a currency conversion. Sometimes our predicted
-          exchange rates aren't the same as our payment processor's exchange
-          rates so you may get a different amount.
-        </>
-      )}
-      <br />
-      Tender: {order.buyerInfo.fromLine || "Anonymous"}
-      <br />
-      {order.noteToWisher
-        ? `Tender's Note: 
-      ${order.noteToWisher}`
-        : "The wish tender didn't leave a note"}
-      <br></br>
-      {order.noteToTender ? (
-        `Your Thank You Note: ${order.noteToTender}`
-      ) : (
-        <>
-          <br></br>
-          <button onClick={() => setReply(order)}>Send a reply</button>
-        </>
-      )}
-    </div>
+    <Grid item xs={12}>
+      <Container>
+        {!order.seen ? (
+          <ListItem button divider className={classes.new}>
+            <ListItemText
+              // disableTypography
+              primary={
+                <Typography
+                  style={{
+                    color: "yellow",
+                    fontWeight: 900,
+                    fontSize: "1.3em",
+                  }}
+                >
+                  New wishtender!
+                </Typography>
+              }
+              secondary={
+                <Typography style={{ fontWeight: 900, color: "white" }}>
+                  From: {order.fromLine}
+                </Typography>
+              }
+            />
+            <Button
+              variant="contained"
+              aria-label="expand row"
+              size="small"
+              onClick={() => {
+                setOpen(!open);
+              }}
+            >
+              {open ? "Close" : "Open"}
+            </Button>
+          </ListItem>
+        ) : (
+          <ListItem button divider className={open && classes.highlight}>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <UpIcon /> : <DownIcon />}
+            </IconButton>
+            <ListItemText
+              primary={`From: ${order.fromLine}`}
+              secondary={new Date(order.paidOn).toLocaleString()}
+            />
+            <ListItemText
+              align="right"
+              primary={
+                order.noteToTender && order.noteToTender.sent
+                  ? `Thank you note sent${order.noteToTender.sent}`
+                  : "No reply sent"
+              }
+            />
+          </ListItem>
+        )}
+
+        <Collapse
+          className={classes.collapse}
+          in={open}
+          timeout="auto"
+          unmountOnExit
+        >
+          <TableContainer className={classes.table}>
+            <Table id={`order-${order._id}`}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Wish</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>QTY</TableCell>
+                  <TableCell>Price</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {gifts}
+                <TableRow>
+                  <TableCell rowSpan={3} />
+                  <TableCell colSpan={2}>Total Tender Received</TableCell>
+                  <TableCell align="right">
+                    {order.tender.afterConversion
+                      ? order.tender.afterConversion
+                      : order.tender.amount}
+                  </TableCell>
+                </TableRow>
+                total: <br />
+                {order.tender.afterConversion && (
+                  <>
+                    {" "}
+                    You received {order.tender.afterConversion}
+                    because there was a currency conversion. Sometimes our
+                    predicted exchange rates aren't the same as our payment
+                    processor's exchange rates so you may get a different
+                    amount.
+                  </>
+                )}
+                <br />
+                Tender: {order.fromLine || "Anonymous"}
+                <br />
+                {order.noteToWisher
+                  ? `Tender's Note: 
+                  ${order.noteToWisher}`
+                  : "The wish tender didn't leave a note"}
+                <br></br>
+                {order.noteToTender ? (
+                  `Your Thank You Note: ${order.noteToTender}`
+                ) : (
+                  <>
+                    <br></br>
+                    <button onClick={() => setReply(order)}>
+                      Send a reply
+                    </button>
+                  </>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Collapse>
+      </Container>
+    </Grid>
   );
 };
 
@@ -79,6 +212,7 @@ export default function WishTracker() {
   const [orders, setOrders] = useState(null);
   const [reply, setReply] = useState(null);
   const [refreshOrders, setRefreshOrders] = useState(null);
+  const classes = useStyles();
 
   useEffect(() => {
     if (currentUser || (refreshOrders && currentUser))
@@ -86,7 +220,7 @@ export default function WishTracker() {
         `${process.env.REACT_APP_BASE_URL}/api/orders/${currentUser.aliases[0]}`,
         (orders) => {
           orders.map((order) => {
-            parseAliasCartPrices(order.cart);
+            parseOrderPrices(order, clientLocale);
             return order;
           });
           setOrders(orders);
@@ -107,29 +241,28 @@ export default function WishTracker() {
         </>
       )}
       <h2>Granted Wishes</h2>
-      <div>
+
+      <List component="nav">
         {orders &&
           orders.map((order) => {
             return (
-              <>
-                <hr />{" "}
-                {displayOrder(
-                  order,
-                  clientCurrency(currentUser),
-                  clientLocale,
-                  setReply
-                )}
-              </>
+              <DisplayOrder
+                order={order}
+                currency={clientCurrency(currentUser)}
+                locale={clientLocale}
+                setReply={setReply}
+                classes={classes}
+              />
             );
           })}
-      </div>
+      </List>
       {reply && (
         <div>
           Reply to: {reply._id} {reply.buyerInfo.fromLine}
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              fetchPostJson(
+              fetchPatchJson(
                 {
                   message: "test reply text",
                 },
