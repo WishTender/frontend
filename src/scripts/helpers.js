@@ -90,18 +90,25 @@ const parseAliasCartPrices = (aliasCart) => {
     itemObj.price = parsePrice(itemObj.price, aliasCart.alias.currency);
   });
 };
-const parseOrderPrices = (order) => {
-  order.tender.amount = parsePrice(order.tender.amount, order.tender.currency);
-  order.tender.afterConversion = parsePrice(
-    order.tender.afterConversion,
-    order.tender.currency
-  );
+const parseOrderPrices = (order, locale) => {
+  const parse = (price) =>
+    displayPrice(
+      parsePrice(price, order.tender.currency),
+      order.tender.currency,
+      order.tender.currency,
+      1,
+      locale
+    );
+  order.tender.amount = parse(order.tender.amount);
+  order.tender.afterConversion = order.tender.afterConversion
+    ? parse(order.tender.afterConversion)
+    : order.tender.afterConversion;
 
   const gifts = order.gifts;
   gifts.forEach((gift) => {
     const itemObj = gift.item;
-    itemObj.price = parsePrice(itemObj.price, itemObj.currency);
-    gift.price = parsePrice(gift.price, order.alias.currency);
+    itemObj.price = parse(itemObj.price);
+    gift.price = parse(gift.price);
   });
 };
 
@@ -254,5 +261,6 @@ export {
   displayPrice,
   parsePrice,
   parseCartPrices,
-  parseOrderPrices as parseAliasCartPrices,
+  parseOrderPrices,
+  parseAliasCartPrices,
 };
