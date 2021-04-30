@@ -2,14 +2,20 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import StyledDialog from "../../../common/StyledDialog/StyledDialog";
 import UpdateProfileForm from "./UpdateProfileForm/UpdateProfileForm";
+import globalStyles from "../../../../themeStyles";
+import { withStyles } from "@material-ui/core/Styles";
 
+const styles = (theme) => ({
+  margin: { margin: theme.spacing(0.5) },
+});
 /**
  * Renders a <UpdateProfileInfo /> component
  * @param  props
  * @param  props.handleCheckHandleAvailability
  * @param  props.handleUpdateHandle
  */
-export default function UpdateProfileInfo(props) {
+export default withStyles(styles)(function UpdateProfileInfo(props) {
+  const classes = globalStyles(props);
   const [dialogOpen, setDialogOpen] = useState(false);
   const handleDialogClose = () => {
     setDialogOpen(false);
@@ -25,6 +31,7 @@ export default function UpdateProfileInfo(props) {
         color="primary"
         aria-label="update profile info"
         variant="outlined"
+        className={classes.margin}
       >
         Edit Profile
       </Button>
@@ -47,4 +54,4 @@ export default function UpdateProfileInfo(props) {
       {/* Dialog end */}
     </>
   );
-}
+});
