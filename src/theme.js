@@ -16,11 +16,15 @@ const theme = createMuiTheme({
       main: "#02bff2",
       mainGradient:
         "linear-gradient(to left, rgb(0 126 255), rgb(2, 214, 242))",
+      mainGradientReverse:
+        "linear-gradient(to left, rgb(2, 214, 242), rgb(0 126 255))",
       darkGradient: "linear-gradient(to left, rgb(0 98 197), rgb(2 175 197))",
       dark: "#0185a9",
       light: "#34cbf4",
       lightGradient:
         "linear-gradient(to left, rgb(152 199 247), rgb(177 244 253))",
+      lightGradientReverse:
+        "linear-gradient(to left, rgb(177 244 253), rgb(152 199 247))",
       extraLight: "#def4fd",
       contrastText: "#fff",
     },
@@ -64,7 +68,7 @@ theme.overrides = {
   },
   MuiButton: {
     root: {
-      // fontWeight: "500",
+      // fontWeight: "00",
       borderRadius: 50,
     },
   },
