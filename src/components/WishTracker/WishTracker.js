@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { fetchGet, fetchPatchJson } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
+import ReplyToWish from "./ReplyToWish";
 import {
   parseOrderPrices,
   parsePrice,
@@ -42,14 +43,16 @@ import RightIcon from "@material-ui/icons/KeyboardArrowRight";
 import HelpIcon from "@material-ui/icons/Help";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import useStyles from "../../themeStyles";
+import StyledDialog from "../common/StyledDialog/StyledDialog";
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
   highlight: {
-    background: theme.palette.primary.light,
+    border: "1px solid " + theme.palette.primary.light,
+    background: theme.palette.primary.extraLight,
     "&:hover": {
-      background: theme.palette.primary.light,
+      background: theme.palette.primary.extraLight,
     },
   },
   collapse: {
@@ -83,6 +86,7 @@ const DisplayOrder = ({
   currency,
   locale,
   setReply,
+  reply,
   classes,
 }) => {
   const openGift = async (e, callback) => {
@@ -166,7 +170,12 @@ const DisplayOrder = ({
   return (
     <>
       {!order.seen ? (
-        <StyledListItem button divider className={classes.new}>
+        <StyledListItem
+          style={open ? { marginBottom: 0 } : null}
+          button
+          divider
+          className={classes.new}
+        >
           <ListItemText
             // disableTypography
             primary={
@@ -208,7 +217,12 @@ const DisplayOrder = ({
           </Button>
         </StyledListItem>
       ) : (
-        <StyledListItem button divider className={open && classes.highlight}>
+        <StyledListItem
+          onClick={() => setOpen(!open)}
+          button
+          divider
+          className={open && classes.highlight}
+        >
           <ListItemText
             primary={`From: ${order.fromLine}`}
             secondary={new Date(order.paidOn).toLocaleString()}
@@ -216,9 +230,9 @@ const DisplayOrder = ({
           <ListItemText
             align="right"
             primary={
-              order.noteToTender && order.noteToTender.sent
-                ? `Thank you note sent${order.noteToTender.sent}`
-                : "No reply sent"
+              (!order.noteToTender ||
+                (order.noteToTender && !order.noteToTender.sent)) &&
+              "No reply sent"
             }
           />
           <IconButton
@@ -241,6 +255,20 @@ const DisplayOrder = ({
           <Table id={`order-${order._id}`}>
             <TableHead>
               <TableRow>
+                <TableCell
+                  colSpan={5}
+                  align="right"
+                  style={{
+                    paddingTop: theme.spacing(0.5),
+                    paddingBottom: theme.spacing(0.5),
+                  }}
+                >
+                  <Typography variant="caption">
+                    Order ID: {order._id}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow>
                 <TableCell>Wish</TableCell>
                 <TableCell></TableCell>
                 <TableCell>QTY</TableCell>
@@ -249,10 +277,13 @@ const DisplayOrder = ({
             </TableHead>
             <TableBody>
               {gifts}
+
               <TableRow>
-                <TableCell rowSpan={3} />
-                <TableCell colSpan={2}>Total Tender Received</TableCell>
-                <TableCell align="right">
+                <TableCell rowSpan={1} />
+                <TableCell style={{ minWidth: "140px" }}>
+                  Total Wishtender
+                </TableCell>
+                <TableCell align="right" colSpan={2}>
                   {order.tender.afterConversion ? (
                     <>
                       {order.tender.afterConversion}
@@ -262,9 +293,14 @@ const DisplayOrder = ({
                       exchange rates aren't the same as our payment processor's
                       exchange rates so you may get a different amount. Please
                       text Dash (founder of WishTender) if you would like a
-                      better solution 773-425-800.`}
+                      better solution 773-425-8000.`}
                       >
-                        <HelpIcon aria-label="pricing information" />
+                        <HelpIcon
+                          // fontSize="small"
+                          style={{ fontSize: 16 }}
+                          color="error"
+                          aria-label="pricing information"
+                        />
                       </Tooltip>
                     </>
                   ) : (
@@ -272,20 +308,55 @@ const DisplayOrder = ({
                   )}
                 </TableCell>
               </TableRow>
-              Tender: {order.fromLine || "Anonymous"}
-              <br />
-              {order.noteToWisher
-                ? `Tender's Note: 
-                  ${order.noteToWisher.message}`
-                : "The tender didn't leave a note"}
-              <br></br>
-              {order.noteToTender ? (
-                `Your Thank You Note: ${order.noteToTender.message}`
-              ) : (
-                <>
-                  <br></br>
-                  <button onClick={() => setReply(order)}>Send a reply</button>
-                </>
+              <TableRow>
+                {/* <TableCell colSpan={1}></TableCell> */}
+                <TableCell colSpan={4}>
+                  {order.noteToWisher ? (
+                    <>
+                      <Typography variant="overline" display="block">
+                        Tender's Note:
+                      </Typography>
+                      {order.noteToWisher.message}
+                    </>
+                  ) : (
+                    "The tender didn't leave a note"
+                  )}
+                  <Box display="flex" justifyContent="flex-end">
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      disableElevation
+                      disabled={!!reply}
+                      onClick={() => setReply(order)}
+                    >
+                      Reply
+                    </Button>
+                  </Box>
+                </TableCell>
+              </TableRow>
+              {(order.noteToTender || reply) && (
+                <TableRow>
+                  <TableCell colSpan={4}>
+                    {order.noteToTender ? (
+                      <>
+                        <Typography variant="overline" display="block">
+                          Your Thank You Note:
+                        </Typography>
+
+                        {order.noteToTender.message}
+                      </>
+                    ) : (
+                      reply && (
+                        <ReplyToWish
+                          to={reply.fromLine}
+                          setReply={setReply}
+                          setRefreshOrders={setRefreshOrders}
+                          order={reply}
+                        />
+                      )
+                    )}
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>
@@ -319,7 +390,7 @@ function WishTracker(props) {
   }, [currentUser, refreshOrders]);
 
   return (
-    <Container maxWidth="md" style={{ marginTop: "7vw" }}>
+    <Container maxWidth="md" style={{ marginTop: "7vw", paddingBottom: "7vw" }}>
       {currentUser && (
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" style={{ margin: "0 8px" }}>
@@ -327,7 +398,7 @@ function WishTracker(props) {
           </Typography>
           <Button
             color="primary"
-            component={Link}
+            // component={Button}
             style={{ fontWeight: "500" }}
             // variant="outlined"
             disableElevation
@@ -375,34 +446,13 @@ function WishTracker(props) {
                   currency={clientCurrency(currentUser)}
                   locale={clientLocale}
                   setReply={setReply}
+                  reply={reply}
                   classes={classes}
                 />
               );
             })}
         </List>
       </Paper>
-      {reply && (
-        <div>
-          Reply to: {reply._id} {reply.buyerInfo.fromLine}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              fetchPatchJson(
-                {
-                  message: "test reply text",
-                },
-                `${process.env.REACT_APP_BASE_URL}/api/orders/reply/${reply._id}`,
-                (res) => {
-                  if (res.messageSent) setRefreshOrders(true);
-                }
-              );
-            }}
-          >
-            <input type="text" />
-            <input type="submit" value="Send" />
-          </form>
-        </div>
-      )}
     </Container>
   );
 }
