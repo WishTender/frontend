@@ -321,8 +321,10 @@ function WishTracker(props) {
   return (
     <Container maxWidth="md" style={{ marginTop: "7vw" }}>
       {currentUser && (
-        <Box display="flex" alignItems="center" justifyContent="flex-end">
-          <Typography>Wish Tracker</Typography>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography variant="h6" style={{ margin: "0 8px" }}>
+            Wish-Tracker
+          </Typography>
           <Button
             color="primary"
             component={Link}
