@@ -10,7 +10,6 @@ const gradientStyles = (gradient, hoverGradient) => {
       background: gradient,
       "-webkitBackgroundClip": "text",
       "-webkitTextFillColor": "transparent",
-
       border: "0px",
 
       "&:before": {
@@ -20,12 +19,31 @@ const gradientStyles = (gradient, hoverGradient) => {
         left: 0,
         right: 0,
         bottom: 0,
-        borderRadius: theme.shape.borderRadius,
+        borderRadius:
+          theme.overrides?.MuiButton?.root.borderRadius ||
+          theme.shape.borderRadius,
         padding: "1px",
         background: gradient,
         "-webkitMask":
           "linear-gradient(#fff 0 0) content-box,  linear-gradient(#fff 0 0)",
         "-webkitMaskComposite": "destination-out",
+      },
+      "&:hover": {
+        "&:after": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: 50,
+          padding: "1px",
+          background: "rgba(0, 0, 0, 0.04)",
+          // doesn't do anything
+          // transition:
+          //   "background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms", // does nothing
+          zIndex: "-1",
+        },
       },
     },
     "&.MuiButton-contained": {
@@ -53,11 +71,11 @@ const styles = makeStyles({
 
   gradient: gradientStyles(
     theme.palette.primary.mainGradient,
-    theme.palette.primary.darkGradient
+    theme.palette.primary.mainGradientReverse
   ),
   lightGradient: gradientStyles(
     theme.palette.primary.lightGradient,
-    theme.palette.primary.mainGradient
+    theme.palette.primary.lightGradientReverse
   ),
 });
 

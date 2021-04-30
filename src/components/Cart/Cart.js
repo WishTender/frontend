@@ -114,7 +114,7 @@ export default function Cart(props) {
             (Math.round(aliasCarts[a].totalPrice) *
               exchangeRates[aliasCarts[a].alias.currency]) /
             exchangeRates["USD"];
-          messageLength = Math.round(100 + totalPriceUSD);
+          messageLength = Math.round(30 + totalPriceUSD);
         }
         return (
           <>
