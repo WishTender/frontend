@@ -1,6 +1,7 @@
 import { pink } from "@material-ui/core/colors";
 import { createMuiTheme } from "@material-ui/core/styles";
-
+// console.log(pink);
+// pink.mainGradient = `linear-gradient(to left, ${pink[500]}, ${pink[200]})`;
 const theme = createMuiTheme({
   typography: {
     fontFamily: [

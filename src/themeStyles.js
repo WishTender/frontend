@@ -61,7 +61,7 @@ const gradientStyles = (gradient, hoverGradient) => {
       background: gradient,
 
       "-webkitBackgroundClip": "unset",
-      "-webkitTextFillColor": "black",
+      "-webkitTextFillColor": theme.palette.primary.contrastText,
     },
   };
 };

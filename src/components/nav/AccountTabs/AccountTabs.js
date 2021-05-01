@@ -4,6 +4,7 @@ import { RouteContext } from "../../../contexts/RouteContext";
 import { UserContext } from "../../../contexts/UserContext";
 import { NotificationContext } from "../../../contexts/NotificationContext";
 import theme from "../../../theme";
+import themeStyles from "../../../themeStyles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import RedeemIcon from "@material-ui/icons/Redeem";
@@ -12,8 +13,6 @@ import Badge from "@material-ui/core/Badge";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core";
-import { fetchGet } from "../../../scripts/fetchHelper";
-console.log(Router, Route);
 // const useStyles = makeStyles({
 //   top: "10px",
 //   border: "1px solid blue",
@@ -42,6 +41,7 @@ const TabTooltip = withStyles({
   },
 })(Tooltip);
 export default function AccountTabs(props) {
+  const classes = themeStyles(props);
   const [activeTab, setActiveTab] = useState(false);
   const [alias, setAlias] = useState(false);
   const [newGifts, setNewGifts] = useState(null);
@@ -99,6 +99,7 @@ export default function AccountTabs(props) {
               <Badge
                 badgeContent={notificationContext.notifications}
                 color="error"
+                className={classes.gradient}
               >
                 <RedeemIcon />
               </Badge>
