@@ -4,6 +4,7 @@ import { RouteContext } from "./contexts/RouteContext";
 import { CurrencyContext } from "./contexts/CurrencyContext";
 import { CountryContext } from "./contexts/CountryContext";
 import { LocaleContext } from "./contexts/LocaleContext";
+import { NotificationContext } from "./contexts/NotificationContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AccountSettings from "./components/AccountSettings/AccountSettings";
 import useTraceUpdate from "./scripts/useTraceUpdate";
@@ -43,6 +44,8 @@ import { CssBaseline } from "@material-ui/core";
 function App(props) {
   const { getUser } = useContext(UserContext);
   const [user, setUser] = useState();
+  const { getNotifications } = useContext(NotificationContext);
+  const [notifications, setNotifications] = useState();
   const [isCurrentUsersProfile, setIsCurrentUsersProfile] = useState();
   const cookies = parsedCookies();
   useTraceUpdate(App.name, props, { user });
@@ -55,6 +58,12 @@ function App(props) {
       }
     });
   }, [getUser]);
+  useEffect(() => {
+    if (!user) return;
+    getNotifications(user.aliases[0]).then((notifications) => {
+      setNotifications(notifications);
+    });
+  }, [user, getNotifications]);
   const SwitchRoutes = (
     <Switch>
       <Route
@@ -198,23 +207,31 @@ function App(props) {
               >
                 <CurrencyContext.Provider value={clientCurrency(user)}>
                   <UserContext.Provider value={{ user, setUser, getUser }}>
-                    <RouteContext.Provider
+                    <NotificationContext.Provider
                       value={{
-                        isCurrentUsersProfile,
-                        setIsCurrentUsersProfile,
-                        allRoutes: routesArray,
+                        notifications,
+                        setNotifications,
+                        getNotifications,
                       }}
                     >
-                      <Switch>
-                        {/* <Route path="/" exact>
+                      <RouteContext.Provider
+                        value={{
+                          isCurrentUsersProfile,
+                          setIsCurrentUsersProfile,
+                          allRoutes: routesArray,
+                        }}
+                      >
+                        <Switch>
+                          {/* <Route path="/" exact>
                           <LandingPageMenu />
                         </Route> */}
-                        <Route path="/">
-                          <Menu />
-                        </Route>
-                      </Switch>
-                      {SwitchRoutes}
-                    </RouteContext.Provider>
+                          <Route path="/">
+                            <Menu />
+                          </Route>
+                        </Switch>
+                        {SwitchRoutes}
+                      </RouteContext.Provider>
+                    </NotificationContext.Provider>
                   </UserContext.Provider>
                 </CurrencyContext.Provider>
               </CountryContext.Provider>

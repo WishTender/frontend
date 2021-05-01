@@ -44,6 +44,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import DownIcon from "@material-ui/icons/KeyboardArrowDown";
 import useStyles from "../../themeStyles";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
+import { NotificationContext } from "../../contexts/NotificationContext";
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
@@ -89,6 +90,8 @@ const DisplayOrder = ({
   reply,
   classes,
 }) => {
+  const notificationContext = useContext(NotificationContext);
+  const userContext = useContext(UserContext);
   const openGift = async (e, callback) => {
     const { clientHeight, clientWidth } = document.documentElement;
     const eTop = window.pageYOffset + e.target.getBoundingClientRect().top;
@@ -134,6 +137,10 @@ const DisplayOrder = ({
     )
       .then(async (res) => {
         if (res.status >= 200 && res.status < 300) {
+          const notifications = await notificationContext.getNotifications(
+            userContext.user.aliases[0]
+          );
+          notificationContext.setNotifications(notifications);
           callback();
         } else {
           console.log(res.status);

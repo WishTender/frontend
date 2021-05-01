@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect, useRouteMatch } from "react-router-dom"; // a comment (can be deleted)
 import { RouteContext } from "../../../contexts/RouteContext";
 import { UserContext } from "../../../contexts/UserContext";
+import { NotificationContext } from "../../../contexts/NotificationContext";
 import theme from "../../../theme";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -11,6 +12,7 @@ import Badge from "@material-ui/core/Badge";
 import Tooltip from "@material-ui/core/Tooltip";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core";
+import { fetchGet } from "../../../scripts/fetchHelper";
 console.log(Router, Route);
 // const useStyles = makeStyles({
 //   top: "10px",
@@ -42,8 +44,10 @@ const TabTooltip = withStyles({
 export default function AccountTabs(props) {
   const [activeTab, setActiveTab] = useState(false);
   const [alias, setAlias] = useState(false);
+  const [newGifts, setNewGifts] = useState(null);
   const routeContext = useContext(RouteContext);
   const userContext = useContext(UserContext);
+  const notificationContext = useContext(NotificationContext);
   const match = useRouteMatch(
     routeContext.allRoutes.filter((route) => route !== "/:alias")
   );
@@ -92,7 +96,10 @@ export default function AccountTabs(props) {
             component={Link}
             to="/wish-tracker"
             icon={
-              <Badge badgeContent={1} color="error">
+              <Badge
+                badgeContent={notificationContext.notifications}
+                color="error"
+              >
                 <RedeemIcon />
               </Badge>
             }
