@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import StyledDialog from "../../../common/StyledDialog/StyledDialog";
 import UpdateProfileForm from "./UpdateProfileForm/UpdateProfileForm";
 import globalStyles from "../../../../themeStyles";
-import { withStyles } from "@material-ui/core/Styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = (theme) => ({
   margin: { margin: theme.spacing(0.5) },
