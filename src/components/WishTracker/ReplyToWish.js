@@ -29,7 +29,6 @@ export default function ReplyToWish(props) {
         id="outlined-multiline-static"
         label="Message"
         name="message"
-        // ref={register()}
         inputRef={register()}
         multiline
         rows={10}
@@ -37,7 +36,6 @@ export default function ReplyToWish(props) {
       ></TextField>
       <Button
         type="submit"
-        name="send"
         color="primary"
         disableElevation
         variant="contained"
@@ -46,7 +44,6 @@ export default function ReplyToWish(props) {
         Send
       </Button>
       <Button
-        name="close"
         onClick={() => props.setReply(null)}
         disableElevation
         style={{ marginTop: "8px", marginRight: "8px", float: "right" }}
