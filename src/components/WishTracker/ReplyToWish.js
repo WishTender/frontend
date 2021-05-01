@@ -29,7 +29,7 @@ export default function ReplyToWish(props) {
         id="outlined-multiline-static"
         label="Message"
         name="message"
-        ref={register()}
+        inputRef={register()}
         multiline
         rows={10}
         variant="filled"
