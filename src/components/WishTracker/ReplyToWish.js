@@ -45,6 +45,7 @@ export default function ReplyToWish(props) {
         Send
       </Button>
       <Button
+        name="close"
         onClick={() => props.setReply(null)}
         disableElevation
         style={{ marginTop: "8px", marginRight: "8px", float: "right" }}
