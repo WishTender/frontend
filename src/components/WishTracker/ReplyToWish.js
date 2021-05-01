@@ -36,6 +36,7 @@ export default function ReplyToWish(props) {
       ></TextField>
       <Button
         type="submit"
+        name="send"
         color="primary"
         disableElevation
         variant="contained"
