@@ -24,7 +24,7 @@ function WishTracker(props) {
   const { user: currentUser } = useContext(UserContext);
   const clientLocale = useContext(LocaleContext);
   const [orders, setOrders] = useState(null);
-  const [reply, setReply] = useState(null);
+  // const [reply, setReply] = useState(null);
   const [refreshOrders, setRefreshOrders] = useState(null);
 
   useEffect(() => {
@@ -96,10 +96,10 @@ function WishTracker(props) {
                 <DisplayOrder
                   setRefreshOrders={setRefreshOrders}
                   order={order}
-                  currency={clientCurrency(currentUser)}
-                  locale={clientLocale}
-                  setReply={setReply}
-                  reply={reply}
+                  // currency={clientCurrency(currentUser)}
+                  // locale={clientLocale}
+                  // setReply={setReply}
+                  // reply={reply}
                 />
               );
             })}
