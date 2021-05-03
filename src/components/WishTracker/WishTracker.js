@@ -19,8 +19,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import RightIcon from "@material-ui/icons/KeyboardArrowRight";
+import useSmallScreen from "../../hooks/useSmallScreen";
 
 function WishTracker(props) {
+  const smallScreen = useSmallScreen();
   const { user: currentUser } = useContext(UserContext);
   const clientLocale = useContext(LocaleContext);
   const [orders, setOrders] = useState(null);
@@ -96,10 +98,7 @@ function WishTracker(props) {
                 <DisplayOrder
                   setRefreshOrders={setRefreshOrders}
                   order={order}
-                  // currency={clientCurrency(currentUser)}
-                  // locale={clientLocale}
-                  // setReply={setReply}
-                  // reply={reply}
+                  screen={smallScreen && "xs"}
                 />
               );
             })}

@@ -55,11 +55,9 @@ const StyledListItem = withStyles((theme) => ({
 const DisplayOrder = ({
   setRefreshOrders,
   order,
-  //   currency,
-  //   locale,
-  //   setReply,
-  //   reply,
+
   classes,
+  screen,
 }) => {
   const userContext = useContext(UserContext);
   const notificationContext = useContext(NotificationContext);
@@ -155,7 +153,7 @@ const DisplayOrder = ({
         open={open}
         classes={classes}
         order={order}
-        screen="xs" //hard coded for building
+        screen={screen}
       />
     </>
   );
