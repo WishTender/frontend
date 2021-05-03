@@ -24,6 +24,7 @@ export default function OrderDetails({
   open,
   classes,
   setRefreshOrders,
+  screen,
 }) {
   const [reply, setReply] = useState(null);
 
@@ -53,21 +54,28 @@ export default function OrderDetails({
                 <Typography variant="caption">Order ID: {order._id}</Typography>
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>Wish</TableCell>
-              <TableCell></TableCell>
-              <TableCell>QTY</TableCell>
-              <TableCell>Price</TableCell>
-            </TableRow>
+            {screen !== "xs" && (
+              <TableRow>
+                <TableCell>Wish</TableCell>
+                <TableCell></TableCell>
+                <TableCell>QTY</TableCell>
+                <TableCell>Price</TableCell>
+              </TableRow>
+            )}
           </TableHead>
           <TableBody>
             {gifts}
 
             <TableRow>
-              <TableCell rowSpan={1} />
-              <TableCell style={{ minWidth: "140px" }}>
-                Total Wishtender
-              </TableCell>
+              {screen !== "xs" && (
+                <>
+                  <TableCell rowSpan={1} />
+                  <TableCell style={{ minWidth: "140px" }}>
+                    Total Wishtender
+                  </TableCell>
+                </>
+              )}
+              <TableCell>Total Wishtender</TableCell>
               <TableCell align="right" colSpan={2}>
                 {order.tender.afterConversion ? (
                   <>

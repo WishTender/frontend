@@ -155,6 +155,7 @@ const DisplayOrder = ({
         open={open}
         classes={classes}
         order={order}
+        screen="xs" //hard coded for building
       />
     </>
   );
