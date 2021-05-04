@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import theme from "../../theme";
 
 import { UserContext } from "../../contexts/UserContext";
 import openGift from "./openGift";
@@ -130,21 +131,50 @@ const DisplayOrder = ({
             primary={`From: ${order.fromLine}`}
             secondary={new Date(order.paidOn).toLocaleString()}
           />
-          <ListItemText
-            align="right"
-            primary={
-              (!order.noteToTender ||
-                (order.noteToTender && !order.noteToTender.sent)) &&
-              "No reply sent"
-            }
-          />
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <UpIcon /> : <DownIcon />}
-          </IconButton>
+          {screen === "xs" ? (
+            <div>
+              <div>
+                <Typography
+                  align="right"
+                  style={{
+                    fontSize: "0.8em",
+                    position: "absolute",
+                    top: theme.spacing(0.8),
+                    right: theme.spacing(0.9),
+                  }}
+                >
+                  {(!order.noteToTender ||
+                    (order.noteToTender && !order.noteToTender.sent)) &&
+                    "No reply sent"}
+                </Typography>
+              </div>
+              <IconButton
+                aria-label="expand row"
+                size="small"
+                onClick={() => setOpen(!open)}
+              >
+                {open ? <UpIcon /> : <DownIcon />}
+              </IconButton>
+            </div>
+          ) : (
+            <>
+              <ListItemText
+                align="right"
+                primary={
+                  (!order.noteToTender ||
+                    (order.noteToTender && !order.noteToTender.sent)) &&
+                  "No reply sent"
+                }
+              />
+              <IconButton
+                aria-label="expand row"
+                size="small"
+                onClick={() => setOpen(!open)}
+              >
+                {open ? <UpIcon /> : <DownIcon />}
+              </IconButton>
+            </>
+          )}
         </StyledListItem>
       )}
 

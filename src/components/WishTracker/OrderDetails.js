@@ -7,6 +7,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import GiftSm from "./GiftSm";
 import Gift from "./Gift";
 
 import {
@@ -30,7 +31,11 @@ export default function OrderDetails({
 
   let gifts = order.gifts;
   gifts = gifts.map((gift) => {
-    return <Gift orderId={order._id} gift={gift} />;
+    return screen === "xs" ? (
+      <GiftSm orderId={order._id} gift={gift} />
+    ) : (
+      <Gift orderId={order._id} gift={gift} />
+    );
   });
   return (
     <Collapse
@@ -66,20 +71,40 @@ export default function OrderDetails({
           <TableBody>
             {gifts}
 
-            <TableRow>
-              {screen !== "xs" && (
+            <TableRow
+              style={
+                screen === "xs"
+                  ? { background: theme.palette.secondary.xxLight }
+                  : null
+              }
+            >
+              {screen !== "xs" ? (
                 <>
                   <TableCell rowSpan={1} />
                   <TableCell style={{ minWidth: "140px" }}>
                     Total Wishtender
                   </TableCell>
                 </>
+              ) : (
+                <TableCell style={{ textAlign: "right" }}>
+                  Total Wishtender
+                </TableCell>
               )}
-              <TableCell>Total Wishtender</TableCell>
-              <TableCell align="right" colSpan={2}>
+              <TableCell
+                style={
+                  screen === "xs"
+                    ? {
+                        paddingLeft: theme.spacing(0),
+                        paddingRight: theme.spacing(1),
+                      }
+                    : null
+                }
+                align={screen !== "xs" ? "right" : "left"}
+                colSpan={2}
+              >
                 {order.tender.afterConversion ? (
                   <>
-                    {order.tender.afterConversion}
+                    {screen !== "xs" && order.tender.afterConversion}
                     <Tooltip
                       title={`You received ${order.tender.afterConversion} instead of ${order.tender.amount} because there
                         was a currency conversion. Sometimes our predicted
@@ -88,12 +113,15 @@ export default function OrderDetails({
                         text Dash (founder of WishTender) if you would like a
                         better solution 773-425-8000.`}
                     >
-                      <HelpIcon
-                        // fontSize="small"
-                        style={{ fontSize: 16 }}
-                        color="error"
-                        aria-label="pricing information"
-                      />
+                      <div>
+                        {screen === "xs" && order.tender.afterConversion}
+                        <HelpIcon
+                          // fontSize="small"
+                          style={{ fontSize: 16 }}
+                          color="error"
+                          aria-label="pricing information"
+                        />
+                      </div>
                     </Tooltip>
                   </>
                 ) : (

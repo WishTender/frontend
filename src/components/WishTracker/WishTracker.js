@@ -46,23 +46,48 @@ function WishTracker(props) {
 
   return (
     <Container maxWidth="md" style={{ marginTop: "7vw", paddingBottom: "7vw" }}>
-      {currentUser && (
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Typography variant="h6" style={{ margin: "0 8px" }}>
-            Wish-Tracker
-          </Typography>
-          <Button
-            color="primary"
-            // component={Button}
-            style={{ fontWeight: "500" }}
-            // variant="outlined"
-            disableElevation
-            href="http://localhost:4000/api/stripe/login"
+      {currentUser &&
+        (!smallScreen ? (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            Payment Dashboard <RightIcon color="primary" />
-          </Button>
-        </Box>
-      )}
+            <Typography variant="h6" style={{ margin: "0 8px" }}>
+              Wish-Tracker
+            </Typography>
+            <Button
+              color="primary"
+              // component={Button}
+              style={{ fontWeight: "500" }}
+              // variant="outlined"
+              disableElevation
+              href="http://localhost:4000/api/stripe/login"
+            >
+              Payment Dashboard <RightIcon color="primary" />
+            </Button>
+          </Box>
+        ) : (
+          <Box
+            // display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Button
+              color="primary"
+              // component={Button}
+              style={{ fontWeight: "500" }}
+              // variant="outlined"
+              disableElevation
+              href="http://localhost:4000/api/stripe/login"
+            >
+              Payment Dashboard <RightIcon color="primary" />
+            </Button>
+            <Typography variant="h6" style={{ margin: "0 8px" }}>
+              Wish-Tracker
+            </Typography>
+          </Box>
+        ))}
       <Paper style={{ marginTop: "2vw" }}>
         <List
           component="nav"

@@ -34,6 +34,7 @@ const theme = createMuiTheme({
       main: "#ffe057",
       light: "#ffe678",
       extraLight: "#fdf6a7",
+      xxLight: "#fffef3",
     },
     error: pink,
     // secondary: {
