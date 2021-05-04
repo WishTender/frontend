@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => {
       "& .MuiBox-root": { maxWidth: "250px" },
     },
     cell2: { paddingLeft: theme.spacing(2), paddingRight: theme.spacing(1) },
-    purchaseButton: {
+    giftButton: {
       display: "block",
       paddingLeft: theme.spacing(0),
     },
@@ -32,7 +32,12 @@ const Gift = ({ orderId, gift }) => {
     <TableRow key={orderId + "-" + gift.item._id}>
       <TableCell style={{ minWidth: "40px" }} className={classes.cell1}>
         <Box display="flex" justifyContent="space-between">
-          <img width="60" src={gift.item.itemImage} alt={gift.item.itemName} />
+          <img
+            width="60"
+            height="60"
+            src={gift.item.itemImage}
+            alt={gift.item.itemName}
+          />
           <p className={classes.itemName}>{gift.item.itemName}</p>
         </Box>
       </TableCell>
@@ -43,7 +48,7 @@ const Gift = ({ orderId, gift }) => {
         <Button
           size="small"
           color="primary"
-          className={classes.purchaseButton}
+          className={classes.giftButton}
           // variant="contained"
           component={Link}
           disableElevation
@@ -51,6 +56,17 @@ const Gift = ({ orderId, gift }) => {
         >
           Purchase
         </Button>
+        {/* <Button
+          size="small"
+          // color="primary"
+          className={classes.giftButton}
+          // variant="contained"
+          component={Link}
+          disableElevation
+          to={gift.item.url}
+        >
+          Delete
+        </Button> */}
       </TableCell>
       {/* <TableCell>{gift.price}</TableCell> */}
     </TableRow>
