@@ -7,7 +7,12 @@ const Gift = ({ orderId, gift }) => {
   return (
     <TableRow key={orderId + "-" + gift.item._id}>
       <TableCell>
-        <img width="60" src={gift.item.itemImage} alt={gift.item.itemName} />
+        <img
+          width="60"
+          height="60"
+          src={gift.item.itemImage}
+          alt={gift.item.itemName}
+        />
         <p>{gift.item.itemName}</p>
       </TableCell>
       <TableCell>
