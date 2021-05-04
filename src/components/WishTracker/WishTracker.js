@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { WishlistContext } from "./WishlistContext";
 import { fetchGet } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 import DisplayOrder from "./DisplayOrder";
@@ -25,7 +26,10 @@ function WishTracker(props) {
   const smallScreen = useSmallScreen();
   const { user: currentUser } = useContext(UserContext);
   const clientLocale = useContext(LocaleContext);
+  const { getWishlist } = useContext(WishlistContext);
   const [orders, setOrders] = useState(null);
+  const [wishlist, setWishlist] = useState(null);
+  // const [refreshWishlist, setRefreshWishlist] = useState(null);
   // const [reply, setReply] = useState(null);
   const [refreshOrders, setRefreshOrders] = useState(null);
 
@@ -42,69 +46,77 @@ function WishTracker(props) {
           if (refreshOrders) setRefreshOrders(false);
         }
       );
-  }, [currentUser, refreshOrders]);
+  }, [clientLocale, currentUser, refreshOrders]);
+
+  useEffect(() => {
+    if (currentUser)
+      (async () => {
+        setWishlist(await getWishlist(currentUser.wishlists[0]));
+      })();
+  }, [currentUser, getWishlist]);
 
   return (
     <Container maxWidth="md" style={{ marginTop: "7vw", paddingBottom: "7vw" }}>
-      {currentUser &&
-        (!smallScreen ? (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Typography variant="h6" style={{ margin: "0 8px" }}>
-              Wish-Tracker
-            </Typography>
-            <Button
-              color="primary"
-              // component={Button}
-              style={{ fontWeight: "500" }}
-              // variant="outlined"
-              disableElevation
-              href="http://localhost:4000/api/stripe/login"
+      <WishlistContext.Provider value={{ wishlist, setWishlist, getWishlist }}>
+        {currentUser &&
+          (!smallScreen ? (
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
             >
-              Payment Dashboard <RightIcon color="primary" />
-            </Button>
-          </Box>
-        ) : (
-          <Box
-            // display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Button
-              color="primary"
-              // component={Button}
-              style={{ fontWeight: "500" }}
-              // variant="outlined"
-              disableElevation
-              href="http://localhost:4000/api/stripe/login"
+              <Typography variant="h6" style={{ margin: "0 8px" }}>
+                Wish-Tracker
+              </Typography>
+              <Button
+                color="primary"
+                // component={Button}
+                style={{ fontWeight: "500" }}
+                // variant="outlined"
+                disableElevation
+                href="http://localhost:4000/api/stripe/login"
+              >
+                Payment Dashboard <RightIcon color="primary" />
+              </Button>
+            </Box>
+          ) : (
+            <Box
+              // display="flex"
+              alignItems="center"
+              justifyContent="space-between"
             >
-              Payment Dashboard <RightIcon color="primary" />
-            </Button>
-            <Typography variant="h6" style={{ margin: "0 8px" }}>
-              Wish-Tracker
-            </Typography>
-          </Box>
-        ))}
-      <Paper style={{ marginTop: "2vw" }}>
-        <List
-          component="nav"
-          aria-labelledby="wishes-granted-subheader"
-          subheader={
-            <ListSubheader
-              style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
-              component="div"
-              id="wishes-granted-subheader"
-            >
-              Transactions: {orders && orders.length}
-              {orders && (
-                <span style={{ float: "right", display: "block" }}>
-                  New: {orders.filter((order) => order.seen === false).length}
-                </span>
-              )}
-              {/* <Typography style={{ float: "left" }} display="inline">
+              <Button
+                color="primary"
+                // component={Button}
+                style={{ fontWeight: "500" }}
+                // variant="outlined"
+                disableElevation
+                href="http://localhost:4000/api/stripe/login"
+              >
+                Payment Dashboard <RightIcon color="primary" />
+              </Button>
+              <Typography variant="h6" style={{ margin: "0 8px" }}>
+                Wish-Tracker
+              </Typography>
+            </Box>
+          ))}
+        <Paper style={{ marginTop: "2vw" }}>
+          <List
+            component="nav"
+            aria-labelledby="wishes-granted-subheader"
+            subheader={
+              <ListSubheader
+                style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
+                component="div"
+                id="wishes-granted-subheader"
+              >
+                Transactions: {orders && orders.length}
+                {orders && (
+                  <span style={{ float: "right", display: "block" }}>
+                    New: {orders.filter((order) => order.seen === false).length}
+                  </span>
+                )}
+                {/* <Typography style={{ float: "left" }} display="inline">
               Transactions: {orders && orders.length}
               </Typography>
               <Typography
@@ -114,21 +126,22 @@ function WishTracker(props) {
               >
               {currentUser.email}
             </Typography> */}
-            </ListSubheader>
-          }
-        >
-          {orders &&
-            orders.map((order) => {
-              return (
-                <DisplayOrder
-                  setRefreshOrders={setRefreshOrders}
-                  order={order}
-                  screen={smallScreen && "xs"}
-                />
-              );
-            })}
-        </List>
-      </Paper>
+              </ListSubheader>
+            }
+          >
+            {orders &&
+              orders.map((order) => {
+                return (
+                  <DisplayOrder
+                    setRefreshOrders={setRefreshOrders}
+                    order={order}
+                    screen={smallScreen && "xs"}
+                  />
+                );
+              })}
+          </List>
+        </Paper>
+      </WishlistContext.Provider>
     </Container>
   );
 }

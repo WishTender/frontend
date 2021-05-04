@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { fetchDelete } from "../../scripts/fetchHelper";
 import { Tooltip } from "@material-ui/core";
+import { WishlistContext } from "./WishlistContext";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function RemoveWish(props) {
+  const { user } = useContext(UserContext);
+  const { getWishlist, setWishlist, wishlist } = useContext(WishlistContext);
   const deleteWish = async () => {
     await fetchDelete(
       `${process.env.REACT_APP_BASE_URL}/api/wishListItems/${props.wish}`,
-      (res) => {
+      async (res) => {
         if (res.status <= 200 && res.status > 300) {
-          alert("deleted");
+          setWishlist(await getWishlist(user.aliases[0]));
         }
       }
     );
@@ -16,6 +20,12 @@ export default function RemoveWish(props) {
   const clone = React.cloneElement(props.children, { onClick: deleteWish });
 
   return (
-    <Tooltip title="Remove wishlist item from your wishlist.">{clone}</Tooltip>
+    <>
+      {wishlist.wishlistItems.find((item) => item._id === props.wish) && (
+        <Tooltip title="Remove wishlist item from your wishlist.">
+          {clone}
+        </Tooltip>
+      )}
+    </>
   );
 }

@@ -1,10 +1,10 @@
+import React, { useContext } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
-import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
-import { Box, Tooltip } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Box } from "@material-ui/core";
 import RemoveWish from "./RemoveWish";
 
 const useStyles = makeStyles((theme) => {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const Gift = ({ orderId, gift }) => {
+const Gift = ({ orderId, gift, setRefreshWishlist }) => {
   const classes = useStyles();
   return (
     <TableRow key={orderId + "-" + gift.item._id}>
