@@ -76,10 +76,7 @@ const fetchDelete = (route, callback) => {
         let responseText = await response.text();
         throw new Error(responseText);
       }
-      return response.text();
-    })
-    .then((res) => {
-      callback(res);
+      callback(response);
     })
     .catch((err) => {
       console.log(err);

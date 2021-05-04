@@ -4,7 +4,7 @@ import { Button, Typography } from "@material-ui/core";
 import { fetchPatchJson } from "../../scripts/fetchHelper";
 import { useForm } from "react-hook-form";
 
-export default function ReplyToWish(props) {
+export default function ReplyToTender(props) {
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = (data) => {
