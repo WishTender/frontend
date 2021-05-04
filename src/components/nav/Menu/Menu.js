@@ -19,6 +19,7 @@ import useCustomStyles from "../../../themeStyles";
 import { Link } from "react-router-dom";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import AccountSettings from "../../AccountSettings/AccountSettings";
+import useSmallScreen from "../../../hooks/useSmallScreen";
 const StyledMenuItem = withStyles((theme) => ({
   root: {
     borderBottom: "1px solid #e6e6e6",
@@ -46,31 +47,15 @@ const useStyles = makeStyles({
 
 export default function Menu(props) {
   const { user } = useContext(UserContext);
+  const smallScreen = useSmallScreen();
   const classes = useStyles(props);
   const customClasses = useCustomStyles(props);
-
-  const breakpoint = 600;
-  const [smallScreen, setSmallScreen] = React.useState(
-    window.innerWidth < breakpoint
-  );
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [headerHeight, setHeaderHeight] = React.useState(null);
 
   const [buttonHeight, setButtonHeight] = React.useState(null);
   const [buttonWidth, setButtonWidth] = React.useState(null);
-
-  React.useEffect(() => {
-    const handleWindowResize = () => {
-      if (window.innerWidth < breakpoint && !smallScreen) setSmallScreen(true);
-      else if (window.innerWidth >= breakpoint && smallScreen)
-        setSmallScreen(false);
-    };
-    window.addEventListener("resize", handleWindowResize);
-
-    // Return a function from the effect that removes the event listener
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, [smallScreen]);
 
   const handleClick = (event) => {
     if (anchorEl) {
