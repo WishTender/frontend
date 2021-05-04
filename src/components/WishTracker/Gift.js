@@ -25,6 +25,7 @@ const Gift = ({ orderId, gift }) => {
         >
           Purchase
         </Button>
+
         <RemoveWish wish={gift.item._id}>
           <Button size="small" disableElevation style={{ display: "block" }}>
             Remove Wish
