@@ -113,7 +113,7 @@ export default function OrderDetails({
                         text Dash (founder of WishTender) if you would like a
                         better solution 773-425-8000.`}
                     >
-                      <>
+                      <div style={{ display: "inline" }}>
                         {screen === "xs" && order.tender.afterConversion}
                         <HelpIcon
                           // fontSize="small"
@@ -121,7 +121,7 @@ export default function OrderDetails({
                           color="error"
                           aria-label="pricing information"
                         />
-                      </>
+                      </div>
                     </Tooltip>
                   </>
                 ) : (
