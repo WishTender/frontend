@@ -1,10 +1,11 @@
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import { Link } from "react-router-dom"; // a comment (can be deleted)
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
 import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
-import { Box } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
+import RemoveWish from "./RemoveWish";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -38,37 +39,26 @@ const Gift = ({ orderId, gift }) => {
             src={gift.item.itemImage}
             alt={gift.item.itemName}
           />
-          <p className={classes.itemName}>{gift.item.itemName}</p>
+          <p className={classes.itemName}>
+            <a href={gift.item.url}>{gift.item.itemName}</a>
+          </p>
         </Box>
       </TableCell>
       <TableCell className={classes.cell2}>
         QTY: {gift.qty}
         <br></br>
         {gift.price}
-        <Button
-          size="small"
-          color="primary"
-          className={classes.giftButton}
-          // variant="contained"
-          component={Link}
-          disableElevation
-          to={gift.item.url}
-        >
-          Purchase
-        </Button>
-        {/* <Button
-          size="small"
-          // color="primary"
-          className={classes.giftButton}
-          // variant="contained"
-          component={Link}
-          disableElevation
-          to={gift.item.url}
-        >
-          Delete
-        </Button> */}
+        <RemoveWish wish={gift._id}>
+          <Button
+            size="small"
+            color="primary"
+            className={classes.giftButton}
+            disableElevation
+          >
+            Remove
+          </Button>
+        </RemoveWish>
       </TableCell>
-      {/* <TableCell>{gift.price}</TableCell> */}
     </TableRow>
   );
 };

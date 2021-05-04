@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import ReplyToWish from "./ReplyToWish";
+import ReplyToTender from "./ReplyToTender";
 import HelpIcon from "@material-ui/icons/Help";
 import theme from "../../theme";
 import Table from "@material-ui/core/Table";
@@ -113,7 +113,7 @@ export default function OrderDetails({
                         text Dash (founder of WishTender) if you would like a
                         better solution 773-425-8000.`}
                     >
-                      <div>
+                      <>
                         {screen === "xs" && order.tender.afterConversion}
                         <HelpIcon
                           // fontSize="small"
@@ -121,7 +121,7 @@ export default function OrderDetails({
                           color="error"
                           aria-label="pricing information"
                         />
-                      </div>
+                      </>
                     </Tooltip>
                   </>
                 ) : (
@@ -168,7 +168,7 @@ export default function OrderDetails({
                     </>
                   ) : (
                     reply && (
-                      <ReplyToWish
+                      <ReplyToTender
                         to={reply.fromLine}
                         setReply={setReply}
                         setRefreshOrders={setRefreshOrders}
