@@ -3,12 +3,7 @@ import { WishlistContext } from "./WishlistContext";
 import { fetchGet } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 import DisplayOrder from "./DisplayOrder";
-import {
-  parseOrderPrices,
-  parsePrice,
-  displayPrice,
-  clientCurrency,
-} from "../../scripts/helpers";
+import { parseOrderPrices } from "../../scripts/helpers";
 import { LocaleContext } from "../../contexts/LocaleContext";
 import Paper from "@material-ui/core/Paper";
 import {

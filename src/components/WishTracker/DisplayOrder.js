@@ -84,7 +84,7 @@ const DisplayOrder = ({
                   fontSize: "1.3em",
                 }}
               >
-                New wishtender!
+                New Granted Wish!
               </Typography>
             }
             secondary={

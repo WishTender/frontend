@@ -64,7 +64,7 @@ export default function OrderDetails({
                 <TableCell>Wish</TableCell>
                 <TableCell></TableCell>
                 <TableCell>QTY</TableCell>
-                <TableCell>Price</TableCell>
+                <TableCell>Subtotal</TableCell>
               </TableRow>
             )}
           </TableHead>
