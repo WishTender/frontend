@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => {
       fontSize: ".5rem",
       marginLeft: theme.spacing(1),
       minWidth: "80px",
+      width: "100%",
     },
     cell1: {
       paddingLeft: theme.spacing(1),
@@ -48,7 +49,7 @@ const Gift = ({ orderId, gift, setRefreshWishlist }) => {
         QTY: {gift.qty}
         <br></br>
         {gift.price}
-        <RemoveWish wish={gift._id}>
+        <RemoveWish wish={gift.item._id}>
           <Button
             size="small"
             color="primary"
