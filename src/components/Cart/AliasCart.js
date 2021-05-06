@@ -16,26 +16,31 @@ import {
   OutlinedInput,
   InputLabel,
   FormControl,
-  FormHelperText,
 } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
-import React from "react";
+import { useForm } from "react-hook-form";
+import React, { useState } from "react";
 import useSmallScreen from "../../hooks/useSmallScreen";
 import theme from "../../theme";
 import Gift from "./Gift";
-
-const TenderInfoInputs = ({ cart }) => {
+import { fetchPostJson } from "../../scripts/fetchHelper";
+const TenderInfoInputs = ({ cart, register }) => {
   return (
     <>
       <FormControl variant="outlined">
-        <InputLabel htmlFor="from">From</InputLabel>
+        <InputLabel htmlFor="fromLine">From</InputLabel>
         <OutlinedInput
           color="primary"
           variant="outlined"
           label="From"
-          name="from"
-          // labelWidth={38}
-          id="from"
+          name="fromLine"
+          id="fromLine"
+          inputRef={register({
+            maxLength: {
+              value: 60,
+              message: `From line must be less than ${60 + 1} characters`,
+            },
+          })}
           endAdornment={
             <InputAdornment position="end">
               <Tooltip title={`Visible to ${cart.alias.aliasName}`}>
@@ -50,6 +55,13 @@ const TenderInfoInputs = ({ cart }) => {
           Email <span style={{ color: "#b9b9b9" }}>Private</span>
         </InputLabel>
         <OutlinedInput
+          inputRef={register({
+            required: "Email Required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              message: "Enter a valid e-mail address",
+            },
+          })}
           color="primary"
           variant="outlined"
           label="Email: Private"
@@ -71,83 +83,146 @@ const TenderInfoInputs = ({ cart }) => {
   );
 };
 
-export default function AliasCart({ cart }) {
+export default function AliasCart({ cart, exchangeRates }) {
+  const { errors, handleSubmit, register } = useForm();
+  const [message, setMessage] = useState("");
   const smallScreen = useSmallScreen();
+  const checkoutCart = (data) => {
+    // create stripe session and get session id
+    // redirect to session in the callback
+    fetchPostJson(
+      {
+        alias: cart.alias._id,
+        order: {
+          buyerInfo: {
+            email: data.email,
+            fromLine: data.fromLine,
+          },
+          alias: cart.alias._id,
+          noteToWisher: data.message,
+        },
+      },
+      process.env.REACT_APP_BASE_URL + "/api/checkout",
+      (data) => {
+        goToCheckout(data.checkoutSessionId);
+      }
+    );
+  };
+  const goToCheckout = (sessionId) => {
+    /* Handle any errors returns from Checkout  */
+    var handleResult = function (result) {
+      if (result.error) {
+        alert(result.error.message);
+      }
+    };
+
+    var stripe = window.Stripe(
+      "pk_test_51HAi5vLLBOhef2QNgeOEgpmhxfegnaTxArp0ri2QR4e7c4HxayuuHv8jWN9AzTuLKKEIztnhXgvss5P70Gs4A7kI00052oBzNQ"
+    );
+
+    stripe
+      .redirectToCheckout({
+        sessionId: sessionId,
+      })
+      .then(handleResult);
+  };
+  let messageLength;
+  if (exchangeRates) {
+    const totalPriceUSD =
+      (Math.round(cart.totalPrice) * exchangeRates[cart.alias.currency]) /
+      exchangeRates["USD"];
+    messageLength = Math.round(30 + totalPriceUSD);
+  }
+
   return (
     <TableContainer
       component={Paper}
       style={{ marginBottom: theme.spacing(2), marginTop: theme.spacing(2) }}
     >
-      <Table id={`aliasCart-${cart.alias._id}`}>
-        <TableHead>
-          <TableRow>
-            <TableCell colSpan={4}>
-              Wish Basket for
-              <Typography component="span">{` ${cart.alias.aliasName} `}</Typography>
-              <Link href={cart.alias.handle}>{`@${cart.alias.handle}`}</Link>
-            </TableCell>
-          </TableRow>
-          {!smallScreen && (
+      <form onSubmit={handleSubmit(checkoutCart)}>
+        <Table id={`aliasCart-${cart.alias._id}`}>
+          <TableHead>
             <TableRow>
-              <TableCell>Wish</TableCell>
-              <TableCell></TableCell>
-              <TableCell>QTY</TableCell>
-              <TableCell>Subtotal</TableCell>
+              <TableCell colSpan={4}>
+                Wish Basket for
+                <Typography component="span">{` ${cart.alias.aliasName} `}</Typography>
+                <Link href={cart.alias.handle}>{`@${cart.alias.handle}`}</Link>
+              </TableCell>
             </TableRow>
-          )}
-        </TableHead>
-        <TableBody>
-          {Object.values(cart.items).map((gift) => (
-            <Gift screen={smallScreen && "xs"} gift={gift} />
-          ))}
-          <TableRow>
             {!smallScreen && (
-              <>
+              <TableRow>
+                <TableCell>Wish</TableCell>
                 <TableCell></TableCell>
-                <TableCell></TableCell>
-              </>
+                <TableCell>QTY</TableCell>
+                <TableCell>Subtotal</TableCell>
+              </TableRow>
             )}
-            <TableCell align="right">Subtotal:</TableCell>
-            <TableCell align="right">${cart.totalPrice}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell colSpan={4}>
-              <div style={{ display: "grid", gap: "1em" }}>
-                <Typography align="left">Add Message</Typography>
-                <TextField
-                  style={{ width: "100%", marginTop: "8px" }}
-                  id="outlined-multiline-static"
-                  label="Message"
-                  name="message"
-                  // inputRef={register()}
-                  multiline
-                  rows={10}
-                  variant="filled"
-                  helperText="This size gift allows you 666 characters. 666 remaining."
-                ></TextField>
-                {smallScreen ? (
-                  <TenderInfoInputs cart={cart} />
-                ) : (
-                  <Box display="flex" style={{ gap: "1em" }}>
-                    <TenderInfoInputs cart={cart} />
-                  </Box>
-                )}
-                <div>
-                  <Button
-                    type="submit"
-                    color="primary"
-                    disableElevation
-                    variant="contained"
-                    style={{ marginTop: "8px", float: "right" }}
-                  >
-                    Checkout
-                  </Button>
+          </TableHead>
+          <TableBody>
+            {Object.values(cart.items).map((gift) => (
+              <Gift screen={smallScreen && "xs"} gift={gift} />
+            ))}
+            <TableRow>
+              {!smallScreen && (
+                <>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                </>
+              )}
+              <TableCell align="right">Subtotal:</TableCell>
+              <TableCell align="right">${cart.totalPrice}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={4}>
+                <div style={{ display: "grid", gap: "1em" }}>
+                  <Typography align="left">Add Message</Typography>
+                  <TextField
+                    style={{ width: "100%", marginTop: "8px" }}
+                    id="outlined-multiline-static"
+                    label="Message"
+                    name="message"
+                    error={messageLength - message.length < 0}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    inputRef={register({
+                      maxLength: {
+                        value: messageLength,
+                        message: `message must be less than ${
+                          messageLength + 1
+                        } characters`,
+                      },
+                    })}
+                    multiline
+                    rows={10}
+                    variant="filled"
+                    helperText={`This size gift allows you ${messageLength} characters. ${
+                      messageLength - message.length
+                    } remaining.`}
+                  ></TextField>
+                  {smallScreen ? (
+                    <TenderInfoInputs register={register} cart={cart} />
+                  ) : (
+                    <Box display="flex" style={{ gap: "1em" }}>
+                      <TenderInfoInputs register={register} cart={cart} />
+                    </Box>
+                  )}
+                  <div>
+                    <Button
+                      type="submit"
+                      color="primary"
+                      disableElevation
+                      variant="contained"
+                      style={{ marginTop: "8px", float: "right" }}
+                    >
+                      Checkout
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </form>
     </TableContainer>
   );
 }

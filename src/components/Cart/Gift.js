@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
-import { Box, Typography } from "@material-ui/core";
+import { Box, IconButton, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/AddBox";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import theme from "../../theme";
+import { fetchPatchJson } from "../../scripts/fetchHelper";
+import { CartContext } from "./CartContext";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -29,6 +31,32 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
+const addToCart = (itemId, aliasId, cartContext) => {
+  fetchPatchJson(
+    { itemId, aliasId },
+    `${process.env.REACT_APP_BASE_URL}/api/cart/add-to-cart`,
+    () => updateCart(cartContext)
+  );
+};
+const reduce = (itemId, aliasId, cartContext) => {
+  fetchPatchJson(
+    { itemId, aliasId },
+    `${process.env.REACT_APP_BASE_URL}/api/cart/reduce`,
+    () => updateCart(cartContext)
+  );
+};
+const removeFromCart = (itemId, aliasId, cartContext) => {
+  fetchPatchJson(
+    { itemId, aliasId },
+    `${process.env.REACT_APP_BASE_URL}/api/cart/remove-from-cart`,
+    () => updateCart(cartContext)
+  );
+};
+const updateCart = async (cartContext) => {
+  let cart;
+  cart = await cartContext.getCart();
+  cartContext.setCart(cart);
+};
 const GiftImageAndName = ({ gift, classes, screen }) => {
   return (
     <>
@@ -46,17 +74,35 @@ const GiftImageAndName = ({ gift, classes, screen }) => {
 };
 
 const Quantity = ({ gift, screen }) => {
+  const cartContext = useContext(CartContext);
+
   return (
     <Box display="flex" alignItems="center">
       {screen === "xs" && "QTY: "}
       <span style={{ paddingRight: theme.spacing(1) }}>{gift.qty}</span>
-      <AddIcon color="primary" />
-      <RemoveIcon color="primary" />
+      <IconButton
+        size="small"
+        onClick={() => {
+          addToCart(gift.item._id, gift.item.alias._id, cartContext);
+        }}
+      >
+        <AddIcon color="primary" />
+      </IconButton>
+      <IconButton
+        onClick={() => {
+          reduce(gift.item._id, gift.item.alias._id, cartContext);
+        }}
+        size="small"
+      >
+        <RemoveIcon color="primary" />
+      </IconButton>
     </Box>
   );
 };
 
 export default function Gift({ gift, screen }) {
+  const cartContext = useContext(CartContext);
+
   const classes = useStyles();
 
   return (
@@ -78,30 +124,32 @@ export default function Gift({ gift, screen }) {
           <Quantity gift={gift} screen="xs" />
           <br></br>
           {gift.price}
-          {/* <RemoveWish wish={gift._id}> */}
           <Button
             size="small"
             color="primary"
             className={classes.giftButton_xs}
             disableElevation
+            onClick={() =>
+              removeFromCart(gift.item._id, gift.item.alias._id, cartContext)
+            }
           >
             Remove
           </Button>
-          {/* </RemoveWish> */}
         </TableCell>
       ) : (
         <>
           <TableCell>
-            {/* <RemoveWish wish={gift._id}> */}
             <Button
               size="small"
               color="primary"
+              onClick={() =>
+                removeFromCart(gift.item._id, gift.item.alias._id, cartContext)
+              }
               className={classes.giftButton_xs}
               disableElevation
             >
               Remove
             </Button>
-            {/* </RemoveWish> */}
           </TableCell>
           <TableCell>
             <Quantity gift={gift} />
