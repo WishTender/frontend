@@ -4,14 +4,30 @@ import { CartContext } from "./CartContext";
 import { LocaleContext } from "../../contexts/LocaleContext";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 
-export default function AllCarts({ exchangeRates }) {
+export default function AllCarts() {
   const [cart, setCart] = useState(null);
+  const [exchangeRates, setExchangeRates] = useState(null);
   const { getCart } = useContext(CartContext);
   const clientCurrency = useContext(CurrencyContext);
   const localeContext = useContext(LocaleContext);
 
   useEffect(() => {
-    if (!cart) {
+    if (clientCurrency) {
+      const fetchData = async () => {
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_URL}/api/exchange/all?base=${clientCurrency}`
+        );
+
+        const rates = await response.json();
+        setExchangeRates(rates.rates);
+      };
+
+      fetchData();
+    }
+  }, [clientCurrency, cart]);
+
+  useEffect(() => {
+    if (!cart && exchangeRates) {
       (async () => {
         setCart(await getCart(clientCurrency, localeContext, exchangeRates));
       })();

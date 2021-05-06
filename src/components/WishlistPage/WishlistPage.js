@@ -1,20 +1,31 @@
 import React, { useState, useEffect, useContext } from "react";
 import ProfileSection from "./ProfileSection/ProfileSection";
 import { UserContext } from "../../contexts/UserContext";
+import { LocaleContext } from "../../contexts/LocaleContext";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { RouteContext } from "../../contexts/RouteContext";
 import { fetchGet } from "../../scripts/fetchHelper";
 import { useParams } from "react-router-dom";
 import useTraceUpdate from "../../scripts/useTraceUpdate";
 import Wishlist from "./Wishlist";
-import { unitToStandard, parsePrice } from "../../scripts/helpers";
+import {
+  unitToStandard,
+  parsePrice,
+  clientCurrency,
+  parseWishlistPrices,
+  parseConvertWishlistPrices,
+} from "../../scripts/helpers";
 
 const handleRoute =
   process.env.REACT_APP_BASE_URL + "/api/aliases?handle_lowercased=";
 function WishlistPage(props) {
   const [alias, setAlias] = useState(null);
+  const [convertRate, setConvertRate] = useState(null);
   const [wishlist, setWishlist] = useState(null);
   const [refreshWishlist, setRefreshWishlist] = useState(null);
   const { user: currentUser } = useContext(UserContext);
+  const localeContext = useContext(LocaleContext);
+  const clientCurrency = useContext(CurrencyContext);
   const { setIsCurrentUsersProfile } = useContext(RouteContext);
   let { alias: aliasPath } = useParams();
 
@@ -27,29 +38,50 @@ function WishlistPage(props) {
   useTraceUpdate(WishlistPage.name, props, states);
 
   useEffect(() => {
-    fetchGet(`${handleRoute}${aliasPath.toLowerCase()}`, (alias) => {
+    fetchGet(`${handleRoute}${aliasPath.toLowerCase()}`, async (alias) => {
       const wl = alias.wishlists[0];
       if (wl) {
-        wl.wishlistItems.forEach((item) => {
-          const parsedPrice = parsePrice(item.price, item.currency);
-          item.price = parsedPrice;
-        });
+        if (
+          (currentUser && currentUser.currency === alias.currency) ||
+          clientCurrency === alias.currency
+        ) {
+          parseWishlistPrices(wl, alias.currency, localeContext);
+        } else {
+          const response = await fetch(
+            `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${alias.currency}&symbols=${clientCurrency}`
+          );
+
+          let rate = await response.json();
+          setConvertRate(rate.rate);
+          parseConvertWishlistPrices(
+            wl,
+            clientCurrency,
+            localeContext,
+            convertRate
+          );
+        }
       }
       setIsCurrentUsersProfile(
         currentUser?.aliases.includes(alias?._id) || false
       );
       setAlias(alias);
     });
-  }, [aliasPath, currentUser, setIsCurrentUsersProfile]);
+  }, [
+    aliasPath,
+    clientCurrency,
+    convertRate,
+    currentUser,
+    localeContext,
+    setIsCurrentUsersProfile,
+  ]);
 
   useEffect(() => {
     if (refreshWishlist) {
       fetchGet(
         `${process.env.REACT_APP_BASE_URL}/api/wishlists/${alias.wishlists[0]._id}`,
         (wishlist) => {
-          wishlist.wishlistItems.forEach(
-            (item) => (item.price = unitToStandard(item.price, item.currency))
-          );
+          parseWishlistPrices(wishlist, alias.currency, localeContext);
+
           setWishlist(wishlist);
           setRefreshWishlist(false);
         }

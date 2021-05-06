@@ -74,7 +74,37 @@ const displayPrice = (price, currencyFrom, currencyTo, convertRate, locale) => {
   return display;
 };
 
-// should return {converted, original}
+const parseWishlistPrices = (wishlist, aliasCurrency, localeContext) => {
+  wishlist.wishlistItems.forEach((item) => {
+    item.price = parsePrice(item.price, item.currency);
+    item.price = displayPrice(
+      item.price,
+      item.currency,
+      item.currency,
+      1,
+      localeContext
+    );
+  });
+};
+
+const parseConvertWishlistPrices = (
+  wishlist,
+  clientCurrency,
+  localeContext,
+  exchangeRate
+) => {
+  wishlist.wishlistItems.forEach((item) => {
+    item.price = parsePrice(item.price, item.currency);
+    item.price = displayPrice(
+      item.price,
+      item.currency,
+      clientCurrency,
+      exchangeRate,
+      localeContext
+    );
+  });
+};
+
 const parseCartPrices = (
   cart,
   clientCurrency,
@@ -106,7 +136,9 @@ const parseAliasCartPrices = (
     aliasCart.totalPrice,
     aliasCart.alias.currency,
     clientCurrency,
-    1 / exchangeRates[aliasCart.alias.currency],
+    aliasCart.alias.currency !== clientCurrency
+      ? 1 / exchangeRates[aliasCart.alias.currency]
+      : 1,
     localeContext
   );
   const items = Object.keys(aliasCart.items);
@@ -117,7 +149,9 @@ const parseAliasCartPrices = (
       itemObj.price,
       aliasCart.alias.currency,
       clientCurrency,
-      1 / exchangeRates[aliasCart.alias.currency],
+      aliasCart.alias.currency !== clientCurrency
+        ? 1 / exchangeRates[aliasCart.alias.currency]
+        : 1,
       localeContext
     );
   });
@@ -296,4 +330,6 @@ export {
   parseCartPrices,
   parseOrderPrices,
   parseAliasCartPrices,
+  parseConvertWishlistPrices,
+  parseWishlistPrices,
 };

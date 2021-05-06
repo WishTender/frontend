@@ -8,48 +8,24 @@ import AllCarts from "./AllCarts";
 // const ratesApi = new ExchangeRateApiInterface();
 
 export default function Cart(props) {
-  const [exchangeRates, setExchangeRates] = useState(null);
-  const clientCurrency = useContext(CurrencyContext);
-
-  useEffect(() => {
-    if (clientCurrency) {
-      const fetchData = async () => {
-        const response = await fetch(
-          `${process.env.REACT_APP_BASE_URL}/api/exchange/all?base=${clientCurrency}`
-        );
-
-        const rates = await response.json();
-        setExchangeRates(rates.rates);
-      };
-
-      fetchData();
-    }
-  }, [clientCurrency]);
-
   return (
     <div>
-      {exchangeRates && (
-        <Container
-          maxWidth="md"
-          style={{
-            marginTop: "6vw",
-            paddingBottom: "7vw",
-            paddingRight: "7vw",
-            paddingLeft: "7vw",
-          }}
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Typography variant="h6" style={{ margin: "0 8px" }}>
-              Cart
-            </Typography>
-          </Box>
-          <AllCarts exchangeRates={exchangeRates} />
-        </Container>
-      )}
+      <Container
+        maxWidth="md"
+        style={{
+          marginTop: "6vw",
+          paddingBottom: "7vw",
+          paddingRight: "7vw",
+          paddingLeft: "7vw",
+        }}
+      >
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography variant="h6" style={{ margin: "0 8px" }}>
+            Cart
+          </Typography>
+        </Box>
+        <AllCarts />
+      </Container>
     </div>
   );
 }
