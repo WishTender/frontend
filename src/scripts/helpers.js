@@ -120,12 +120,12 @@ const displayConversion = (
   fromLocale,
   toLocale
 ) => {
-  return `${displayCurrency(
-    convertedPrice,
-    toCurrency,
-    toLocale
-  )} estimated from ${displayCurrency(price, fromCurrency, fromLocale)}`;
+  return {
+    converted: displayCurrency(convertedPrice, toCurrency, toLocale),
+    original: displayCurrency(price, fromCurrency, fromLocale),
+  };
 };
+
 const chooseCurrency = (locale) => {
   if (locale.countryCode) {
     const currencies = getCurrencies(locale.countryCode);

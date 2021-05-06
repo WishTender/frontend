@@ -2,16 +2,22 @@ import React, { useContext } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
-import { Box, IconButton, Typography } from "@material-ui/core";
+import { Badge, Box, IconButton, Tooltip, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/AddBox";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import theme from "../../theme";
 import { fetchPatchJson } from "../../scripts/fetchHelper";
 import { CartContext } from "./CartContext";
+import { LocaleContext } from "../../contexts/LocaleContext";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
+import { displayPrice } from "../../scripts/helpers";
+import Help from "@material-ui/icons/Help";
+import ConvertedPrice from "../common/ConvertedPrice";
 
 const useStyles = makeStyles((theme) => {
   return {
+    est: { color: theme.palette.error[300] },
     itemName_xs: {
       fontSize: ".5rem",
       marginLeft: theme.spacing(1),
@@ -101,8 +107,18 @@ const Quantity = ({ gift, screen }) => {
   );
 };
 
-export default function Gift({ gift, screen }) {
+export default function Gift({ gift, screen, exchangeRates }) {
   const cartContext = useContext(CartContext);
+  const localeContext = useContext(LocaleContext);
+  const clientCurrency = useContext(CurrencyContext);
+
+  const formattedPrice = displayPrice(
+    gift.price,
+    gift.item.currency,
+    clientCurrency,
+    1 / exchangeRates[gift.item.currency],
+    localeContext
+  );
 
   const classes = useStyles();
 
@@ -123,8 +139,11 @@ export default function Gift({ gift, screen }) {
       {screen === "xs" ? (
         <TableCell className={classes.cell2_xs}>
           <Quantity gift={gift} screen="xs" />
-          <br></br>
-          {gift.price}
+          {formattedPrice.converted ? (
+            <ConvertedPrice formattedPrice={formattedPrice} />
+          ) : (
+            formattedPrice.price
+          )}
           <Button
             size="small"
             color="primary"
@@ -157,8 +176,11 @@ export default function Gift({ gift, screen }) {
           </TableCell>
 
           <TableCell>
-            {/* <Typography style={{ fontSize: "0.6rem" }}>Subtotal: </Typography> */}
-            ${gift.price}
+            {formattedPrice.converted ? (
+              <ConvertedPrice formattedPrice={formattedPrice} />
+            ) : (
+              formattedPrice.price
+            )}
           </TableCell>
         </>
       )}

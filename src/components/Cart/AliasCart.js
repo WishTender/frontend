@@ -18,12 +18,17 @@ import {
   FormControl,
 } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
+import { displayPrice } from "../../scripts/helpers";
+
 import { useForm } from "react-hook-form";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { LocaleContext } from "../../contexts/LocaleContext";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 import useSmallScreen from "../../hooks/useSmallScreen";
 import theme from "../../theme";
 import Gift from "./Gift";
 import { fetchPostJson } from "../../scripts/fetchHelper";
+import ConvertedPrice from "../common/ConvertedPrice";
 const TenderInfoInputs = ({ cart, register }) => {
   return (
     <>
@@ -133,6 +138,16 @@ export default function AliasCart({ cart, exchangeRates }) {
       exchangeRates["USD"];
     messageLength = Math.round(30 + totalPriceUSD);
   }
+  const localeContext = useContext(LocaleContext);
+  const clientCurrency = useContext(CurrencyContext);
+
+  const formattedPrice = displayPrice(
+    cart.totalPrice,
+    cart.alias.currency,
+    clientCurrency,
+    1 / exchangeRates[cart.alias.currency],
+    localeContext
+  );
 
   return (
     <TableContainer
@@ -154,13 +169,19 @@ export default function AliasCart({ cart, exchangeRates }) {
                 <TableCell>Wish</TableCell>
                 <TableCell></TableCell>
                 <TableCell>QTY</TableCell>
-                <TableCell>Subtotal</TableCell>
+                <TableCell style={!smallScreen ? { minWidth: "133px" } : null}>
+                  Subtotal
+                </TableCell>
               </TableRow>
             )}
           </TableHead>
           <TableBody>
             {Object.values(cart.items).map((gift) => (
-              <Gift screen={smallScreen && "xs"} gift={gift} />
+              <Gift
+                screen={smallScreen && "xs"}
+                gift={gift}
+                exchangeRates={exchangeRates}
+              />
             ))}
             <TableRow>
               {!smallScreen && (
@@ -170,7 +191,9 @@ export default function AliasCart({ cart, exchangeRates }) {
                 </>
               )}
               <TableCell align="right">Subtotal:</TableCell>
-              <TableCell align="right">${cart.totalPrice}</TableCell>
+              <TableCell align="right">
+                <ConvertedPrice formattedPrice={formattedPrice} />
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={4}>
