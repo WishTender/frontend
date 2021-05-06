@@ -67,27 +67,59 @@ const displayPrice = (price, currencyFrom, currencyTo, convertRate, locale) => {
           "en-US",
           locale
         )
-      : displayCurrency(price, currencyFrom, currencyTo, "en-US");
+      : {
+          original: displayCurrency(price, currencyFrom, currencyTo, "en-US"),
+          originalFloat: price,
+        };
   return display;
 };
 
-const parseCartPrices = (cart) => {
+// should return {converted, original}
+const parseCartPrices = (
+  cart,
+  clientCurrency,
+  localeContext,
+  exchangeRates
+) => {
   const aliases = Object.keys(cart.aliasCarts);
   aliases.forEach((alias) => {
     const aliasCart = cart.aliasCarts[alias];
-    parseAliasCartPrices(aliasCart);
+    parseAliasCartPrices(
+      aliasCart,
+      clientCurrency,
+      localeContext,
+      exchangeRates
+    );
   });
 };
-
-const parseAliasCartPrices = (aliasCart) => {
+const parseAliasCartPrices = (
+  aliasCart,
+  clientCurrency,
+  localeContext,
+  exchangeRates
+) => {
   aliasCart.totalPrice = parsePrice(
     aliasCart.totalPrice,
     aliasCart.alias.currency
+  );
+  aliasCart.totalPrice = displayPrice(
+    aliasCart.totalPrice,
+    aliasCart.alias.currency,
+    clientCurrency,
+    1 / exchangeRates[aliasCart.alias.currency],
+    localeContext
   );
   const items = Object.keys(aliasCart.items);
   items.forEach((item) => {
     const itemObj = aliasCart.items[item];
     itemObj.price = parsePrice(itemObj.price, aliasCart.alias.currency);
+    itemObj.price = displayPrice(
+      itemObj.price,
+      aliasCart.alias.currency,
+      clientCurrency,
+      1 / exchangeRates[aliasCart.alias.currency],
+      localeContext
+    );
   });
 };
 const parseOrderPrices = (order, locale) => {
@@ -123,6 +155,7 @@ const displayConversion = (
   return {
     converted: displayCurrency(convertedPrice, toCurrency, toLocale),
     original: displayCurrency(price, fromCurrency, fromLocale),
+    originalFloat: price,
   };
 };
 

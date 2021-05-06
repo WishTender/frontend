@@ -1,31 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
-import { fetchGet, fetchPostJson } from "../../scripts/fetchHelper";
-import { displayPrice, parseCartPrices } from "../../scripts/helpers";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
-import { LocaleContext } from "../../contexts/LocaleContext";
 import { Container, Box, Typography, Button } from "@material-ui/core";
 // import ExchangeRateApiInterface from "../../scripts/RatesAPI";
-import { useForm } from "react-hook-form";
-import AliasCart from "./AliasCart";
+
 import AllCarts from "./AllCarts";
 
 // const ratesApi = new ExchangeRateApiInterface();
 
 export default function Cart(props) {
-  const [cart, setCart] = useState(null);
   const [exchangeRates, setExchangeRates] = useState(null);
   const clientCurrency = useContext(CurrencyContext);
-
-  // const [checkoutSessionId, setCheckoutSessionId] = useState("");
-  useEffect(() => {
-    if (props.cart) parseCartPrices(props.cart);
-    if (!props.cart && !cart) {
-      fetchGet(process.env.REACT_APP_BASE_URL + "/api/cart", (crt) => {
-        parseCartPrices(crt);
-        setCart(crt);
-      });
-    }
-  }, [cart, props.cart]);
 
   useEffect(() => {
     if (clientCurrency) {
@@ -44,7 +28,7 @@ export default function Cart(props) {
 
   return (
     <div>
-      {exchangeRates && cart && (
+      {exchangeRates && (
         <Container
           maxWidth="md"
           style={{

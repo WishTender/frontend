@@ -28,7 +28,7 @@ import useSmallScreen from "../../hooks/useSmallScreen";
 import theme from "../../theme";
 import Gift from "./Gift";
 import { fetchPostJson } from "../../scripts/fetchHelper";
-import ConvertedPrice from "../common/ConvertedPrice";
+import DisplayPrice from "../common/DisplayPrice";
 const TenderInfoInputs = ({ cart, register }) => {
   return (
     <>
@@ -134,20 +134,11 @@ export default function AliasCart({ cart, exchangeRates }) {
   let messageLength;
   if (exchangeRates) {
     const totalPriceUSD =
-      (Math.round(cart.totalPrice) * exchangeRates[cart.alias.currency]) /
+      (Math.round(cart.totalPrice.originalFloat) *
+        exchangeRates[cart.alias.currency]) /
       exchangeRates["USD"];
     messageLength = Math.round(30 + totalPriceUSD);
   }
-  const localeContext = useContext(LocaleContext);
-  const clientCurrency = useContext(CurrencyContext);
-
-  const formattedPrice = displayPrice(
-    cart.totalPrice,
-    cart.alias.currency,
-    clientCurrency,
-    1 / exchangeRates[cart.alias.currency],
-    localeContext
-  );
 
   return (
     <TableContainer
@@ -191,8 +182,8 @@ export default function AliasCart({ cart, exchangeRates }) {
                 </>
               )}
               <TableCell align="right">Subtotal:</TableCell>
-              <TableCell align="right">
-                <ConvertedPrice formattedPrice={formattedPrice} />
+              <TableCell style={{ minWidth: "133px" }} align="right">
+                <DisplayPrice priceObject={cart.totalPrice} />
               </TableCell>
             </TableRow>
             <TableRow>
