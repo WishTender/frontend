@@ -32,7 +32,7 @@ const Gift = ({ orderId, gift }) => {
         </RemoveWish>
       </TableCell>
       <TableCell>{gift.qty} </TableCell>
-      <TableCell>{gift.price.original}</TableCell>
+      <TableCell>{gift.price.display}</TableCell>
     </TableRow>
   );
 };

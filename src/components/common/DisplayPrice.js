@@ -6,7 +6,7 @@ export default function DisplayPrice({ priceObject }) {
       {priceObject.converted ? (
         <ConvertedPrice formattedPrice={priceObject} />
       ) : (
-        priceObject.original
+        priceObject.display
       )}
     </>
   );

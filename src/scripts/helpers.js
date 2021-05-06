@@ -68,8 +68,8 @@ const displayPrice = (price, currencyFrom, currencyTo, convertRate, locale) => {
           locale
         )
       : {
-          original: displayCurrency(price, currencyFrom, currencyTo, "en-US"),
-          originalFloat: price,
+          display: displayCurrency(price, currencyFrom, currencyTo, "en-US"),
+          float: price,
         };
   return display;
 };
@@ -188,8 +188,8 @@ const displayConversion = (
 ) => {
   return {
     converted: displayCurrency(convertedPrice, toCurrency, toLocale),
-    original: displayCurrency(price, fromCurrency, fromLocale),
-    originalFloat: price,
+    display: displayCurrency(price, fromCurrency, fromLocale),
+    float: price,
   };
 };
 

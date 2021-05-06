@@ -134,8 +134,7 @@ export default function AliasCart({ cart, exchangeRates }) {
   let messageLength;
   if (exchangeRates) {
     const totalPriceUSD =
-      (Math.round(cart.totalPrice.originalFloat) *
-        exchangeRates[cart.alias.currency]) /
+      (Math.round(cart.totalPrice.float) * exchangeRates[cart.alias.currency]) /
       exchangeRates["USD"];
     messageLength = Math.round(30 + totalPriceUSD);
   }

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => {
 export default function ConvertedPrice({ formattedPrice }) {
   const classes = useStyles();
   return (
-    <Tooltip title={`estimated conversion from ${formattedPrice.original}`}>
+    <Tooltip title={`estimated conversion from ${formattedPrice.display}`}>
       <div>
         <span className={classes.est}>est.</span>
         {formattedPrice.converted}

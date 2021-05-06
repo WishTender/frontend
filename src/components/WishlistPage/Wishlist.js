@@ -94,7 +94,7 @@ function Wishlist(props) {
           {props.isAuth ? (
             <EditWishForm
               info={{
-                price: selectWish.price.originalFloat,
+                price: selectWish.price.float,
                 itemName: selectWish.itemName,
                 itemImage: selectWish.itemImage,
                 currency: selectWish.currency,
