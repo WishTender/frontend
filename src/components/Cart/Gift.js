@@ -80,14 +80,7 @@ const Quantity = ({ gift, screen }) => {
     <Box display="flex" alignItems="center">
       {screen === "xs" && "QTY: "}
       <span style={{ paddingRight: theme.spacing(1) }}>{gift.qty}</span>
-      <IconButton
-        size="small"
-        onClick={() => {
-          addToCart(gift.item._id, gift.item.alias._id, cartContext);
-        }}
-      >
-        <AddIcon color="primary" />
-      </IconButton>
+
       <IconButton
         onClick={() => {
           reduce(gift.item._id, gift.item.alias._id, cartContext);
@@ -95,6 +88,14 @@ const Quantity = ({ gift, screen }) => {
         size="small"
       >
         <RemoveIcon color="primary" />
+      </IconButton>
+      <IconButton
+        size="small"
+        onClick={() => {
+          addToCart(gift.item._id, gift.item.alias._id, cartContext);
+        }}
+      >
+        <AddIcon color="primary" />
       </IconButton>
     </Box>
   );
