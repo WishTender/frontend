@@ -2,16 +2,18 @@ import React, { useContext } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
-import { Box, IconButton, Typography } from "@material-ui/core";
+import { Box, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/AddBox";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import theme from "../../theme";
 import { fetchPatchJson } from "../../scripts/fetchHelper";
 import { CartContext } from "./CartContext";
+import DisplayPrice from "../common/DisplayPrice";
 
 const useStyles = makeStyles((theme) => {
   return {
+    est: { color: theme.palette.error[300] },
     itemName_xs: {
       fontSize: ".5rem",
       marginLeft: theme.spacing(1),
@@ -80,14 +82,7 @@ const Quantity = ({ gift, screen }) => {
     <Box display="flex" alignItems="center">
       {screen === "xs" && "QTY: "}
       <span style={{ paddingRight: theme.spacing(1) }}>{gift.qty}</span>
-      <IconButton
-        size="small"
-        onClick={() => {
-          addToCart(gift.item._id, gift.item.alias._id, cartContext);
-        }}
-      >
-        <AddIcon color="primary" />
-      </IconButton>
+
       <IconButton
         onClick={() => {
           reduce(gift.item._id, gift.item.alias._id, cartContext);
@@ -96,13 +91,20 @@ const Quantity = ({ gift, screen }) => {
       >
         <RemoveIcon color="primary" />
       </IconButton>
+      <IconButton
+        size="small"
+        onClick={() => {
+          addToCart(gift.item._id, gift.item.alias._id, cartContext);
+        }}
+      >
+        <AddIcon color="primary" />
+      </IconButton>
     </Box>
   );
 };
 
-export default function Gift({ gift, screen }) {
+export default function Gift({ gift, screen, exchangeRates }) {
   const cartContext = useContext(CartContext);
-
   const classes = useStyles();
 
   return (
@@ -122,8 +124,8 @@ export default function Gift({ gift, screen }) {
       {screen === "xs" ? (
         <TableCell className={classes.cell2_xs}>
           <Quantity gift={gift} screen="xs" />
-          <br></br>
-          {gift.price}
+          <DisplayPrice priceObject={gift.price} />
+
           <Button
             size="small"
             color="primary"
@@ -156,8 +158,7 @@ export default function Gift({ gift, screen }) {
           </TableCell>
 
           <TableCell>
-            {/* <Typography style={{ fontSize: "0.6rem" }}>Subtotal: </Typography> */}
-            ${gift.price}
+            <DisplayPrice priceObject={gift.price} />
           </TableCell>
         </>
       )}

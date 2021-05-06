@@ -18,12 +18,17 @@ import {
   FormControl,
 } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
+import { displayPrice } from "../../scripts/helpers";
+
 import { useForm } from "react-hook-form";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { LocaleContext } from "../../contexts/LocaleContext";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 import useSmallScreen from "../../hooks/useSmallScreen";
 import theme from "../../theme";
 import Gift from "./Gift";
 import { fetchPostJson } from "../../scripts/fetchHelper";
+import DisplayPrice from "../common/DisplayPrice";
 const TenderInfoInputs = ({ cart, register }) => {
   return (
     <>
@@ -129,7 +134,7 @@ export default function AliasCart({ cart, exchangeRates }) {
   let messageLength;
   if (exchangeRates) {
     const totalPriceUSD =
-      (Math.round(cart.totalPrice) * exchangeRates[cart.alias.currency]) /
+      (Math.round(cart.totalPrice.float) * exchangeRates[cart.alias.currency]) /
       exchangeRates["USD"];
     messageLength = Math.round(30 + totalPriceUSD);
   }
@@ -154,13 +159,19 @@ export default function AliasCart({ cart, exchangeRates }) {
                 <TableCell>Wish</TableCell>
                 <TableCell></TableCell>
                 <TableCell>QTY</TableCell>
-                <TableCell>Subtotal</TableCell>
+                <TableCell style={!smallScreen ? { minWidth: "133px" } : null}>
+                  Subtotal
+                </TableCell>
               </TableRow>
             )}
           </TableHead>
           <TableBody>
             {Object.values(cart.items).map((gift) => (
-              <Gift screen={smallScreen && "xs"} gift={gift} />
+              <Gift
+                screen={smallScreen && "xs"}
+                gift={gift}
+                exchangeRates={exchangeRates}
+              />
             ))}
             <TableRow>
               {!smallScreen && (
@@ -170,7 +181,9 @@ export default function AliasCart({ cart, exchangeRates }) {
                 </>
               )}
               <TableCell align="right">Subtotal:</TableCell>
-              <TableCell align="right">${cart.totalPrice}</TableCell>
+              <TableCell style={{ minWidth: "133px" }} align="right">
+                <DisplayPrice priceObject={cart.totalPrice} />
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={4}>

@@ -106,7 +106,7 @@ export default function OrderDetails({
                   <>
                     {screen !== "xs" && order.tender.afterConversion}
                     <Tooltip
-                      title={`You received ${order.tender.afterConversion} instead of ${order.tender.amount} because there
+                      title={`You received ${order.tender.afterConversion.display} instead of ${order.tender.amount.display} because there
                         was a currency conversion. Sometimes our predicted
                         exchange rates aren't the same as our payment processor's
                         exchange rates so you may get a different amount. Please
@@ -114,7 +114,8 @@ export default function OrderDetails({
                         better solution 773-425-8000.`}
                     >
                       <div style={{ display: "inline" }}>
-                        {screen === "xs" && order.tender.afterConversion}
+                        {screen === "xs" &&
+                          order.tender.afterConversion.display}
                         <HelpIcon
                           // fontSize="small"
                           style={{ fontSize: 16 }}
@@ -125,7 +126,7 @@ export default function OrderDetails({
                     </Tooltip>
                   </>
                 ) : (
-                  order.tender.amount
+                  order.tender.amount.display
                 )}
               </TableCell>
             </TableRow>

@@ -1,6 +1,5 @@
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import { Link } from "react-router-dom"; // a comment (can be deleted)
 import Button from "@material-ui/core/Button";
 import RemoveWish from "./RemoveWish";
 
@@ -33,7 +32,7 @@ const Gift = ({ orderId, gift }) => {
         </RemoveWish>
       </TableCell>
       <TableCell>{gift.qty} </TableCell>
-      <TableCell>{gift.price}</TableCell>
+      <TableCell>{gift.price.display}</TableCell>
     </TableRow>
   );
 };

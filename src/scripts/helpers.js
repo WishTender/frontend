@@ -67,27 +67,93 @@ const displayPrice = (price, currencyFrom, currencyTo, convertRate, locale) => {
           "en-US",
           locale
         )
-      : displayCurrency(price, currencyFrom, currencyTo, "en-US");
+      : {
+          display: displayCurrency(price, currencyFrom, currencyTo, "en-US"),
+          float: price,
+        };
   return display;
 };
 
-const parseCartPrices = (cart) => {
-  const aliases = Object.keys(cart.aliasCarts);
-  aliases.forEach((alias) => {
-    const aliasCart = cart.aliasCarts[alias];
-    parseAliasCartPrices(aliasCart);
+const parseWishlistPrices = (wishlist, aliasCurrency, localeContext) => {
+  wishlist.wishlistItems.forEach((item) => {
+    item.price = parsePrice(item.price, item.currency);
+    item.price = displayPrice(
+      item.price,
+      item.currency,
+      item.currency,
+      1,
+      localeContext
+    );
   });
 };
 
-const parseAliasCartPrices = (aliasCart) => {
+const parseConvertWishlistPrices = (
+  wishlist,
+  clientCurrency,
+  localeContext,
+  exchangeRate
+) => {
+  wishlist.wishlistItems.forEach((item) => {
+    item.price = parsePrice(item.price, item.currency);
+    item.price = displayPrice(
+      item.price,
+      item.currency,
+      clientCurrency,
+      exchangeRate,
+      localeContext
+    );
+  });
+};
+
+const parseCartPrices = (
+  cart,
+  clientCurrency,
+  localeContext,
+  exchangeRates
+) => {
+  const aliases = Object.keys(cart.aliasCarts);
+  aliases.forEach((alias) => {
+    const aliasCart = cart.aliasCarts[alias];
+    parseAliasCartPrices(
+      aliasCart,
+      clientCurrency,
+      localeContext,
+      exchangeRates
+    );
+  });
+};
+const parseAliasCartPrices = (
+  aliasCart,
+  clientCurrency,
+  localeContext,
+  exchangeRates
+) => {
   aliasCart.totalPrice = parsePrice(
     aliasCart.totalPrice,
     aliasCart.alias.currency
+  );
+  aliasCart.totalPrice = displayPrice(
+    aliasCart.totalPrice,
+    aliasCart.alias.currency,
+    clientCurrency,
+    aliasCart.alias.currency !== clientCurrency
+      ? 1 / exchangeRates[aliasCart.alias.currency]
+      : 1,
+    localeContext
   );
   const items = Object.keys(aliasCart.items);
   items.forEach((item) => {
     const itemObj = aliasCart.items[item];
     itemObj.price = parsePrice(itemObj.price, aliasCart.alias.currency);
+    itemObj.price = displayPrice(
+      itemObj.price,
+      aliasCart.alias.currency,
+      clientCurrency,
+      aliasCart.alias.currency !== clientCurrency
+        ? 1 / exchangeRates[aliasCart.alias.currency]
+        : 1,
+      localeContext
+    );
   });
 };
 const parseOrderPrices = (order, locale) => {
@@ -120,12 +186,13 @@ const displayConversion = (
   fromLocale,
   toLocale
 ) => {
-  return `${displayCurrency(
-    convertedPrice,
-    toCurrency,
-    toLocale
-  )} estimated from ${displayCurrency(price, fromCurrency, fromLocale)}`;
+  return {
+    converted: displayCurrency(convertedPrice, toCurrency, toLocale),
+    display: displayCurrency(price, fromCurrency, fromLocale),
+    float: price,
+  };
 };
+
 const chooseCurrency = (locale) => {
   if (locale.countryCode) {
     const currencies = getCurrencies(locale.countryCode);
@@ -263,4 +330,6 @@ export {
   parseCartPrices,
   parseOrderPrices,
   parseAliasCartPrices,
+  parseConvertWishlistPrices,
+  parseWishlistPrices,
 };

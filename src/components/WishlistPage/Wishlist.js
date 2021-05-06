@@ -47,32 +47,13 @@ const styles = (theme) => ({
 function Wishlist(props) {
   const customClasses = useCustomStyles(props);
   const [selectWish, setSelectWish] = useState(null);
-  const [convertRate, setConvertRate] = useState(null);
   const [addWishVisible, setAddWishVisible] = useState(false);
   const clientCurrency = useContext(CurrencyContext);
   useTraceUpdate(Wishlist.name, props, {
     selectWish,
-    convertRate,
     addWishVisible,
     clientCurrency,
   });
-
-  useEffect(() => {
-    if (clientCurrency !== props.currency && props.currency) {
-      const fetchData = async () => {
-        const response = await fetch(
-          `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${props.currency}&symbols=${clientCurrency}`
-        );
-        let rate = await response.json();
-        setConvertRate(rate.rate);
-      };
-
-      fetchData();
-      // ratesApi
-      //   .getExchangeRateSync(props.currency, clientCurrency)
-      //   .then(setConvertRate);
-    }
-  }, [clientCurrency, props.currency]);
 
   const innerGrid =
     props.items &&
@@ -95,7 +76,6 @@ function Wishlist(props) {
               price={item.price}
               imageUrl={item.itemImage}
               currency={item.currency}
-              convertRate={convertRate}
             />
           </div>
         </Grid>
@@ -114,7 +94,7 @@ function Wishlist(props) {
           {props.isAuth ? (
             <EditWishForm
               info={{
-                price: selectWish.price,
+                price: selectWish.price.float,
                 itemName: selectWish.itemName,
                 itemImage: selectWish.itemImage,
                 currency: selectWish.currency,
