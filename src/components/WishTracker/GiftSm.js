@@ -48,7 +48,7 @@ const Gift = ({ orderId, gift, setRefreshWishlist }) => {
       <TableCell className={classes.cell2}>
         QTY: {gift.qty}
         <br></br>
-        {gift.price}
+        {gift.price.original}
         <RemoveWish wish={gift.item._id}>
           <Button
             size="small"
