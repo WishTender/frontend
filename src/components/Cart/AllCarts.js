@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import AliasCart from "./AliasCart";
 import { CartContext } from "./CartContext";
 
-export default function AllCarts() {
+export default function AllCarts({ exchangeRates }) {
   const [cart, setCart] = useState(null);
   const { getCart } = useContext(CartContext);
 
@@ -18,7 +18,7 @@ export default function AllCarts() {
       {cart && (
         <>
           {Object.values(cart.aliasCarts).map((cart) => (
-            <AliasCart cart={cart} />
+            <AliasCart exchangeRates={exchangeRates} cart={cart} />
           ))}
         </>
       )}
