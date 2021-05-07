@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import useSmallScreen from "../../hooks/useSmallScreen";
 import { UserContext } from "../../contexts/UserContext";
 import {
   TextField,
@@ -12,6 +13,7 @@ import {
 import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
 export default function Login() {
+  const smallScreen = useSmallScreen(444);
   const [profile, setProfile] = useState(null);
   const { setUser, getUser } = useContext(UserContext);
   const { register, handleSubmit, error } = useForm();
@@ -54,9 +56,22 @@ export default function Login() {
       alignItems="center"
     >
       <Container
-        maxWidth="xs"
-        component={Paper}
-        style={{ padding: "30px", opacity: ".97" }}
+        maxWidth={"xs"}
+        component={smallScreen ? "div" : Paper}
+        style={
+          smallScreen
+            ? {
+                background: "#fff",
+                height: "100%",
+                width: "100%",
+                display: "flex",
+                padding: "30px",
+                opacity: ".88",
+                flexDirection: "column",
+                justifyContent: "center",
+              }
+            : { padding: "30px", opacity: ".97" }
+        }
       >
         {profile && <Redirect to={`/${profile}`} />}
         <form
