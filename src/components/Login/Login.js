@@ -1,6 +1,13 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import { TextField, Paper, Container, Box, Button } from "@material-ui/core";
+import {
+  TextField,
+  Link,
+  Paper,
+  Container,
+  Box,
+  Button,
+} from "@material-ui/core";
 
 import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
@@ -67,14 +74,24 @@ export default function Login() {
             //   },
             // }}
           />
-          <TextField
-            name="password"
-            type="password"
-            inputRef={register({ required: "Password Required" })}
-            variant="outlined"
-            // autocomplete="new-password"
-          />
-
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <TextField
+              name="password"
+              type="password"
+              inputRef={register({ required: "Password Required" })}
+              variant="outlined"
+              // autocomplete="new-password"
+            />
+            <Link
+              style={{ marginTop: "5px" }}
+              align="right"
+              href="#"
+              onClick={() => {}}
+              variant="caption"
+            >
+              Forgot Password?
+            </Link>
+          </div>
           <Button
             color="primary"
             variant="contained"
