@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function useSmallScreen() {
-  const breakpoint = 600;
+export default function useSmallScreen(screen) {
+  const breakpoint = screen || 600;
   const [smallScreen, setSmallScreen] = React.useState(
     window.innerWidth < breakpoint
   );
