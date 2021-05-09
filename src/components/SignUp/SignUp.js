@@ -16,7 +16,7 @@ export default function SignUp() {
   const [success, setSuccess] = useState(null);
   const [email, setEmail] = useState(null);
   const screenSize = useScreenSize({
-    breakpoints: { mobile: 0, xs: 450, sm: 600 },
+    breakpoints: { mobile: 0, xs: 450, sm: 700 },
     useStandard: false,
   });
 
@@ -68,7 +68,6 @@ export default function SignUp() {
           height: "100%",
           width: "50%",
           borderRadius: 0,
-
           background: "linear-gradient(45deg, rgb(0 126 255 / 48%), #03b0e0)",
         }}
       >
@@ -77,10 +76,22 @@ export default function SignUp() {
           style={{
             display: "flex",
             alignItems: "center",
+            flexDirection: "column",
             justifyContent: "center",
             height: "100%",
+            gap: "20px",
           }}
         >
+          <Typography
+            variant="h7"
+            style={{
+              zIndex: "2",
+              color: "white",
+            }}
+            align="center"
+          >
+            Sign Up
+          </Typography>
           <form
             onSubmit={handleSubmit(onSubmit)}
             style={{
@@ -169,7 +180,6 @@ export default function SignUp() {
             style={{
               height: "60%",
 
-              margin: "auto",
               display: "flex",
               justifyContent: "center",
             }}
