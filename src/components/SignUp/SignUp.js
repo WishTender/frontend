@@ -63,6 +63,7 @@ export default function SignUp() {
       <Box
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
         component={Paper}
         style={{
           height: "100%",
