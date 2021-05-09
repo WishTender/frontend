@@ -9,13 +9,16 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import useSmallScreen from "../../hooks/useSmallScreen";
+import useScreenSize from "../../hooks/useScreenSize";
 
 export default function SignUp() {
   const { register, handleSubmit, errors } = useForm();
   const [success, setSuccess] = useState(null);
   const [email, setEmail] = useState(null);
-  const smallScreen = useSmallScreen(444);
+  const screenSize = useScreenSize({
+    breakpoints: { mobile: 0, xs: 450, sm: 600 },
+    useStandard: false,
+  });
 
   const onSubmit = (data) => {
     const headers = new Headers();
