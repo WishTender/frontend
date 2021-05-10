@@ -115,7 +115,12 @@ export default function Login() {
           >
             Login
           </Button>
-          <Button color="primary" variant="outlined" value="Sign Up">
+          <Button
+            color="primary"
+            variant="outlined"
+            value="Sign Up"
+            href="/sign-up"
+          >
             Sign Up
           </Button>
         </form>

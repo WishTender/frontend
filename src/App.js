@@ -7,6 +7,7 @@ import { LocaleContext } from "./contexts/LocaleContext";
 import { NotificationContext } from "./contexts/NotificationContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AccountSettings from "./components/AccountSettings/AccountSettings";
+import Onboard from "./components/OnboardFlow/Onboard";
 import useTraceUpdate from "./scripts/useTraceUpdate";
 // import React from 'react';k
 // import './App.css';
@@ -135,6 +136,9 @@ function App(props) {
           return <Cart cart={props?.location?.props?.cart} />;
         }}
       />
+      <Route path="/onboard">
+        <Onboard />
+      </Route>
       <Route
         path="/connect-setup"
         exact
