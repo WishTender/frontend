@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
+// import { makeStyles } from "@material-ui/core/styles";
+import themeStyles from "../../themeStyles";
+
 import SecondPanel from "./SecondPanel";
 import {
   Box,
@@ -12,7 +15,8 @@ import {
 } from "@material-ui/core";
 import useScreenSize from "../../hooks/useScreenSize";
 
-export default function SignUp() {
+export default function SignUp(props) {
+  const classes = themeStyles(props);
   const { register, handleSubmit, errors } = useForm();
   const [success, setSuccess] = useState(null);
   const [email, setEmail] = useState(null);
@@ -197,13 +201,21 @@ export default function SignUp() {
               })}
             />
             {errors.password && <p>{errors.password.message}</p>}
-            <Button color="primary" variant="contained" type="submit">
+            <Button
+              color="primary"
+              style={{ fontWeight: "600" }}
+              className={classes.gradient}
+              variant="contained"
+              type="submit"
+            >
               Sign Up
             </Button>
             <Button
               variant="outlined"
               style={{
                 color: "white",
+                fontWeight: "600",
+
                 border: "1px solid white",
               }}
               value="Log In"
@@ -211,7 +223,7 @@ export default function SignUp() {
             >
               Log In
             </Button>
-          </form>{" "}
+          </form>
           {(screenSize === "xs" || screenSize === "mobile") && (
             <div
               style={{
