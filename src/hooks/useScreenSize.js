@@ -3,11 +3,12 @@ const getScreenSize = (bp) => {
   function getKeyByValue(object, value) {
     return Object.keys(object).find((key) => object[key] === value);
   }
-  const sortedBreakpointValues = Object.values(bp).sort((a, b) => a - b);
-  const screenValue =
-    sortedBreakpointValues.find(
-      (c, i) => window.innerWidth < sortedBreakpointValues[i + 1]
-    ) || sortedBreakpointValues.reverse()[0];
+  const sortedBreakpointValues = Object.values(bp).sort();
+  let screenValue = sortedBreakpointValues.find((c, i) => {
+    return i === sortedBreakpointValues.length - 1
+      ? true
+      : window.innerWidth < sortedBreakpointValues[i + 1];
+  });
 
   const size = getKeyByValue(bp, screenValue);
   return size;
