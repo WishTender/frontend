@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 function getSteps() {
-  return ["Sign up", "Set up account", "Set Up wishlist"];
+  return ["Set Up Account Info", "Set Up Wishlist", "Connect To Bank Account"];
 }
 
 function getStepContent(stepIndex) {
