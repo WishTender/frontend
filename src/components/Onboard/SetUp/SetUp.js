@@ -108,11 +108,9 @@ export default withStyles(styles)(function Login(props) {
         alignItems="center"
         justifyContent="center"
       >
-        <Typography
-          className={classes[`set-up-text1${screenSize === "xs" ? "_xs" : ""}`]}
-        >
-          Set Up
-        </Typography>
+        {screenSize === "sm" && (
+          <Typography className={classes[`set-up-text1`]}>Set Up</Typography>
+        )}
         <Container
           id="set-up-container"
           maxWidth={"xs"}
@@ -121,6 +119,11 @@ export default withStyles(styles)(function Login(props) {
             classes[`set-up-container${screenSize === "xs" ? "_xs" : ""}`]
           }
         >
+          {screenSize === "xs" && (
+            <Typography className={classes[`set-up-text1_xs`]}>
+              Set Up
+            </Typography>
+          )}
           <form
             className={classes["set-up-form"]}
             onSubmit={handleSubmit(onSubmit)}
@@ -212,6 +215,15 @@ export default withStyles(styles)(function Login(props) {
             </Button>
           </form>
         </Container>
+        {/* <img
+          src="images/gift_drawing_optimized_for_web.png"
+          style={{
+            position: "absolute",
+            bottom: "2vw",
+            right: "2vw",
+            width: "20vw",
+          }}
+        ></img> */}
       </Box>
     </>
   );
