@@ -34,7 +34,7 @@ const styles = (theme) => {
       zIndex: 3,
       color: theme.palette.primary.main,
       paddingBottom: theme.spacing(2),
-      fontSize: "1em",
+      // fontSize: "1em",
     },
 
     "set-up-form": {
