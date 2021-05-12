@@ -4,7 +4,7 @@ const styles = (theme) => {
       display: "flex",
       alignItems: "center",
       flexDirection: "column",
-      paddingTop: "4vh",
+      paddingTop: "10vh",
       margin: "auto",
       gap: "h",
       width: "fit-content",
@@ -12,6 +12,7 @@ const styles = (theme) => {
     container_xs: {
       display: "flex",
       alignItems: "center",
+      justifyContent: "center",
       justifyItems: "center",
       flexDirection: "column",
       paddingTop: "4vh",
