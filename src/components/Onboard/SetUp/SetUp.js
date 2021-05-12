@@ -183,7 +183,13 @@ export default withStyles(styles)(function Login(props) {
                     handle || props.handle ? handle || props.handle : "handle"
                   }`}{" "}
                 <div style={{ display: "inline", float: "right" }}>
-                  {handleStatus === "available" ? "Available" : ""}
+                  {handleStatus === "available"
+                    ? "Available"
+                    : handleStatus === "loading"
+                    ? "Checking availability..."
+                    : handleStatus === "unavailable"
+                    ? "Unavailable"
+                    : ""}
                 </div>
               </FormHelperText>
             </FormControl>
