@@ -7,7 +7,6 @@ import { LocaleContext } from "./contexts/LocaleContext";
 import { NotificationContext } from "./contexts/NotificationContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AccountSettings from "./components/AccountSettings/AccountSettings";
-import Onboard from "./components/OnboardFlow/Onboard";
 import useTraceUpdate from "./scripts/useTraceUpdate";
 // import React from 'react';k
 // import './App.css';
@@ -33,8 +32,8 @@ import { ThemeProvider } from "@material-ui/styles";
 import WishlistPage from "./components/WishlistPage/WishlistPage";
 
 // import AddWish from "./components/wishlistpage/addwish1/AddWish.js";
-import SignUp from "./components/SignUp/SignUp";
-import SetUp from "./components/SetUp/SetUp";
+import SignUp from "./components/Onboard/SignUp/SignUp";
+import SetUp from "./components/Onboard/SetUp/SetUp";
 // import './Styles/App.css';
 import theme from "./theme";
 import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
@@ -136,9 +135,7 @@ function App(props) {
           return <Cart cart={props?.location?.props?.cart} />;
         }}
       />
-      <Route path="/onboard">
-        <Onboard />
-      </Route>
+
       <Route
         path="/connect-setup"
         exact

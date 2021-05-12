@@ -1,59 +1,56 @@
 import React, { useContext } from "react";
 import { CountryContext } from "../../contexts/CountryContext";
+import supportedPayoutCountries from "./supportedCountryList";
+import { Controller } from "react-hook-form";
 
 import "@formatjs/intl-displaynames/polyfill";
 import "@formatjs/intl-displaynames/locale-data/en";
-
-const supportedPayoutCountries = [
-  "AU",
-  "AT",
-  "BE",
-  "BG",
-  "CA",
-  "CY",
-  "CZ",
-  "DK",
-  "EE",
-  "FI",
-  "FR",
-  "DE",
-  "GR",
-  "HK",
-  "IE",
-  "IT",
-  "LV",
-  "LT",
-  "LU",
-  "MT",
-  "NL",
-  "NZ",
-  "NO",
-  "PL",
-  "PT",
-  "RO",
-  "SG",
-  "SK",
-  "SI",
-  "ES",
-  "SE",
-  "CH",
-  "GB",
-  "US",
-];
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
-export default function CountryOptions() {
-  const clientCountry = useContext(CountryContext);
 
-  const countrySelection = supportedPayoutCountries.map((country) =>
-    clientCountry === country ? (
-      <option selected value={country}>
-        {regionNames?.of(country) || country}
-      </option>
+export default function CountryOptions(props) {
+  const clientCountry = useContext(CountryContext);
+  const [country, setCountry] = React.useState(
+    supportedPayoutCountries.includes(clientCountry) ? clientCountry : ""
+  );
+
+  const handleChange = (event) => {
+    setCountry(event.target.value);
+  };
+
+  const countrySelection = supportedPayoutCountries.map((cntry) =>
+    clientCountry === cntry ? (
+      <MenuItem value={cntry}>{regionNames?.of(cntry) || cntry}</MenuItem>
     ) : (
-      <option value={country}>{regionNames?.of(country) || country}</option>
+      <MenuItem value={cntry}>{regionNames?.of(cntry) || cntry}</MenuItem>
     )
   );
 
-  return <>{countrySelection}</>;
+  return (
+    <FormControl
+      style={{
+        minWidth: 220,
+        width: 220,
+      }}
+    >
+      <InputLabel id="demo-simple-select-label">{props.label}</InputLabel>
+      <Controller
+        control={props.control}
+        name={props.name}
+        inputRef={props.inputRef}
+        as={
+          <Select
+            labelId={props.labelId}
+            id={props.id}
+            value={country}
+            onChange={handleChange}
+            defaultValue={country}
+          >
+            {countrySelection}
+          </Select>
+        }
+      />
+    </FormControl>
+  );
 }
