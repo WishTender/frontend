@@ -32,7 +32,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import WishlistPage from "./components/WishlistPage/WishlistPage";
 
 // import AddWish from "./components/wishlistpage/addwish1/AddWish.js";
-import SignUp from "./components/SignUp/SignUp";
+import SignUp from "./components/Onboard/SignUp/SignUp";
 import SetUp from "./components/Onboard/SetUp/SetUp";
 // import './Styles/App.css';
 import theme from "./theme";

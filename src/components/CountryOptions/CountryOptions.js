@@ -30,8 +30,8 @@ export default function CountryOptions(props) {
   return (
     <FormControl
       style={{
-        // margin: theme.spacing(1),
         minWidth: 220,
+        width: 220,
       }}
     >
       <InputLabel id="demo-simple-select-label">{props.label}</InputLabel>

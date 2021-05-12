@@ -14,23 +14,26 @@ import {
   Box,
   FormHelperText,
   Container,
-  Select,
-  MenuItem,
   FormControl,
-  InputLabel,
   Button,
   Paper,
   TextField,
   Typography,
+  LinearProgress,
 } from "@material-ui/core";
 
 export default withStyles(styles)(function Login(props) {
   const screenSize = useScreenSize({
-    useStandard: true,
+    breakpoints: { xs: "0", sm: "600" },
+    useStandard: false,
   });
-  const { register, handleSubmit, errors, control, clearErrors } = useForm();
+  const { register, handleSubmit, errors, control, clearErrors } = useForm({
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
   const [profile, setProfile] = useState(null);
   const [handle, setHandle] = useState(null);
+  const [handleStatus, setHandleStatus] = useState("");
   const { setUser, getUser } = useContext(UserContext);
   const input = useRef(null);
 
@@ -53,12 +56,18 @@ export default withStyles(styles)(function Login(props) {
     return available;
   };
   const validateHandle = async (handle) => {
+    if (handle === "") {
+      setHandleStatus("");
+      return;
+    }
+    setHandleStatus("loading");
     const available = await new Promise((resolve) => {
       setTimeout(async function () {
         if (input.current) {
           if (handle === input.current.children[0].children[0].value) {
             const avail = await checkHandleAvailability(handle);
             resolve(avail);
+            setHandleStatus(avail ? "available" : "unavailable");
           }
         }
       }, 1000);
@@ -88,95 +97,122 @@ export default withStyles(styles)(function Login(props) {
     });
   };
   return (
-    <Box
-      id="set-up-wrapper"
-      display="flex"
-      className={classes["set-up-wrapper"]}
-      flexDirection="column"
-      height="100%"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <Typography className={classes["set-up-text1"]}>Set up</Typography>
-      <Container
-        id="set-up-container"
-        maxWidth={"xs"}
-        component={Paper}
-        className={classes[`set-up-container`]}
+    <>
+      {/* <Stepper></Stepper> */}
+      <Box
+        id="set-up-wrapper"
+        display="flex"
+        className={classes[`set-up-wrapper${screenSize === "xs" ? "_xs" : ""}`]}
+        flexDirection="column"
+        height="100%"
+        alignItems="center"
+        justifyContent="center"
       >
-        <form
-          className={classes["set-up-form"]}
-          onSubmit={handleSubmit(onSubmit)}
+        <Typography
+          className={classes[`set-up-text1${screenSize === "xs" ? "_xs" : ""}`]}
         >
-          {profile && <Redirect to={`/${profile}`} />}
-          <div>
-            You can change these your handle and display name at any time.
-          </div>
-          <FormControl>
-            <TextField
-              type="text"
-              autoComplete="off"
-              ref={input}
-              name="handle"
-              onChange={(e) => {
-                setHandle(e.target.value);
-                if (errors.handle !== undefined) {
-                  if (errors.handle.type === "validate") {
-                    clearErrors(["handle"]);
+          Set Up
+        </Typography>
+        <Container
+          id="set-up-container"
+          maxWidth={"xs"}
+          component={Paper}
+          className={
+            classes[`set-up-container${screenSize === "xs" ? "_xs" : ""}`]
+          }
+        >
+          <form
+            className={classes["set-up-form"]}
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {profile && <Redirect to={`/${profile}`} />}
+            <Typography variant="body2">
+              You can change your <b>handle</b> and <b>display name</b> at any
+              time.
+            </Typography>
+            <FormControl>
+              <TextField
+                type="text"
+                autoComplete="off"
+                ref={input}
+                name="handle"
+                onChange={(e) => {
+                  setHandle(e.target.value);
+                  if (errors.handle !== undefined) {
+                    if (errors.handle.type === "validate") {
+                      clearErrors(["handle"]);
+                    }
                   }
-                }
-              }}
-              inputRef={register({
-                validate: async (value) => await validateHandle(value),
-                maxLength: {
-                  value: 24,
-                  message: "handle must be less than 25 characters",
-                },
-                pattern: {
-                  value: /^[0-9A-Za-z_-]+$/,
-                  message: `Your username can only contain letters, numbers, '_', or '-'`,
-                },
-              })}
-              spellCheck="false"
-              placeholder="handle"
-              variant="outlined"
-            />
-            <FormHelperText id="handle-helper-text">
-              {errors.handle?.message ||
-                `www.wishtender.com/${
-                  handle || props.handle ? handle || props.handle : "handle"
-                }`}
-            </FormHelperText>
-          </FormControl>
-          {errors.handle && <p>{errors.handle.message}</p>}
-          <TextField
-            autoComplete="off"
-            type="text"
-            placeholder="display name"
-            variant="outlined"
-            name="aliasName"
-            inputRef={register({
-              required: "Display Name Required",
-            })}
-          />
-          {errors.handle && <p>{errors.aliasName.message}</p>}
-          <br></br>
-          <CountryOptions
-            control={control}
-            name="country"
-            label="Country of bank account"
-            inputRef={register({
-              required: "Country Required",
-            })}
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-          />
+                }}
+                inputRef={register({
+                  validate: async (value) => await validateHandle(value),
 
-          <Button type="submit" color="primary" variant="contained">
-            Submit
-          </Button>
-        </form>
-      </Container>
-    </Box>
+                  maxLength: {
+                    value: 24,
+                    message: "handle must be less than 25 characters",
+                  },
+                  pattern: {
+                    value: /^[0-9A-Za-z_-]+$/,
+                    message: `Your handle can only contain letters, numbers, '_', or '-'`,
+                  },
+                })}
+                spellCheck="false"
+                placeholder="handle"
+                variant="outlined"
+              />
+              <FormHelperText id="handle-helper-text">
+                <LinearProgress
+                  className={
+                    handleStatus === "unavailable"
+                      ? classes.progressError
+                      : handleStatus === "available"
+                      ? classes.progressSuccess
+                      : ""
+                  }
+                  color={handleStatus === "loading" ? "secondary" : "primary"}
+                  variant={
+                    handleStatus === "loading" ? "indeterminate" : "determinate"
+                  }
+                  value={100}
+                />
+                {errors.handle?.message ||
+                  `www.wishtender.com/${
+                    handle || props.handle ? handle || props.handle : "handle"
+                  }`}{" "}
+                <div style={{ display: "inline", float: "right" }}>
+                  {handleStatus === "available" ? "Available" : ""}
+                </div>
+              </FormHelperText>
+            </FormControl>
+            <TextField
+              label="Display Name"
+              autoComplete="off"
+              type="text"
+              variant="outlined"
+              name="aliasName"
+              inputRef={register({
+                required: "Display Name Required",
+              })}
+            />
+            {errors.aliasName && <p>{errors.aliasName.message}</p>}
+
+            <CountryOptions
+              control={control}
+              name="country"
+              label="Country of bank account"
+              inputRef={register({
+                required: "Country Required",
+              })}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+            />
+
+            <Button type="submit" color="primary" variant="contained">
+              Submit
+            </Button>
+          </form>
+        </Container>
+      </Box>
+    </>
   );
 });

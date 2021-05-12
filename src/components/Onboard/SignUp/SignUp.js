@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-import themeStyles from "../../themeStyles";
+import themeStyles from "../../../themeStyles";
 import styles from "./styles";
 
 import SecondPanel from "./SecondPanel";
@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import useScreenSize from "../../hooks/useScreenSize";
+import useScreenSize from "../../../hooks/useScreenSize";
 
 export default withStyles(styles)(function SignUp(props) {
   const classes = themeStyles(props);
@@ -104,8 +104,9 @@ export default withStyles(styles)(function SignUp(props) {
               ""
             )}
             <TextField
-              placeholder="Email"
+              label="Email"
               variant="outlined"
+              autoComplete="off"
               name="email"
               inputRef={register({
                 required: "Email Required",
@@ -119,7 +120,7 @@ export default withStyles(styles)(function SignUp(props) {
             <TextField
               variant="outlined"
               type="password"
-              placeholder="Password"
+              label="Password"
               name="password"
               inputRef={register({
                 required: "Password Required",
