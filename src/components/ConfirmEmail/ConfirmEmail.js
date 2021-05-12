@@ -56,7 +56,6 @@ export default function ConfirmEmail() {
         </>
       ) : (
         <>
-          {" "}
           Resend confirmation to {email}: <button onClick={send}>Resend</button>
         </>
       )}
