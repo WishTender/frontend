@@ -46,6 +46,7 @@ export default withStyles(styles)(function ConfirmationEmail() {
           maxWidth: "280px",
           left: "-6%",
         }}
+        alt="mail graphic"
         src="images/mail_graphic.png"
       ></img>
       {/* <div> */}
@@ -61,8 +62,12 @@ export default withStyles(styles)(function ConfirmationEmail() {
         align="center"
       >
         A confirmation has been sent to
-        <br /> <b>{email}somemail@plpl.com</b>
-        <br />
+      </Typography>
+      <Typography
+        className={classes[`text2${screenSize === "xs" ? "_xs" : ""}`]}
+        align="center"
+      >
+        <b>{email}somemail@plpl.com</b>
       </Typography>
       <Typography
         align="center"
