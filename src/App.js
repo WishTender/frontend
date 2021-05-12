@@ -25,7 +25,7 @@ import Login from "./components/Login/Login.js";
 import Logout from "./components/nav/LogoutButton/LogoutButton.js";
 import WishTracker from "./components/WishTracker/WishTracker.js";
 import ConnectSetup from "./components/ConnectSetup/ConnectSetup";
-import ConfirmationEmail from "./components/ConfirmationEmail/ConfirmationEmail";
+import ConfirmationEmail from "./components/Onboard/ConfirmationEmail/ConfirmationEmail";
 import ConfirmEmail from "./components/ConfirmEmail/ConfirmEmail";
 
 import { ThemeProvider } from "@material-ui/styles";
