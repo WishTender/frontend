@@ -41,11 +41,7 @@ function fourPointExplanation() {
       <Grid item xs={12} sm={6} md={3}>
         <Paper className="point">
           <div className="icon">
-            <img
-              src="images/woman_getting_gift_graphic.png"
-              alt="woman getting gift cartoon"
-            />
-            {/* <img src="images/icon_wishlist.png" alt="wishlist icon" /> */}
+            <img src="images/icon_wishlist.png" alt="wishlist icon" />
           </div>
           <h3>One Stop Wishlist</h3>
           <p>
