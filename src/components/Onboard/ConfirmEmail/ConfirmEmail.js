@@ -5,7 +5,7 @@ import { Box, Button, Typography, Container } from "@material-ui/core";
 export default function ConfirmEmail() {
   const [message, setMessage] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [expired, setExpired] = useState(true);
+  const [expired, setExpired] = useState(null);
   const url = new URLSearchParams(window.location.search);
   const email = url.get("email");
   const token = url.get("token");
