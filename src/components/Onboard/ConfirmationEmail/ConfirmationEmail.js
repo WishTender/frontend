@@ -67,7 +67,7 @@ export default withStyles(styles)(function ConfirmationEmail() {
         className={classes[`text2${screenSize === "xs" ? "_xs" : ""}`]}
         align="center"
       >
-        <b>{email}somemail@plpl.com</b>
+        <b>{email}</b>
       </Typography>
       <Typography
         align="center"
@@ -82,7 +82,7 @@ export default withStyles(styles)(function ConfirmationEmail() {
         onClick={send}
         className={classes.button}
       >
-        Resend Link {email}
+        Resend Link
       </Button>
       {message && message}
     </Container>

@@ -19,13 +19,9 @@ export default function CountryOptions(props) {
     setCountry(event.target.value);
   };
 
-  const countrySelection = supportedPayoutCountries.map((cntry) =>
-    clientCountry === cntry ? (
-      <MenuItem value={cntry}>{regionNames?.of(cntry) || cntry}</MenuItem>
-    ) : (
-      <MenuItem value={cntry}>{regionNames?.of(cntry) || cntry}</MenuItem>
-    )
-  );
+  const countrySelection = supportedPayoutCountries.map((cntry) => (
+    <MenuItem value={cntry}>{regionNames?.of(cntry) || cntry}</MenuItem>
+  ));
 
   return (
     <FormControl
@@ -38,14 +34,15 @@ export default function CountryOptions(props) {
       <Controller
         control={props.control}
         name={props.name}
-        inputRef={props.inputRef}
+        defaultValue={country}
         as={
           <Select
             labelId={props.labelId}
             id={props.id}
+            name={props.name}
             value={country}
             onChange={handleChange}
-            defaultValue={country}
+            // defaultValue={country}
           >
             {countrySelection}
           </Select>
