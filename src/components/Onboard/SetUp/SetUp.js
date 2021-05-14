@@ -139,6 +139,7 @@ export default withStyles(styles)(function Login(props) {
                 autoComplete="off"
                 ref={input}
                 name="handle"
+                value={"doo"}
                 onChange={(e) => {
                   setHandle(e.target.value);
                   if (errors.handle !== undefined) {
@@ -197,6 +198,7 @@ export default withStyles(styles)(function Login(props) {
               label="Display Name"
               autoComplete="off"
               type="text"
+              value={"doo"}
               variant="outlined"
               name="aliasName"
               inputRef={register({
@@ -212,8 +214,8 @@ export default withStyles(styles)(function Login(props) {
               inputRef={register({
                 required: "Country Required",
               })}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="country-select-label"
+              id="country-select"
             />
 
             <Button type="submit" color="primary" variant="contained">
