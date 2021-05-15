@@ -75,7 +75,6 @@ export default withStyles(styles)(function Login(props) {
     return available || "This handle is unavailable";
   };
   const onSubmit = (data) => {
-    console.log(data);
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     fetch(process.env.REACT_APP_BASE_URL + "/api/aliases", {
@@ -139,7 +138,7 @@ export default withStyles(styles)(function Login(props) {
                 autoComplete="off"
                 ref={input}
                 name="handle"
-                value={"doo"}
+                value={handle}
                 onChange={(e) => {
                   setHandle(e.target.value);
                   if (errors.handle !== undefined) {
@@ -198,7 +197,6 @@ export default withStyles(styles)(function Login(props) {
               label="Display Name"
               autoComplete="off"
               type="text"
-              value={"doo"}
               variant="outlined"
               name="aliasName"
               inputRef={register({

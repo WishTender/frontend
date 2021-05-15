@@ -24,7 +24,6 @@ import Cart from "./components/Cart/Cart.js";
 import Login from "./components/Login/Login.js";
 import Logout from "./components/nav/LogoutButton/LogoutButton.js";
 import WishTracker from "./components/WishTracker/WishTracker.js";
-import ConnectSetup from "./components/ConnectSetup/ConnectSetup";
 import ConfirmationEmail from "./components/Onboard/ConfirmationEmail/ConfirmationEmail";
 import ConfirmEmail from "./components/Onboard/ConfirmEmail/ConfirmEmail";
 
@@ -136,17 +135,6 @@ function App(props) {
         }}
       />
 
-      <Route
-        path="/connect-setup"
-        exact
-        render={(props) => {
-          return (
-            <div>
-              <ConnectSetup />
-            </div>
-          );
-        }}
-      />
       <Route
         path="/connect-success"
         exact
