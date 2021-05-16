@@ -1,30 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import { Button, Box, Container, Typography } from "@material-ui/core";
+import { Redirect } from "react-router-dom"; // a comment (can be deleted)
+import { UserContext } from "../../contexts/UserContext";
 
 export default function CheckOutSuccess() {
-  const [message, setMessage] = useState(null);
-  const correctCurrency = (data) => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    fetch(
-      process.env.REACT_APP_BASE_URL + "/api/connectAccount/correctCurrency",
-      {
-        credentials: "include",
+  const userContext = useContext(UserContext);
+  const [activatedStatus, setActivatedStatus] = useState("");
+  const [alias, setAlias] = useState("");
 
-        method: "PATCH",
-        body: JSON.stringify(data),
-        headers,
-      }
-    )
-      .then(async (res) => {
-        if (res.status >= 200 && res.status < 300) {
-          return setMessage("You're account is set up and ready to use.");
-        }
-        const json = await res.json();
-        setMessage(json.message);
-      })
-      .catch(console.log);
-  };
   useEffect(() => {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/aliases/", {
+      credentials: "include",
+
+      method: "GET",
+    }).then(async (res) => {
+      const json = await res.json();
+      setActivatedStatus(json.activated ? "activated" : "");
+    });
+  }, []);
+
+  const activate = () => {
     fetch(
       process.env.REACT_APP_BASE_URL + "/api/connectAccount/activateConnect",
       {
@@ -35,48 +30,104 @@ export default function CheckOutSuccess() {
     )
       .then(async (res) => {
         if (res.status >= 200 && res.status < 300) {
-          return setMessage("You're account is set up and ready to use.");
+          return setActivatedStatus("success");
         }
         const json = await res.json();
         if (res.status >= 400 && res.status < 500) {
-          setMessage(
-            json.error === "Currency Conflict" ? (
-              <>
-                You're Stripe account is set to {json.currency} but there are
-                items in your wishlist set to a different currency. Do you want
-                to convert the prices?
-                <button
-                  onClick={() =>
-                    correctCurrency({
-                      changeValue: true,
-                      currency: json.currency,
-                    })
-                  }
-                >
-                  Yes. Change currency and Automatically convert prices my
-                  wishlist items
-                </button>
-                <button
-                  onClick={() =>
-                    correctCurrency({
-                      changeValue: false,
-                      currency: json.currency,
-                    })
-                  }
-                >
-                  No.Only change currency. I'll convert the prices myself.
-                </button>
-              </>
-            ) : (
-              json.message
-            )
-          );
+          console.log(json);
         }
-        throw new Error(json.message);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  return <> {message && message}</>;
+  };
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100%"
+      justifyContent="center"
+      alignItems="center"
+      style={{ paddingBottom: "17vh", paddingTop: "10vh" }}
+    >
+      <Container
+        maxWidth="xs"
+        align="center"
+        style={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-around",
+          gap: "3vh",
+        }}
+      >
+        <Box display="flex" justifyContent="center">
+          <img
+            alt="gift graphic"
+            src={
+              activatedStatus === ""
+                ? "images/piggy_bank_sleep_grey.png"
+                : "images/piggy_bank.png"
+            }
+            // src={"images/piggy_bank.png"}
+            style={{ maxHeight: "30vh" }}
+          />
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          style={{ gap: "3vh" }}
+        >
+          {activatedStatus === "activated" || activatedStatus === "success" ? (
+            <>
+              <Typography variant="h5" component="h1">
+                {activatedStatus === "activated"
+                  ? "Account Already Set Up"
+                  : "Success!"}
+              </Typography>
+              <Typography>Your account is set up to receive funds.</Typography>
+              {alias && <Redirect to={`/${alias}`} />}
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={async () => {
+                  const res = await fetch(
+                    `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${userContext.user._id}`,
+                    { credentials: "include" }
+                  );
+                  const json = await res.json();
+                  setAlias(json.handle);
+                  setAlias(false);
+                }}
+              >
+                Back To Wishlist
+              </Button>
+            </>
+          ) : (
+            <>
+              <Typography variant="h5" component="h1">
+                One more step...
+              </Typography>
+              <Typography>
+                You information was successfully submitted.{" "}
+              </Typography>
+              <Typography>
+                Press the button below to activate your account.
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={activate}
+                style={{ width: "100%" }}
+              >
+                Activate
+              </Button>
+            </>
+          )}
+        </Box>
+      </Container>
+    </Box>
+  );
 }
