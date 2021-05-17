@@ -123,6 +123,7 @@ function WishlistPage(props) {
       }
       {alias &&
         !alias.activated &&
+        !currentUser?.aliases.includes(alias?._id) &&
         "This user hasn't activated their wishlist."}
     </div>
   );
