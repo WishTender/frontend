@@ -86,6 +86,8 @@ function Wishlist(props) {
     <div className="wishlist">
       {selectWish && (
         <StyledDialog
+          background="url(/images/background_bow_confetti-sm_optimized.png)"
+          background_xs="url(/images/background_bow_confetti_xs_optimized.png)"
           onClose={() => {
             setSelectWish(null);
           }}
