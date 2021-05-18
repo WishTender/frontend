@@ -1,4 +1,5 @@
 import getCurrencies from "./getCurrencies";
+const countryData = require("country-data");
 
 const fetchUser = (callback) => {
   return fetch(process.env.REACT_APP_BASE_URL + "/api/users/current", {
@@ -210,6 +211,68 @@ const chooseCurrency = (locale) => {
     );
   }
 };
+const getCurrencyList = (locale) => {
+  let matchingCurrencies = locale ? getCurrencies(locale?.countryCode) : [];
+  const ratesApiCurrencies = [
+    "GBP",
+    "HKD",
+    "IDR",
+    "ILS",
+    "DKK",
+    "INR",
+    "CHF",
+    "MXN",
+    "CZK",
+    "SGD",
+    "THB",
+    "HRK",
+    "EUR",
+    "MYR",
+    "NOK",
+    "CNY",
+    "BGN",
+    "PHP",
+    "PLN",
+    "ZAR",
+    "CAD",
+    "ISK",
+    "BRL",
+    "RON",
+    "NZD",
+    "TRY",
+    "JPY",
+    "RUB",
+    "KRW",
+    "USD",
+    "AUD",
+    "HUF",
+    "SEK",
+  ];
+
+  let filteredAPICurrencies = ratesApiCurrencies.filter(
+    (cur) => !matchingCurrencies.includes(cur)
+  );
+  matchingCurrencies = matchingCurrencies
+    .map((cur) => ({
+      code: cur,
+      name: countryData.currencies[cur].name,
+      match: true,
+    }))
+    .sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
+
+  filteredAPICurrencies = filteredAPICurrencies
+    .map((cur) => ({
+      code: cur,
+      name: countryData.currencies[cur].name,
+    }))
+    .sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
+
+  return [
+    ...matchingCurrencies,
+    { code: "000", name: "Not Listed/Use Default" },
+    ...filteredAPICurrencies,
+  ];
+};
 
 const clientLocale = (user) => {
   const cookies = parsedCookies();
@@ -332,4 +395,5 @@ export {
   parseAliasCartPrices,
   parseConvertWishlistPrices,
   parseWishlistPrices,
+  getCurrencyList,
 };

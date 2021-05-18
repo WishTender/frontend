@@ -14,6 +14,7 @@ import {
   clientCurrency,
   parsedCookies,
   chooseCurrency,
+  getCurrencyList,
 } from "./scripts/helpers";
 import "./myapp.css";
 import HomePage from "./components/HomePage";
@@ -39,10 +40,14 @@ import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
 // import WishForm from "./components/wishlistpage/AddWish/WishForm/WishForm";
 import ConnectSuccess from "./components/ConnectSuccess/ConnectSucess";
 import { CssBaseline } from "@material-ui/core";
+import StyledDialog from "./components/common/StyledDialog/StyledDialog";
+import CurrencyOptions from "./components/SelectCurrencyForm/SelectCurrencyForm";
+import SelectCurrencyForm from "./components/SelectCurrencyForm/SelectCurrencyForm";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
   const [user, setUser] = useState();
+  const [askCurrency, setAskCurrency] = useState([]);
   const { getNotifications } = useContext(NotificationContext);
   const [notifications, setNotifications] = useState();
   const [isCurrentUsersProfile, setIsCurrentUsersProfile] = useState();
@@ -52,8 +57,11 @@ function App(props) {
   useEffect(() => {
     getUser().then((user) => {
       setUser(user);
-      if (!clientCurrency(user)) {
-        chooseCurrency(JSON.parse(parsedCookies().locale));
+      const cur = clientCurrency(user);
+      if (!cur) {
+        const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
+        setAskCurrency(currencies);
+        // chooseCurrency(JSON.parse(parsedCookies().locale));
       }
     });
   }, [getUser]);
@@ -210,6 +218,19 @@ function App(props) {
                           allRoutes: routesArray,
                         }}
                       >
+                        <StyledDialog
+                          open={askCurrency?.length}
+                          onClose={() => {
+                            setAskCurrency([]);
+                          }}
+                        >
+                          <SelectCurrencyForm
+                            onClose={() => {
+                              setAskCurrency([]);
+                            }}
+                            currencies={askCurrency}
+                          />
+                        </StyledDialog>
                         <Switch>
                           {/* <Route path="/" exact>
                           <LandingPageMenu />
