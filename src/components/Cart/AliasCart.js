@@ -18,12 +18,9 @@ import {
   FormControl,
 } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
-import { displayPrice } from "../../scripts/helpers";
 
 import { useForm } from "react-hook-form";
-import React, { useState, useContext } from "react";
-import { LocaleContext } from "../../contexts/LocaleContext";
-import { CurrencyContext } from "../../contexts/CurrencyContext";
+import React, { useState } from "react";
 import useSmallScreen from "../../hooks/useSmallScreen";
 import theme from "../../theme";
 import Gift from "./Gift";

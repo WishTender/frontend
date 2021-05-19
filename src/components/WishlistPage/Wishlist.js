@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import WishItem from "./WishItem";
 import { Button, Container, Typography } from "@material-ui/core";
@@ -48,7 +48,7 @@ function Wishlist(props) {
   const customClasses = useCustomStyles(props);
   const [selectWish, setSelectWish] = useState(null);
   const [addWishVisible, setAddWishVisible] = useState(false);
-  const clientCurrency = useContext(CurrencyContext);
+  const { currency: clientCurrency } = useContext(CurrencyContext);
   useTraceUpdate(Wishlist.name, props, {
     selectWish,
     addWishVisible,

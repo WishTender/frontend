@@ -1,4 +1,5 @@
 import getCurrencies from "./getCurrencies";
+const countryData = require("country-data");
 
 const fetchUser = (callback) => {
   return fetch(process.env.REACT_APP_BASE_URL + "/api/users/current", {
@@ -135,8 +136,11 @@ const parseAliasCartPrices = (
   aliasCart.totalPrice = displayPrice(
     aliasCart.totalPrice,
     aliasCart.alias.currency,
-    clientCurrency,
-    aliasCart.alias.currency !== clientCurrency
+    clientCurrency !== "noConversion"
+      ? clientCurrency
+      : aliasCart.alias.currency,
+    aliasCart.alias.currency !== clientCurrency &&
+      clientCurrency !== "noConversion"
       ? 1 / exchangeRates[aliasCart.alias.currency]
       : 1,
     localeContext
@@ -148,8 +152,11 @@ const parseAliasCartPrices = (
     itemObj.price = displayPrice(
       itemObj.price,
       aliasCart.alias.currency,
-      clientCurrency,
-      aliasCart.alias.currency !== clientCurrency
+      clientCurrency !== "noConversion"
+        ? clientCurrency
+        : aliasCart.alias.currency,
+      aliasCart.alias.currency !== clientCurrency &&
+        clientCurrency !== "noConversion"
         ? 1 / exchangeRates[aliasCart.alias.currency]
         : 1,
       localeContext
@@ -209,6 +216,68 @@ const chooseCurrency = (locale) => {
       `Here the user would pick currency from list of currencies. Currencies used in countries where people speak languageCode: "${locale.languageCode}" could be at top of list`
     );
   }
+};
+const getCurrencyList = (locale) => {
+  let matchingCurrencies = locale ? getCurrencies(locale?.countryCode) : [];
+  const ratesApiCurrencies = [
+    "GBP",
+    "HKD",
+    "IDR",
+    "ILS",
+    "DKK",
+    "INR",
+    "CHF",
+    "MXN",
+    "CZK",
+    "SGD",
+    "THB",
+    "HRK",
+    "EUR",
+    "MYR",
+    "NOK",
+    "CNY",
+    "BGN",
+    "PHP",
+    "PLN",
+    "ZAR",
+    "CAD",
+    "ISK",
+    "BRL",
+    "RON",
+    "NZD",
+    "TRY",
+    "JPY",
+    "RUB",
+    "KRW",
+    "USD",
+    "AUD",
+    "HUF",
+    "SEK",
+  ];
+
+  let filteredAPICurrencies = ratesApiCurrencies.filter(
+    (cur) => !matchingCurrencies.includes(cur)
+  );
+  matchingCurrencies = matchingCurrencies
+    .map((cur) => ({
+      code: cur,
+      name: countryData.currencies[cur].name,
+      match: true,
+    }))
+    .sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
+
+  filteredAPICurrencies = filteredAPICurrencies
+    .map((cur) => ({
+      code: cur,
+      name: countryData.currencies[cur].name,
+    }))
+    .sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
+
+  return [
+    ...matchingCurrencies,
+    { code: "noConversion", name: "Not Listed/Don't Convert Prices" },
+    ...filteredAPICurrencies,
+  ];
 };
 
 const clientLocale = (user) => {
@@ -332,4 +401,5 @@ export {
   parseAliasCartPrices,
   parseConvertWishlistPrices,
   parseWishlistPrices,
+  getCurrencyList,
 };

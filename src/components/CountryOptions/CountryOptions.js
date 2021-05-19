@@ -15,9 +15,10 @@ export default function CountryOptions(props) {
     supportedPayoutCountries.includes(clientCountry) ? clientCountry : ""
   );
 
-  const handleChange = (event) => {
-    setCountry(event.target.value);
-  };
+  // this isn't actually doing anything
+  // const handleChange = (event) => {
+  //   setCountry(event.target.value);
+  // };
 
   const countrySelection = supportedPayoutCountries.map((cntry) => (
     <MenuItem value={cntry}>{regionNames?.of(cntry) || cntry}</MenuItem>
@@ -40,9 +41,9 @@ export default function CountryOptions(props) {
             labelId={props.labelId}
             id={props.id}
             name={props.name}
-            value={country}
-            onChange={handleChange}
-            // defaultValue={country}
+            // this isn't actually doing anything
+            // value={country}
+            // onChange={handleChange}
           >
             {countrySelection}
           </Select>

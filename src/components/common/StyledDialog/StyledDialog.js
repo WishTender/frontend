@@ -90,13 +90,15 @@ export default function StyledDialog(props) {
       >
         <Container className={containerClasses.root}>
           <MuiDialogTitle>
-            <IconButton
-              aria-label="close"
-              className={buttonClasses.closeButton}
-              onClick={props.onClose}
-            >
-              <CloseIcon />
-            </IconButton>
+            {!props.noClose && (
+              <IconButton
+                aria-label="close"
+                className={buttonClasses.closeButton}
+                onClick={props.onClose}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
           </MuiDialogTitle>
           {props.children}
         </Container>
