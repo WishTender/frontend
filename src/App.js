@@ -49,9 +49,8 @@ function App(props) {
   const { getUser } = useContext(UserContext);
 
   const [user, setUser] = useState();
-  const [currencyList, setAskCurrency] = useState([]);
+  const [currencyList, setCurrencyList] = useState([]);
   const [currency, setCurrency] = useState(null);
-  const [chosenCurrency, setChosenCurrency] = useState(null);
   const [currencyNeeded, setCurrencyNeeded] = useState(false);
   const { getNotifications } = useContext(NotificationContext);
   const [notifications, setNotifications] = useState();
@@ -68,9 +67,11 @@ function App(props) {
         setCurrency(parsedCookies().currency);
       }
       setUser(user);
+      const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
+      setCurrencyList(currencies);
       if (currencyNeeded) {
-        const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
-        setAskCurrency(currencies);
+        // const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
+        // setCurrencyList(currencies);
         // chooseCurrency(JSON.parse(parsedCookies().locale));
       }
     });
@@ -216,6 +217,7 @@ function App(props) {
                 <CurrencyContext.Provider
                   value={{
                     currency,
+                    currencyList,
                     setCurrency,
                     setCurrencyNeeded,
                   }}
@@ -240,14 +242,12 @@ function App(props) {
                             noClose={true}
                             open={currencyNeeded}
                             onClose={() => {
-                              setAskCurrency([]);
                               setCurrencyNeeded(false);
                               if (!currency) setCurrency("noConversion");
                             }}
                           >
                             <SelectCurrencyForm
                               onClose={() => {
-                                setAskCurrency([]);
                                 setCurrencyNeeded(false);
                               }}
                               currencies={currencyList}
