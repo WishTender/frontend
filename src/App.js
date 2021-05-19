@@ -242,6 +242,7 @@ function App(props) {
                             onClose={() => {
                               setAskCurrency([]);
                               setCurrencyNeeded(false);
+                              if (!currency) setCurrency("noConversion");
                             }}
                           >
                             <SelectCurrencyForm

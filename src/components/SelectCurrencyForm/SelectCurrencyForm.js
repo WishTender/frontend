@@ -15,7 +15,28 @@ function CurrencyOptions(props) {
       label="Enable secondary text"
       value={cur.code}
     >
-      {cur.name}
+      <Typography
+        display="inline"
+        style={{
+          fontWeight: "900",
+          color: cur.code === "noConversion" ? "grey" : "limegreen",
+          paddingRight: "8px",
+        }}
+      >
+        {cur.symbol}
+      </Typography>
+      {cur.name}{" "}
+      <Typography
+        display="inline"
+        style={{
+          fontSize: ".8em",
+          fontWeight: "900",
+          color: "lightgrey",
+          paddingLeft: "8px",
+        }}
+      >
+        {cur.code}
+      </Typography>
     </MenuItem>
   ));
   if (props.currencies[0].match) {
