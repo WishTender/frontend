@@ -6,15 +6,17 @@ import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { RouteContext } from "../../contexts/RouteContext";
 import { fetchGet } from "../../scripts/fetchHelper";
 import { useParams } from "react-router-dom";
+import useChooseCurrency from "../../hooks/useChooseCurrency";
 import useTraceUpdate from "../../scripts/useTraceUpdate";
 import Wishlist from "./Wishlist";
 import {
   unitToStandard,
   parsePrice,
-  clientCurrency,
+  // clientCurrency,
   parseWishlistPrices,
   parseConvertWishlistPrices,
 } from "../../scripts/helpers";
+import { Typography } from "@material-ui/core";
 
 const handleRoute =
   process.env.REACT_APP_BASE_URL + "/api/aliases?handle_lowercased=";
@@ -25,7 +27,10 @@ function WishlistPage(props) {
   const [refreshWishlist, setRefreshWishlist] = useState(null);
   const { user: currentUser } = useContext(UserContext);
   const localeContext = useContext(LocaleContext);
-  const clientCurrency = useContext(CurrencyContext);
+  useChooseCurrency();
+  const { currency: clientCurrency, setCurrencyNeeded } =
+    useContext(CurrencyContext);
+
   const { setIsCurrentUsersProfile } = useContext(RouteContext);
   let { alias: aliasPath } = useParams();
 
@@ -38,11 +43,15 @@ function WishlistPage(props) {
   useTraceUpdate(WishlistPage.name, props, states);
 
   useEffect(() => {
+    // if (!clientCurrency) {
+    //   setCurrencyNeeded(true);
+    // }
     fetchGet(`${handleRoute}${aliasPath.toLowerCase()}`, async (alias) => {
       const wl = alias.wishlists[0];
       if (wl) {
         if (
           (currentUser && currentUser.currency === alias.currency) ||
+          clientCurrency === "noConversion" ||
           clientCurrency === alias.currency
         ) {
           parseWishlistPrices(wl, alias.currency, localeContext);
@@ -72,6 +81,7 @@ function WishlistPage(props) {
     convertRate,
     currentUser,
     localeContext,
+    setCurrencyNeeded,
     setIsCurrentUsersProfile,
   ]);
 
@@ -96,6 +106,7 @@ function WishlistPage(props) {
       currentUser !== undefined);
   return (
     <div>
+      <Typography variant="h1">curr: {clientCurrency}</Typography>
       {alias && currentUser !== undefined && (
         <ProfileSection
           isAuth={currentUser?.aliases.includes(alias?._id) || false}

@@ -136,8 +136,11 @@ const parseAliasCartPrices = (
   aliasCart.totalPrice = displayPrice(
     aliasCart.totalPrice,
     aliasCart.alias.currency,
-    clientCurrency,
-    aliasCart.alias.currency !== clientCurrency
+    clientCurrency !== "noConversion"
+      ? clientCurrency
+      : aliasCart.alias.currency,
+    aliasCart.alias.currency !== clientCurrency &&
+      clientCurrency !== "noConversion"
       ? 1 / exchangeRates[aliasCart.alias.currency]
       : 1,
     localeContext
@@ -149,8 +152,11 @@ const parseAliasCartPrices = (
     itemObj.price = displayPrice(
       itemObj.price,
       aliasCart.alias.currency,
-      clientCurrency,
-      aliasCart.alias.currency !== clientCurrency
+      clientCurrency !== "noConversion"
+        ? clientCurrency
+        : aliasCart.alias.currency,
+      aliasCart.alias.currency !== clientCurrency &&
+        clientCurrency !== "noConversion"
         ? 1 / exchangeRates[aliasCart.alias.currency]
         : 1,
       localeContext
@@ -269,7 +275,7 @@ const getCurrencyList = (locale) => {
 
   return [
     ...matchingCurrencies,
-    { code: "000", name: "Not Listed/Use Default" },
+    { code: "noConversion", name: "Not Listed/Don't Convert Prices" },
     ...filteredAPICurrencies,
   ];
 };

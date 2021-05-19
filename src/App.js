@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { RouteContext } from "./contexts/RouteContext";
+
 import { CurrencyContext } from "./contexts/CurrencyContext";
 import { CountryContext } from "./contexts/CountryContext";
 import { LocaleContext } from "./contexts/LocaleContext";
@@ -39,15 +40,19 @@ import theme from "./theme";
 import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
 // import WishForm from "./components/wishlistpage/AddWish/WishForm/WishForm";
 import ConnectSuccess from "./components/ConnectSuccess/ConnectSucess";
-import { CssBaseline } from "@material-ui/core";
+import { CssBaseline, Dialog } from "@material-ui/core";
 import StyledDialog from "./components/common/StyledDialog/StyledDialog";
 import CurrencyOptions from "./components/SelectCurrencyForm/SelectCurrencyForm";
 import SelectCurrencyForm from "./components/SelectCurrencyForm/SelectCurrencyForm";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
+
   const [user, setUser] = useState();
-  const [askCurrency, setAskCurrency] = useState([]);
+  const [currencyList, setAskCurrency] = useState([]);
+  const [currency, setCurrency] = useState(null);
+  const [chosenCurrency, setChosenCurrency] = useState(null);
+  const [currencyNeeded, setCurrencyNeeded] = useState(false);
   const { getNotifications } = useContext(NotificationContext);
   const [notifications, setNotifications] = useState();
   const [isCurrentUsersProfile, setIsCurrentUsersProfile] = useState();
@@ -56,15 +61,21 @@ function App(props) {
 
   useEffect(() => {
     getUser().then((user) => {
+      if (user && user?.currency) {
+        setCurrency(user.currency);
+      }
+      if ((!user || !user?.currency) && parsedCookies().currency) {
+        setCurrency(parsedCookies().currency);
+      }
       setUser(user);
-      const cur = clientCurrency(user);
-      if (!cur) {
+      if (currencyNeeded) {
         const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
         setAskCurrency(currencies);
         // chooseCurrency(JSON.parse(parsedCookies().locale));
       }
     });
-  }, [getUser]);
+  }, [currency, currencyNeeded, getUser]);
+
   useEffect(() => {
     if (!user) return;
     getNotifications(user.aliases[0]).then((notifications) => {
@@ -202,7 +213,13 @@ function App(props) {
                   cookies.locale ? JSON.parse(cookies.locale).countryCode : "US"
                 }
               >
-                <CurrencyContext.Provider value={clientCurrency(user)}>
+                <CurrencyContext.Provider
+                  value={{
+                    currency,
+                    setCurrency,
+                    setCurrencyNeeded,
+                  }}
+                >
                   <UserContext.Provider value={{ user, setUser, getUser }}>
                     <NotificationContext.Provider
                       value={{
@@ -218,19 +235,24 @@ function App(props) {
                           allRoutes: routesArray,
                         }}
                       >
-                        <StyledDialog
-                          open={askCurrency?.length}
-                          onClose={() => {
-                            setAskCurrency([]);
-                          }}
-                        >
-                          <SelectCurrencyForm
+                        {currencyNeeded && (
+                          <StyledDialog
+                            noClose={true}
+                            open={currencyNeeded}
                             onClose={() => {
                               setAskCurrency([]);
+                              setCurrencyNeeded(false);
                             }}
-                            currencies={askCurrency}
-                          />
-                        </StyledDialog>
+                          >
+                            <SelectCurrencyForm
+                              onClose={() => {
+                                setAskCurrency([]);
+                                setCurrencyNeeded(false);
+                              }}
+                              currencies={currencyList}
+                            />
+                          </StyledDialog>
+                        )}
                         <Switch>
                           {/* <Route path="/" exact>
                           <LandingPageMenu />
@@ -255,28 +277,3 @@ function App(props) {
 }
 
 export default App;
-// import React, { useState, useEffect, useContext } from "react";
-
-// function App(props) {
-//   const fetch8 = () => {
-//     // https://wishtender.herokuapp.com
-//     fetch(`${process.env.REACT_APP_BASE_URL}/api/k`, {
-//       credentials: "include",
-//     }).then(async (res) => {
-//       console.log("status", res.status);
-//       // const l = await res.json();
-//       const l = await res.text();
-
-//       console.log("body", l);
-//       console.log("res", res);
-//       console.log("Pk", process.env.REACT_APP_BASE_URL);
-//     });
-//   };
-//   return (
-//     <div>
-//       <button onClick={fetch8}>fetch2</button>
-//     </div>
-//   );
-// }
-
-// export default App;

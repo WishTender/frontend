@@ -8,11 +8,11 @@ export default function AllCarts() {
   const [cart, setCart] = useState(null);
   const [exchangeRates, setExchangeRates] = useState(null);
   const { getCart } = useContext(CartContext);
-  const clientCurrency = useContext(CurrencyContext);
+  const { currency: clientCurrency } = useContext(CurrencyContext);
   const localeContext = useContext(LocaleContext);
 
   useEffect(() => {
-    if (clientCurrency) {
+    if (clientCurrency && clientCurrency !== "noConversion") {
       const fetchData = async () => {
         const response = await fetch(
           `${process.env.REACT_APP_BASE_URL}/api/exchange/all?base=${clientCurrency}`
@@ -27,7 +27,10 @@ export default function AllCarts() {
   }, [clientCurrency, cart]);
 
   useEffect(() => {
-    if (!cart && exchangeRates) {
+    if (
+      (!cart && exchangeRates) ||
+      (!cart && clientCurrency === "noConversion")
+    ) {
       (async () => {
         setCart(await getCart(clientCurrency, localeContext, exchangeRates));
       })();
@@ -35,12 +38,14 @@ export default function AllCarts() {
   }, [cart, clientCurrency, exchangeRates, getCart, localeContext]);
   return (
     <CartContext.Provider value={{ cart, setCart, getCart }}>
-      {cart && (
+      {cart && Object.values(cart).length ? (
         <>
           {Object.values(cart.aliasCarts).map((cart) => (
             <AliasCart exchangeRates={exchangeRates} cart={cart} />
           ))}
         </>
+      ) : (
+        "Empty Cart"
       )}
     </CartContext.Provider>
   );

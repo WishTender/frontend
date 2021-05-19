@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
-import { CurrencyContext } from "../../contexts/CurrencyContext";
-import { Container, Box, Typography, Button } from "@material-ui/core";
+import React from "react";
+import { Container, Box, Typography } from "@material-ui/core";
 // import ExchangeRateApiInterface from "../../scripts/RatesAPI";
 
 import AllCarts from "./AllCarts";
+import useChooseCurrency from "../../hooks/useChooseCurrency";
 
 // const ratesApi = new ExchangeRateApiInterface();
 
 export default function Cart(props) {
+  useChooseCurrency();
   return (
     <div>
       <Container

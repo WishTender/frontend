@@ -10,7 +10,8 @@ import theme from "../../theme";
 import { fetchPatchJson } from "../../scripts/fetchHelper";
 import { CartContext } from "./CartContext";
 import DisplayPrice from "../common/DisplayPrice";
-
+import { LocaleContext } from "../../contexts/LocaleContext";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 const useStyles = makeStyles((theme) => {
   return {
     est: { color: theme.palette.error[300] },
@@ -33,31 +34,50 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const addToCart = (itemId, aliasId, cartContext) => {
+// const addToCart = (itemId, aliasId, cartContext) => {
+//   fetchPatchJson(
+//     { itemId, aliasId },
+//     `${process.env.REACT_APP_BASE_URL}/api/cart/add-to-cart`,
+//     () => updateCart(cartContext)
+//   );
+// };
+// const reduce = (itemId, aliasId, cartContext) => {
+//   fetchPatchJson(
+//     { itemId, aliasId },
+//     `${process.env.REACT_APP_BASE_URL}/api/cart/reduce`,
+//     () => updateCart(cartContext)
+//   );
+// };
+// const removeFromCart = (cartContext) => {
+//   fetchPatchJson(
+//     { itemId, aliasId },
+//     `${process.env.REACT_APP_BASE_URL}/api/cart/remove-from-cart`,
+//     () => updateCart(cartContext)
+//   );
+// };
+
+const updateCart = async (
+  route,
+  itemId,
+  aliasId,
+  cartContext,
+  localeContext,
+  clientCurrency,
+  exchangeRates
+) => {
   fetchPatchJson(
     { itemId, aliasId },
-    `${process.env.REACT_APP_BASE_URL}/api/cart/add-to-cart`,
-    () => updateCart(cartContext)
+    `${process.env.REACT_APP_BASE_URL}/api/cart/${route}`,
+    async () => {
+      let cart;
+      cart = await cartContext.getCart(
+        clientCurrency,
+        localeContext,
+        exchangeRates
+      );
+      cartContext.setCart(cart);
+    }
   );
-};
-const reduce = (itemId, aliasId, cartContext) => {
-  fetchPatchJson(
-    { itemId, aliasId },
-    `${process.env.REACT_APP_BASE_URL}/api/cart/reduce`,
-    () => updateCart(cartContext)
-  );
-};
-const removeFromCart = (itemId, aliasId, cartContext) => {
-  fetchPatchJson(
-    { itemId, aliasId },
-    `${process.env.REACT_APP_BASE_URL}/api/cart/remove-from-cart`,
-    () => updateCart(cartContext)
-  );
-};
-const updateCart = async (cartContext) => {
-  let cart;
-  cart = await cartContext.getCart();
-  cartContext.setCart(cart);
 };
 const GiftImageAndName = ({ gift, classes, screen }) => {
   return (
@@ -75,8 +95,10 @@ const GiftImageAndName = ({ gift, classes, screen }) => {
   );
 };
 
-const Quantity = ({ gift, screen }) => {
+const Quantity = ({ gift, screen, exchangeRates }) => {
   const cartContext = useContext(CartContext);
+  const localeContext = useContext(LocaleContext);
+  const { currency } = useContext(CurrencyContext);
 
   return (
     <Box display="flex" alignItems="center">
@@ -85,7 +107,15 @@ const Quantity = ({ gift, screen }) => {
 
       <IconButton
         onClick={() => {
-          reduce(gift.item._id, gift.item.alias._id, cartContext);
+          updateCart(
+            "reduce",
+            gift.item._id,
+            gift.item.alias._id,
+            cartContext,
+            localeContext,
+            currency,
+            exchangeRates
+          );
         }}
         size="small"
       >
@@ -94,7 +124,15 @@ const Quantity = ({ gift, screen }) => {
       <IconButton
         size="small"
         onClick={() => {
-          addToCart(gift.item._id, gift.item.alias._id, cartContext);
+          updateCart(
+            "add-to-cart",
+            gift.item._id,
+            gift.item.alias._id,
+            cartContext,
+            localeContext,
+            currency,
+            exchangeRates
+          );
         }}
       >
         <AddIcon color="primary" />
@@ -106,6 +144,8 @@ const Quantity = ({ gift, screen }) => {
 export default function Gift({ gift, screen, exchangeRates }) {
   const cartContext = useContext(CartContext);
   const classes = useStyles();
+  const localeContext = useContext(LocaleContext);
+  const { currency } = useContext(CurrencyContext);
 
   return (
     <TableRow>
@@ -123,7 +163,7 @@ export default function Gift({ gift, screen, exchangeRates }) {
       </TableCell>
       {screen === "xs" ? (
         <TableCell className={classes.cell2_xs}>
-          <Quantity gift={gift} screen="xs" />
+          <Quantity gift={gift} screen="xs" exchangeRates={exchangeRates} />
           <DisplayPrice priceObject={gift.price} />
 
           <Button
@@ -132,7 +172,15 @@ export default function Gift({ gift, screen, exchangeRates }) {
             className={classes.giftButton_xs}
             disableElevation
             onClick={() =>
-              removeFromCart(gift.item._id, gift.item.alias._id, cartContext)
+              updateCart(
+                "remove-from-cart",
+                gift.item._id,
+                gift.item.alias._id,
+                cartContext,
+                localeContext,
+                currency,
+                exchangeRates
+              )
             }
           >
             Remove
@@ -145,7 +193,15 @@ export default function Gift({ gift, screen, exchangeRates }) {
               size="small"
               color="primary"
               onClick={() =>
-                removeFromCart(gift.item._id, gift.item.alias._id, cartContext)
+                updateCart(
+                  "remove-from-cart",
+                  gift.item._id,
+                  gift.item.alias._id,
+                  cartContext,
+                  localeContext,
+                  currency,
+                  exchangeRates
+                )
               }
               className={classes.giftButton_xs}
               disableElevation

@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Button, Typography } from "@material-ui/core";
+import { Button, Typography, Box } from "@material-ui/core";
 
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 
@@ -33,7 +33,7 @@ function CurrencyOptions(props) {
         width: 220,
       }}
     >
-      <InputLabel>Select your Preferred Currency</InputLabel>
+      <InputLabel>Select Your Preferred Currency</InputLabel>
       <Controller
         control={props.control}
         name={props.name}
@@ -57,16 +57,30 @@ export default function SelectCurrencyForm(props) {
   return (
     <>
       {props.currencies.length && (
-        <form onSubmit={handleSubmit(setCurrency)}>
-          <CurrencyOptions
-            name="currency"
-            control={control}
-            currencies={props.currencies}
-          />
-          <Button type="submit" color="primary" variant="contained">
-            Set Currency
-          </Button>
-        </form>
+        <Box display="flex">
+          <form
+            style={
+              {
+                // display: "flex",
+                // flexDirection: "column",
+                // alignItems: "center",
+              }
+            }
+            onSubmit={handleSubmit(setCurrency)}
+          >
+            <Typography variant="h5">
+              To Continue Please Select Currency
+            </Typography>
+            <CurrencyOptions
+              name="currency"
+              control={control}
+              currencies={props.currencies}
+            />
+            <Button type="submit" color="primary" variant="contained">
+              Set Currency
+            </Button>
+          </form>
+        </Box>
       )}
     </>
   );
