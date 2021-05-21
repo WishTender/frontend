@@ -261,6 +261,7 @@ const getCurrencyList = (locale) => {
   matchingCurrencies = matchingCurrencies
     .map((cur) => ({
       code: cur,
+      symbol: currencyInfo(cur).symbol,
       name: countryData.currencies[cur].name,
       match: true,
     }))
@@ -269,13 +270,18 @@ const getCurrencyList = (locale) => {
   filteredAPICurrencies = filteredAPICurrencies
     .map((cur) => ({
       code: cur,
+      symbol: currencyInfo(cur).symbol,
       name: countryData.currencies[cur].name,
     }))
     .sort((a, b) => (a.name[0] > b.name[0] ? 1 : -1));
 
   return [
     ...matchingCurrencies,
-    { code: "noConversion", name: "Not Listed/Don't Convert Prices" },
+    {
+      code: "noConversion",
+      symbol: "N/A",
+      name: "Not Listed/Don't Convert Prices",
+    },
     ...filteredAPICurrencies,
   ];
 };

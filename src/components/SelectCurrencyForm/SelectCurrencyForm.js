@@ -1,46 +1,54 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Button, Typography, Box } from "@material-ui/core";
-
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
-
+import {
+  Button,
+  Grid,
+  Typography,
+  InputLabel,
+  Box,
+  Switch,
+  FormGroup,
+} from "@material-ui/core";
+import currenciesArray from "./currenciesMenuArray";
+import {
+  FormControl,
+  FormControlLabel,
+  FormInputLabel,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
 function CurrencyOptions(props) {
-  let currencySelection = props.currencies.map((cur, i) => (
-    <MenuItem
-      style={
-        cur.match && !props.currencies[i + 1].match
-          ? { borderBottom: "1px solid grey" }
-          : {}
-      }
-      label="Enable secondary text"
-      value={cur.code}
-    >
-      {cur.name}
-    </MenuItem>
-  ));
-  if (props.currencies[0].match) {
-    currencySelection = [
-      <Typography variant="caption" style={{ padding: "8px" }}>
-        Detected Currency Preferences
-      </Typography>,
-      ...currencySelection,
-    ];
-  }
+  const { setCurrencyCookieAndContext, setCurrency } =
+    useContext(CurrencyContext);
   return (
     <FormControl
       style={{
         minWidth: 220,
         width: 220,
+        textAlign: "left",
       }}
     >
       <InputLabel>Select Your Preferred Currency</InputLabel>
       <Controller
         control={props.control}
         name={props.name}
+        disabled={props.disabled || false}
         defaultValue={props.currencies[0].code}
         as={
-          <Select labelId={props.labelId} id={props.id} name={props.name}>
-            {currencySelection}
+          <Select
+            disabled={props.disabled || false}
+            labelId={props.labelId}
+            id={props.id}
+            name={props.name}
+          >
+            {currenciesArray({
+              currencies: props.currencies,
+              onClick: (curCode) => {
+                setCurrencyCookieAndContext(curCode, setCurrency);
+              },
+              disabled: props.disabled,
+            })}
           </Select>
         }
       />
@@ -50,8 +58,16 @@ function CurrencyOptions(props) {
 
 export default function SelectCurrencyForm(props) {
   const { register, handleSubmit, error, control } = useForm();
-  const setCurrency = (data) => {
-    document.cookie = `currency= ${data.currency}`;
+  const [checked, setChecked] = useState(true);
+  const { setCurrencyCookie, setCurrency, setCurrencyCookieAndContext } =
+    useContext(CurrencyContext);
+  const submit = (data) => {
+    if (!checked) {
+      // setCurrencyCookieAndContext("noConversion", setCurrency);
+      setCurrencyCookie("noConversion");
+    } else {
+      setCurrencyCookie(data.currency);
+    }
     props.onClose();
   };
   return (
@@ -59,23 +75,54 @@ export default function SelectCurrencyForm(props) {
       {props.currencies.length && (
         <Box display="flex">
           <form
-            style={
-              {
-                // display: "flex",
-                // flexDirection: "column",
-                // alignItems: "center",
-              }
-            }
-            onSubmit={handleSubmit(setCurrency)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "2rem",
+              // alignItems: "center",
+            }}
+            onSubmit={handleSubmit(submit)}
           >
             <Typography variant="h5">
               To Continue Please Select Currency
             </Typography>
+            {/* <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "2rem 0rem",
+                gap: "8px",
+              }}
+            > */}
+            <Grid component="label" container alignItems="center" spacing={1}>
+              <Grid item style={checked ? { color: "grey" } : {}}>
+                Leave prices as listed.
+              </Grid>
+              <Grid item>
+                <Switch
+                  checked={checked}
+                  onChange={() => {
+                    setChecked(!checked);
+                  }}
+                  name="checkedB"
+                  color="secondary"
+                ></Switch>
+              </Grid>
+              <Grid style={!checked ? { color: "grey" } : {}} item>
+                Convert prices
+              </Grid>
+            </Grid>
+
             <CurrencyOptions
+              disabled={!checked}
               name="currency"
               control={control}
               currencies={props.currencies}
             />
+            {/* </div> */}
+            <Typography variant="body2">
+              These settings can be changed in the menu bar at anytime.
+            </Typography>
             <Button type="submit" color="primary" variant="contained">
               Set Currency
             </Button>

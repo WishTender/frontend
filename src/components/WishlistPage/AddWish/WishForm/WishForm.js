@@ -45,7 +45,7 @@ export default function WishForm(props) {
   const [price, setPrice] = useState("");
   const [name, setName] = useState("");
   const [crop, setCrop] = useState("");
-  const clientCurrency = useContext(CurrencyContext);
+  const { currency: clientCurrency } = useContext(CurrencyContext);
 
   useEffect(() => {
     setName(props.info && props.info.title);

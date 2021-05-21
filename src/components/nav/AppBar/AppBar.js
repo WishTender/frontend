@@ -24,6 +24,7 @@ import AccountTabs from "../AccountTabs/AccountTabs";
 import "./AppBar.css";
 import useCustomStyles from "../../../themeStyles";
 import { MenuItem } from "@material-ui/core";
+import CurrenciesMenu from "../CurrenciesMenu";
 
 const styles = (theme) => ({
   root: {
@@ -77,14 +78,22 @@ function ScrollTop(props) {
 
 function BackToTop(props) {
   const { user } = useContext(UserContext);
-  const [menuAnchor, setMenuAnchor] = useState(null);
+  const [accountMenuAnchor, setAccountMenuAnchor] = useState(null);
+  const [currencyMenuAnchor, setCurrencyMenuAnchor] = useState(null);
 
   const [scrolledStyle, setscrolledStyle] = useState("noShadow");
-  const toggleMenu = (event) => {
-    if (menuAnchor) {
-      setMenuAnchor(null);
+  const toggleAccountMenu = (event) => {
+    if (accountMenuAnchor) {
+      setAccountMenuAnchor(null);
     } else {
-      setMenuAnchor(event.currentTarget);
+      setAccountMenuAnchor(event.currentTarget);
+    }
+  };
+  const toggleCurrencyMenu = (event) => {
+    if (currencyMenuAnchor) {
+      setCurrencyMenuAnchor(null);
+    } else {
+      setCurrencyMenuAnchor(event.currentTarget);
     }
   };
 
@@ -155,6 +164,8 @@ function BackToTop(props) {
           {!user ? (
             props.screen !== "xs" ? (
               <>
+                <CurrenciesMenu />
+
                 {ShoppingCartButton}
                 <Button
                   component={Link}
@@ -168,7 +179,10 @@ function BackToTop(props) {
                 <SignupButton />
               </>
             ) : (
-              <> {ShoppingCartButton}</>
+              <>
+                <CurrenciesMenu />
+                {ShoppingCartButton}
+              </>
             )
           ) : (
             <>
@@ -179,7 +193,7 @@ function BackToTop(props) {
                   <Tooltip title="Account" aria-label="account">
                     <IconButton
                       className={classes.doubleIconButton}
-                      onClick={toggleMenu}
+                      onClick={toggleAccountMenu}
                       aria-label="logout"
                     >
                       <AccountIcon />
@@ -187,21 +201,21 @@ function BackToTop(props) {
                     </IconButton>
                   </Tooltip>
                   <PopUpMenu
-                    onClose={() => setMenuAnchor(null)}
-                    anchorEl={menuAnchor}
-                    open={menuAnchor}
+                    onClose={() => setAccountMenuAnchor(null)}
+                    anchorEl={accountMenuAnchor}
+                    open={accountMenuAnchor}
                   >
                     <MenuItem
                       component={Link}
                       to="/account-settings"
                       color="primary"
                       href="/account-settings"
-                      onClick={() => setMenuAnchor(null)}
+                      onClick={() => setAccountMenuAnchor(null)}
                     >
                       Account Settings
                     </MenuItem>
                     <LogoutButton>
-                      <MenuItem onClick={() => setMenuAnchor(null)}>
+                      <MenuItem onClick={() => setAccountMenuAnchor(null)}>
                         Log out
                       </MenuItem>
                     </LogoutButton>

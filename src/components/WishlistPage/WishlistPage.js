@@ -56,12 +56,16 @@ function WishlistPage(props) {
         ) {
           parseWishlistPrices(wl, alias.currency, localeContext);
         } else {
-          const response = await fetch(
-            `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${alias.currency}&symbols=${clientCurrency}`
-          );
+          if (!convertRate) {
+            const response = await fetch(
+              `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${alias.currency}&symbols=${clientCurrency}`
+            ).catch((r) => {
+              console.log(r);
+            });
 
-          let rate = await response.json();
-          setConvertRate(rate.rate);
+            let res = await response.json();
+            setConvertRate(res.rate);
+          }
           parseConvertWishlistPrices(
             wl,
             clientCurrency,
@@ -106,7 +110,6 @@ function WishlistPage(props) {
       currentUser !== undefined);
   return (
     <div>
-      <Typography variant="h1">curr: {clientCurrency}</Typography>
       {alias && currentUser !== undefined && (
         <ProfileSection
           isAuth={currentUser?.aliases.includes(alias?._id) || false}
