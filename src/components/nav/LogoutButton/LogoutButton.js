@@ -3,10 +3,12 @@ import { Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import { UserContext } from "../../../contexts/UserContext";
+import { CurrencyContext } from "../../../contexts/CurrencyContext";
 
 export default function LogoutButton(props) {
   const [loggedOut, setLoggedOut] = useState(false);
   const { getUser, setUser } = useContext(UserContext);
+  const { getCurrencyCookie, setCurrency } = useContext(CurrencyContext);
   const logout = (data) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -23,6 +25,7 @@ export default function LogoutButton(props) {
           const user = await getUser();
           setLoggedOut(true);
           setUser(user);
+          setCurrency(getCurrencyCookie());
           return;
         }
         const text = await res.text();

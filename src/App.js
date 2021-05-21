@@ -47,6 +47,8 @@ import SelectCurrencyForm from "./components/SelectCurrencyForm/SelectCurrencyFo
 
 function App(props) {
   const { getUser } = useContext(UserContext);
+  const { getCurrencyCookie, setCurrencyCookie, setCurrencyCookieAndContext } =
+    useContext(CurrencyContext);
 
   const [user, setUser] = useState();
   const [currencyList, setCurrencyList] = useState([]);
@@ -57,14 +59,13 @@ function App(props) {
   const [isCurrentUsersProfile, setIsCurrentUsersProfile] = useState();
   const cookies = parsedCookies();
   useTraceUpdate(App.name, props, { user });
-
   useEffect(() => {
     getUser().then((user) => {
       if (user && user?.currency) {
         setCurrency(user.currency);
       }
       if ((!user || !user?.currency) && parsedCookies().currency) {
-        setCurrency(parsedCookies().currency);
+        setCurrency(getCurrencyCookie());
       }
       setUser(user);
       const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
@@ -220,6 +221,9 @@ function App(props) {
                     currencyList,
                     setCurrency,
                     setCurrencyNeeded,
+                    getCurrencyCookie,
+                    setCurrencyCookie,
+                    setCurrencyCookieAndContext,
                   }}
                 >
                   <UserContext.Provider value={{ user, setUser, getUser }}>
@@ -243,7 +247,9 @@ function App(props) {
                             open={currencyNeeded}
                             onClose={() => {
                               setCurrencyNeeded(false);
-                              if (!currency) setCurrency("noConversion");
+                              if (!currency) {
+                                setCurrencyCookie("noConversion");
+                              }
                             }}
                           >
                             <SelectCurrencyForm

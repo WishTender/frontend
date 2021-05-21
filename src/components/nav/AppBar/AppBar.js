@@ -179,7 +179,10 @@ function BackToTop(props) {
                 <SignupButton />
               </>
             ) : (
-              <> {ShoppingCartButton}</>
+              <>
+                <CurrenciesMenu />
+                {ShoppingCartButton}
+              </>
             )
           ) : (
             <>

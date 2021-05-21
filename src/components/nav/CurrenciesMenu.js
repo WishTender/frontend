@@ -2,6 +2,7 @@ import { IconButton, Button, MenuItem, Tooltip } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 import PopUpMenu from "../common/PopUpMenu/PopUpMenu";
+import currenciesMenuItemArray from "../SelectCurrencyForm/currenciesMenuArray";
 export default function CurrenciesMenu({ onClose, anchorEl }) {
   const [currencyMenuAnchor, setCurrencyMenuAnchor] = useState(null);
 
@@ -12,19 +13,24 @@ export default function CurrenciesMenu({ onClose, anchorEl }) {
       setCurrencyMenuAnchor(event.currentTarget);
     }
   };
-  const { currencyList, currency, setCurrenciesNeeded } =
+  const { currencyList, currency, setCurrencyCookieAndContext, setCurrency } =
     useContext(CurrencyContext);
-  //   useEffect(() => {
-  //     if (!currency) setCurrenciesNeeded(true);
-  //   }, [currency, setCurrenciesNeeded]);
-  const currencies = currencyList.map((cur) => <MenuItem>{cur.name}</MenuItem>);
+
   return (
     <>
-      {currencyList && currency && (
+      {currencyList?.length && currency && (
         <>
           <Tooltip title="Currency">
-            <Button onClick={toggleCurrencyMenu} style={{ color: "limegreen" }}>
-              {currencyList.find((cur) => cur.symbol).symbol}
+            <Button
+              onClick={toggleCurrencyMenu}
+              color="secondary"
+              style={{
+                minWidth: "40px",
+                color: currency === "noConversion" ? "grey" : "limegreen",
+              }}
+            >
+              {currency === "noConversion" && "$"}
+              {currencyList.find((cur) => cur.code === currency).symbol}
             </Button>
           </Tooltip>
           <PopUpMenu
@@ -32,7 +38,14 @@ export default function CurrenciesMenu({ onClose, anchorEl }) {
             anchorEl={currencyMenuAnchor}
             open={currencyMenuAnchor}
           >
-            {currencies}
+            {currenciesMenuItemArray({
+              currencies: currencyList,
+              onClick: (curCode) => {
+                setCurrencyCookieAndContext(curCode, setCurrency);
+                toggleCurrencyMenu();
+              },
+              currency,
+            })}
           </PopUpMenu>
         </>
       )}

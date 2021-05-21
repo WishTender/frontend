@@ -1,14 +1,16 @@
 import React from "react";
 import { MenuItem, Typography } from "@material-ui/core";
 
-export default function Currencies(props) {
-  let currencySelection = props.currencies.map((cur, i) => (
+export default function currenciesMenuItemArray(options) {
+  let currencySelection = options.currencies.map((cur, i) => (
     <MenuItem
+      onClick={options.onClick ? () => options.onClick(cur.code) : null}
       style={
-        cur.match && !props.currencies[i + 1].match
+        cur.match && !options.currencies[i + 1].match
           ? { borderBottom: "1px solid grey" }
           : {}
       }
+      selected={cur.code === options.currency}
       label="Enable secondary text"
       value={cur.code}
     >
@@ -16,7 +18,10 @@ export default function Currencies(props) {
         display="inline"
         style={{
           fontWeight: "900",
-          color: cur.code === "noConversion" ? "grey" : "limegreen",
+          color:
+            cur.code === "noConversion" || options.disabled
+              ? "grey"
+              : "limegreen",
           paddingRight: "8px",
         }}
       >
@@ -32,11 +37,11 @@ export default function Currencies(props) {
           paddingLeft: "8px",
         }}
       >
-        {cur.code}
+        {cur.code !== "noConversion" && cur.code}
       </Typography>
     </MenuItem>
   ));
-  if (props.currencies[0].match) {
+  if (options.currencies[0].match) {
     currencySelection = [
       <Typography variant="caption" style={{ padding: "8px" }}>
         Detected Currency Preferences
