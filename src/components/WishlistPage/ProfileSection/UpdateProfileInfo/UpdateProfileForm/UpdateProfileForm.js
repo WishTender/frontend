@@ -145,17 +145,13 @@ export default function UpdateProfileForm(props) {
         </Typography>
       )}
       <Container
-        className={classes.root}
-        width="100%"
-        style={
+        // className={classes.root}
+        className={
           screenSize === "xs"
-            ? {
-                top: "20vh",
-
-                position: "relative",
-              }
-            : {}
+            ? props.classes.dialogContent_xs
+            : props.classes.dialogContent
         }
+        width="100%"
       >
         <form
           style={{ display: "grid", gap: "1em" }}
@@ -248,7 +244,11 @@ export default function UpdateProfileForm(props) {
             type="submit"
             form="update-profile-form"
             value="Submit"
-            className={screenSize === "xs" ? props.classes.submit_xs : ""}
+            className={
+              screenSize === "xs"
+                ? props.classes.submit_xs
+                : props.classes.submit
+            }
           >
             Save
           </Button>

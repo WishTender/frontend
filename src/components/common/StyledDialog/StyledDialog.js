@@ -10,14 +10,7 @@ import { Typography } from "@material-ui/core";
 
 const childStyles = makeStyles((theme) => ({
   title: {
-    // position: "relative",
     padding: "0 0 40px 0",
-    // // left: 0,
-    // display: "flex",
-    // justifyContent: "center",
-    // alignContent: "center",
-    // width: "100%",
-    // // height: "4em",
     "& h2.MuiTypography-root": {
       width: "100%",
       display: "flex",
@@ -48,6 +41,7 @@ const childStyles = makeStyles((theme) => ({
     top: "3%",
   },
   closeButton_xs: { color: "white" },
+  submit: { borderRadius: "0" },
   submit_xs: {
     position: "fixed",
     bottom: "0",
@@ -56,6 +50,11 @@ const childStyles = makeStyles((theme) => ({
     borderRadius: "0",
     width: "100%",
     fontWeight: "900",
+  },
+  dialogContent: {},
+  dialogContent_xs: {
+    top: "20vh",
+    position: "relative",
   },
 }));
 const containerStyles = makeStyles((theme) => ({
