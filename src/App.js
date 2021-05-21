@@ -44,6 +44,11 @@ import { CssBaseline, Dialog } from "@material-ui/core";
 import StyledDialog from "./components/common/StyledDialog/StyledDialog";
 import CurrencyOptions from "./components/SelectCurrencyForm/SelectCurrencyForm";
 import SelectCurrencyForm from "./components/SelectCurrencyForm/SelectCurrencyForm";
+import AddToCart from "./components/WishlistPage/AddToCart/AddToCart";
+import EditWishForm from "./components/WishlistPage/EditWishForm/EditWishForm";
+import AddWish from "./components/WishlistPage/AddWish/AddWish";
+import UpdateProfileForm from "./components/WishlistPage/ProfileSection/UpdateProfileInfo/UpdateProfileForm/UpdateProfileForm";
+import CustomizedDialogs from "./components/WishlistPage/ProfileSection/UpdateProfileInfo/UpdateProfileForm/Test";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -117,6 +122,61 @@ function App(props) {
             <div>
               <WishlistPage user={user} />
             </div>
+          );
+        }}
+      />
+      <Route
+        path="/add-to-cart"
+        render={(props) => {
+          return (
+            <AddToCart
+              open={true}
+              item={{
+                itemImage:
+                  "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
+              }}
+            />
+          );
+        }}
+      />
+      <Route
+        path="/edit-wish-form"
+        render={(props) => {
+          return (
+            <StyledDialog open={true}>
+              <EditWishForm
+                info={{
+                  itemImage:
+                    "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
+                }}
+              />{" "}
+            </StyledDialog>
+          );
+        }}
+      />
+      <Route
+        path="/updateinfo"
+        render={(props) => {
+          return (
+            <StyledDialog open={true}>
+              <UpdateProfileForm />
+            </StyledDialog>
+          );
+        }}
+      />
+      <Route
+        path="/updateinfotest"
+        render={(props) => {
+          return <CustomizedDialogs />;
+        }}
+      />
+      <Route
+        path="/add-wish"
+        render={(props) => {
+          return (
+            <StyledDialog open={true}>
+              <AddWish></AddWish>
+            </StyledDialog>
           );
         }}
       />

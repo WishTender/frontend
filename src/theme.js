@@ -53,19 +53,19 @@ theme.overrides = {
   MuiTypography: {},
   MuiDialog: {
     root: {
-      "& form": { display: "grid", gap: "1em" },
-      '& .MuiButton-root[type="submit"]': {
-        fontWeight: 900,
-        color: "white",
-        borderRadius: 0,
-        [theme.breakpoints.down(450)]: {
-          position: "fixed",
-          left: "0",
-          bottom: 0,
-          width: "100%",
-          zIndex: 10,
-        },
-      },
+      // "& form": { display: "grid", gap: "1em" },
+      // '& .MuiButton-root[type="submit"]': {
+      //   fontWeight: 900,
+      //   color: "white",
+      //   borderRadius: 0,
+      //   [theme.breakpoints.down(450)]: {
+      //     position: "fixed",
+      //     left: "0",
+      //     bottom: 0,
+      //     width: "100%",
+      //     zIndex: 10,
+      //   },
+      // },
     },
   },
   MuiButton: {

@@ -351,6 +351,8 @@ const isValidPrice = (value, decimalPlaces) => {
 };
 
 const currencyInfo = (currency, locale = "en") => {
+  currency = "USD";
+
   const parts = new Intl.NumberFormat(locale, {
     style: "currency",
     currency: currency,

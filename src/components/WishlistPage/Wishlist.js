@@ -84,34 +84,39 @@ function Wishlist(props) {
 
   return (
     <div className="wishlist">
-      {selectWish && (
+      {selectWish && props.isAuth && (
         <StyledDialog
-          background="url(/images/background_bow_confetti-sm_optimized.png)"
-          background_xs="url(/images/background_bow_confetti_xs_optimized.png)"
           onClose={() => {
             setSelectWish(null);
           }}
           open={selectWish ? true : false}
         >
-          {props.isAuth ? (
-            <EditWishForm
-              info={{
-                price: selectWish.price.float,
-                itemName: selectWish.itemName,
-                itemImage: selectWish.itemImage,
-                currency: selectWish.currency,
-              }}
-              id={selectWish._id}
-              onClose={(options) => {
-                setSelectWish(null);
-                if (options.refresh) props.refreshWishlist();
-              }}
-            />
-          ) : (
-            <AddToCart onClose={() => setSelectWish(null)} item={selectWish} />
-          )}
+          <EditWishForm
+            info={{
+              price: selectWish.price.float,
+              itemName: selectWish.itemName,
+              itemImage: selectWish.itemImage,
+              currency: selectWish.currency,
+            }}
+            id={selectWish._id}
+            onClose={(options) => {
+              setSelectWish(null);
+              if (options.refresh) props.refreshWishlist();
+            }}
+          />
         </StyledDialog>
       )}
+      {selectWish && !props.isAuth && (
+        <AddToCart onClose={() => setSelectWish(null)} item={selectWish} />
+      )}
+      {selectWish && (
+        <AddToCart
+          open={selectWish ? true : false}
+          onClose={() => setSelectWish(null)}
+          item={selectWish}
+        />
+      )}
+
       <Container className={customClasses.wishlistWrapper1}>
         <Typography> Wishes: {props?.items?.length}</Typography>
         {props.isAuth && (
