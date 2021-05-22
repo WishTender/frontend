@@ -42,6 +42,7 @@ import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
 import ConnectSuccess from "./components/ConnectSuccess/ConnectSucess";
 import { CssBaseline, Dialog } from "@material-ui/core";
 import StyledDialog from "./components/common/StyledDialog/StyledDialog";
+import StyledDialog1 from "./components/common/StyledDialog/StyledDialog1";
 import CurrencyOptions from "./components/SelectCurrencyForm/SelectCurrencyForm";
 import SelectCurrencyForm from "./components/SelectCurrencyForm/SelectCurrencyForm";
 import AddToCart from "./components/WishlistPage/AddToCart/AddToCart";
@@ -129,16 +130,43 @@ function App(props) {
         path="/add-to-cart"
         render={(props) => {
           return (
-            <AddToCart
+            <StyledDialog
+              background="url(/images/background_bow_confetti-sm_optimized.png)"
+              background_xs="url(/images/background_bow_confetti_xs_optimized.png)"
+              onClose={props.onClose}
               open={true}
-              item={{
-                itemImage:
-                  "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
-              }}
-            />
+            >
+              <AddToCart
+                item={{
+                  itemImage:
+                    "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
+                }}
+              />
+            </StyledDialog>
           );
         }}
       />
+      <Route
+        path="/add-to-cart2"
+        render={(props) => {
+          return (
+            <StyledDialog1
+              background="url(/images/background_bow_confetti-sm_optimized.png)"
+              background_xs="url(/images/background_bow_confetti_xs_optimized.png)"
+              onClose={props.onClose}
+              open={true}
+            >
+              <AddToCart
+                item={{
+                  itemImage:
+                    "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
+                }}
+              />
+            </StyledDialog1>
+          );
+        }}
+      />
+
       <Route
         path="/edit-wish-form"
         render={(props) => {
@@ -149,8 +177,23 @@ function App(props) {
                   itemImage:
                     "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
                 }}
-              />{" "}
+              />
             </StyledDialog>
+          );
+        }}
+      />
+      <Route
+        path="/edit-wish-form2"
+        render={(props) => {
+          return (
+            <StyledDialog1 open={true}>
+              <EditWishForm
+                info={{
+                  itemImage:
+                    "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
+                }}
+              />
+            </StyledDialog1>
           );
         }}
       />
@@ -177,6 +220,16 @@ function App(props) {
             <StyledDialog open={true}>
               <AddWish></AddWish>
             </StyledDialog>
+          );
+        }}
+      />
+      <Route
+        path="/add-wish2"
+        render={(props) => {
+          return (
+            <StyledDialog1 open={true}>
+              <AddWish></AddWish>
+            </StyledDialog1>
           );
         }}
       />

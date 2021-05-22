@@ -10,7 +10,7 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { useForm } from "react-hook-form";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import useScreenSize from "../../../../../hooks/useScreenSize";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ResponsiveDialogTitleSection from "../../../../common/StyledDialog/ResponsiveDialogTitleSection";
 const useStyles = makeStyles((theme) => {
   return {
     root: {
@@ -97,53 +97,9 @@ export default function UpdateProfileForm(props) {
   };
   return (
     <>
-      {/* <Dialog open> */}
-      <MuiDialogTitle
-        className={
-          screenSize === "xs" ? props.classes.title_xs : props.classes.title
-        }
-      >
-        {screenSize === "xs" && (
-          <IconButton
-            aria-label="close"
-            className={
-              screenSize === "xs"
-                ? props.classes.closeButton_xs
-                : props.classes.closeButton
-            }
-            onClick={props.onClose}
-          >
-            <ArrowBackIcon color="primary" />
-          </IconButton>
-        )}
-        <Typography
-          variant="h6"
-          style={
-            screenSize === "xs"
-              ? { right: "14%", position: "relative" }
-              : { display: "none" }
-          }
-          color="primary"
-        >
-          Profile Info
-        </Typography>
-        <IconButton
-          aria-label="close"
-          className={
-            screenSize === "xs"
-              ? props.classes.closeButton_xs
-              : props.classes.closeButton
-          }
-          onClick={props.onClose}
-        >
-          <CloseIcon color="primary" />
-        </IconButton>
-      </MuiDialogTitle>
-      {screenSize === "sm" && (
-        <Typography variant="h7" color="primary">
-          Profile Info
-        </Typography>
-      )}
+      <ResponsiveDialogTitleSection {...props}>
+        Profile Info
+      </ResponsiveDialogTitleSection>
       <Container
         // className={classes.root}
         className={
