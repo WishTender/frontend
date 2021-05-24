@@ -2,7 +2,7 @@ import React from "react";
 
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
-import { Typography, DialogTitle } from "@material-ui/core";
+import { Typography, DialogTitle, Box } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 const useStyles = makeStyles((theme) => ({
   closeButtonV1: {
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     top: "20vh",
     position: "relative",
   },
-  titleText_xs: { right: "14%", position: "relative" },
+  titleText: { position: "relative" },
 }));
 
 export default function DialogTitleSection(props) {
@@ -77,9 +77,11 @@ export default function DialogTitleSection(props) {
         </IconButton>
       </DialogTitle>
 
-      <Typography variant="h7" color="primary">
-        {props.children}
-      </Typography>
+      <Box display="flex" justifyContent="center">
+        <Typography className={classes.titleText} variant="h7" color="primary">
+          {props.children}
+        </Typography>
+      </Box>
     </>
   );
 }
