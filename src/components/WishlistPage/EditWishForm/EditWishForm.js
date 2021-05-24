@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => {
       display: "flex",
       flexDirection: "column",
       gap: "1em",
-      padding: theme.spacing(8, 0, 1, 0),
+      padding: theme.spacing(6, 0, 1, 0),
       width: "80%",
     },
   };
@@ -104,7 +104,7 @@ export default function EditWishForm(props) {
     <>
       {/* <DialogClose onClose={props.onClose} /> */}
       <ResponsiveDialogTitleSection onClose={props.onClose}>
-        Edit Profile
+        Edit Wish
       </ResponsiveDialogTitleSection>
       <Box display="flex" flexDirection="column" style={{ height: "100%" }}>
         <form
