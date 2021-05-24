@@ -6,9 +6,9 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 const useStyles = makeStyles((theme) => ({
   closeButtonV1: {
     position: "absolute",
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
+    right: theme.spacing(0.5),
+    top: theme.spacing(0.5),
+    color: theme.palette.primary.main,
   },
 }));
 export default function DialogClose(props) {

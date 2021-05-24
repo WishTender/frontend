@@ -90,6 +90,7 @@ export default function StyledDialog(props) {
         <Box
           display="flex"
           justifyContent="center"
+          flexDirection="column"
           className={containerClasses.root}
         >
           {props.children}
