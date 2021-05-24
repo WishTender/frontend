@@ -15,36 +15,25 @@ import { makeStyles } from "@material-ui/core/styles";
 import PriceInput from "../PriceInput";
 import { fetchPatchMulti, fetchDelete } from "../../../scripts/fetchHelper";
 import StyledDialog from "../../common/StyledDialog/StyledDialog";
-import useButtonHeight from "../../common/StyledDialog/hooks/useButtonHeight";
+import theme from "../../../theme";
+import themeStyles from "../../../themeStyles";
+import useScreenSize from "../../../hooks/useScreenSize";
 import {
   toSmallestUnit,
   currencyInfo,
   isValidPrice,
 } from "../../../scripts/helpers";
 import DialogClose from "../../common/StyledDialog/TopSections/TopSection/DialogClose";
+import ResponsiveDialogTitleSection from "../../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection";
 
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      display: "grid",
-      // display: "flex",
-      // alignItems: "center",
-      // justifyContent: "center",
-      // flexDirection: "column",
+      display: "flex",
+      flexDirection: "column",
       gap: "1em",
-      paddingTop: "30px",
-    },
-    button: {
-      fontWeight: 900,
-      color: "white",
-      borderRadius: 0,
-      [theme.breakpoints.down(450)]: {
-        position: "fixed",
-        left: "0",
-        bottom: 0,
-        width: "100%",
-        zIndex: 10,
-      },
+      padding: theme.spacing(8, 0, 1, 0),
+      width: "80%",
     },
   };
 });
@@ -56,6 +45,11 @@ const useStyles = makeStyles((theme) => {
  * @param  props.onClose
  **/
 export default function EditWishForm(props) {
+  const screenSize = useScreenSize({
+    breakpoints: { xs: 0, sm: 450 },
+    useStandard: false,
+  });
+  const themeClasses = themeStyles();
   const classes = useStyles();
   const [price, setPrice] = useState("");
   const [itemName, setItemName] = useState("");
@@ -108,25 +102,22 @@ export default function EditWishForm(props) {
   };
   return (
     <>
-      {props.classes && <DialogClose {...props} />}
-
-      <Box
-        style={{
-          // width: "90%",
-          margin: "auto",
-          paddingBottom: "16px",
-        }}
-      >
+      {/* <DialogClose onClose={props.onClose} /> */}
+      <ResponsiveDialogTitleSection onClose={props.onClose}>
+        Edit Profile
+      </ResponsiveDialogTitleSection>
+      <Box display="flex" flexDirection="column" style={{ height: "100%" }}>
         <form
           autoComplete="off"
-          style={
-            props.disabled
-              ? {
-                  opacity: ".3",
-                  pointerEvents: "none",
-                }
-              : {}
-          }
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            height: "100%",
+            justifyContent: "space-between",
+            textAlign: "center",
+            paddingBottom: screenSize === "sm" && theme.spacing(2),
+          }}
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className={classes.root}>
@@ -139,7 +130,7 @@ export default function EditWishForm(props) {
                     ? URL.createObjectURL(imageFile)
                     : props.info.itemImage
                 }
-                style={{ width: "inherit" }}
+                style={{ width: "70%" }}
                 alt="product"
               />
 
@@ -232,23 +223,24 @@ export default function EditWishForm(props) {
               </Button>
             </Grid>
           </div>
-          <Button
-            id="submit_dialog"
-            disableElevation={true}
-            // className={props.classes && props.classes.submit_xs}
-            variant="contained"
-            color="primary"
-            size="large"
-            type="submit"
-            style={{
-              width: "100vw",
-              borderRadius: 0,
-              position: "absolute",
-              left: 0,
-            }}
-          >
-            Update
-          </Button>
+          <div style={{ width: "100%" }}>
+            <Button
+              id="submit_dialog"
+              disableElevation={true}
+              // className={props.classes && props.classes.submit_xs}
+              variant="contained"
+              color="primary"
+              size="large"
+              type="submit"
+              className={
+                screenSize === "xs"
+                  ? themeClasses.dialogSubmitMobile
+                  : themeClasses.dialogSubmit
+              }
+            >
+              Update
+            </Button>
+          </div>
         </form>
       </Box>
     </>

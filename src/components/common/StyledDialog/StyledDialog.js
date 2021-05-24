@@ -10,8 +10,7 @@ import { Box, Typography } from "@material-ui/core";
 
 const containerStyles = makeStyles((theme) => ({
   root: {
-    width: "400px",
-    textAlign: "center",
+    width: "100%",
     [theme.breakpoints.down("450")]: {
       //center
       display: "flex",
@@ -85,26 +84,10 @@ export default function StyledDialog(props) {
         scroll="body"
         open={props.open}
         onClose={props.onClose} // when you click on the side
-        // style={{ background: "url(/images/background_bow_confetti.png)" }}
         aria-label={props.ariaLabel || "dialog"}
         className={dialogClasses.root}
       >
-        <Box className={containerClasses.root}>
-          {/* {!props.noClose && (
-            <MuiDialogTitle>
-              <>
-                <IconButton
-                  aria-label="close"
-                  className={buttonClasses.closeButton}
-                  onClick={props.onClose}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </>
-            </MuiDialogTitle>
-          )} */}
-          {props.children}
-        </Box>
+        <Box className={containerClasses.root}>{props.children}</Box>
       </Dialog>
     </>
   );

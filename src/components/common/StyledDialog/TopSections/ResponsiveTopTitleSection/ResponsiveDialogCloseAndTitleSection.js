@@ -11,13 +11,9 @@ export default function ResponsiveDialogTitleSection(props) {
   return (
     <>
       {screenSize === "sm" ? (
-        <DialogTitleSection classes={props.classes}>
-          {props.children}
-        </DialogTitleSection>
+        <DialogTitleSection>{props.children}</DialogTitleSection>
       ) : (
-        <DialogTitleSectionXs classes={props.classes}>
-          {props.children}
-        </DialogTitleSectionXs>
+        <DialogTitleSectionXs>{props.children}</DialogTitleSectionXs>
       )}
     </>
   );

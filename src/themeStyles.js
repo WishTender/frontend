@@ -77,6 +77,24 @@ const styles = makeStyles({
     theme.palette.primary.lightGradient,
     theme.palette.primary.lightGradientReverse
   ),
+  dialogSubmitMobile: {
+    position: "relative",
+    bottom: "0",
+    left: "0",
+    height: "3em",
+    borderRadius: "0",
+    border: "1ps solid red",
+    width: "100%",
+    fontWeight: "900",
+  },
+  dialogSubmit: {
+    position: "relative",
+    height: "3em",
+    borderRadius: "0",
+    border: "1ps solid red",
+    fontWeight: "900",
+    width: "80%",
+  },
 });
 
 export default styles;
