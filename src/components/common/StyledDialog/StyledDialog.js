@@ -87,7 +87,13 @@ export default function StyledDialog(props) {
         aria-label={props.ariaLabel || "dialog"}
         className={dialogClasses.root}
       >
-        <Box className={containerClasses.root}>{props.children}</Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          className={containerClasses.root}
+        >
+          {props.children}
+        </Box>
       </Dialog>
     </>
   );

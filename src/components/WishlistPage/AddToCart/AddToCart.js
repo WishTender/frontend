@@ -50,17 +50,18 @@ export default function AddToCart(props) {
           justifyContent="center"
           style={{
             gap: "14px",
-            width: "90%",
-            margin: "auto",
+            width: "fit-content",
             // background: "url(/images/background_bow_confetti.png)",
             backgroundSize: "100%",
             backgroundRepeat: "no-repeat",
             backgroundPositionY: "-80px",
+
             maxHeight: "80%",
             padding:
               screenSize === "xs"
                 ? theme.spacing(5, 0, 0, 0)
-                : theme.spacing(6, 1, 2, 1),
+                : theme.spacing(6, 2, 6, 2),
+            margin: screenSize === "sm" ? theme.spacing(0, 4, 0, 4) : "auto",
           }}
         >
           {cart && (
