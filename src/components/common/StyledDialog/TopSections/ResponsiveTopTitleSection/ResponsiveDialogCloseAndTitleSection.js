@@ -1,7 +1,7 @@
 import React from "react";
 import DialogTitleSection from "./DialogTitleSection";
 import DialogTitleSectionXs from "./DialogTitleSectionXs";
-import useScreenSize from "../../../hooks/useScreenSize";
+import useScreenSize from "../../../../../hooks/useScreenSize";
 
 export default function ResponsiveDialogTitleSection(props) {
   const screenSize = useScreenSize({

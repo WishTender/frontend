@@ -6,58 +6,8 @@ import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
-const childStyles = makeStyles((theme) => ({
-  title: {
-    padding: "0 0 40px 0",
-    "& h2.MuiTypography-root": {
-      width: "100%",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  },
-  title_xs: {
-    position: "absolute",
-    borderBottom: `3px solid ${theme.palette.primary.main}`,
-    padding: "0",
-    left: 0,
-    display: "flex",
-    justifyContent: "flex-end",
-    alignContent: "center",
-    width: "100%",
-    height: "4em",
-    "& h2.MuiTypography-root": {
-      width: "100%",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-  },
-  closeButton: {
-    position: "absolute",
-    right: "3%",
-    top: "3%",
-  },
-  closeButton_xs: { color: "white" },
-  submit: { borderRadius: "0" },
-  submit_xs: {
-    position: "fixed",
-    bottom: "0",
-    left: "0",
-    height: "4em",
-    borderRadius: "0",
-    width: "100%",
-    fontWeight: "900",
-  },
-  dialogContent: {},
-  dialogContent_xs: {
-    top: "20vh",
-    position: "relative",
-  },
-  titleText_xs: { right: "14%", position: "relative" },
-}));
 const containerStyles = makeStyles((theme) => ({
   root: {
     width: "400px",
@@ -95,10 +45,9 @@ export default function StyledDialog(props) {
           maxHeight: "80%",
           margin: "auto",
           borderRadius: "6px",
-          padding: theme.spacing(5, 1),
-          paddingTop: 0,
+          // paddingTop: 0,
         },
-        [theme.breakpoints.down("450")]: {
+        [theme.breakpoints.down(props.mobileBreakPoint || "450")]: {
           "& .MuiDialog-paper": {
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
@@ -108,7 +57,6 @@ export default function StyledDialog(props) {
             maxHeight: "none",
             height: "100%",
             margin: "auto",
-            padding: "0px 0 0 0",
             boxSizing: "border-box",
             maxWidth: "none",
             borderRadius: "0",
@@ -119,17 +67,17 @@ export default function StyledDialog(props) {
     };
   });
 
-  const childClasses = childStyles();
+  // const childClasses = childStyles();
   const dialogClasses = dialogStyles();
   const containerClasses = containerStyles();
-  const clonedChildren = cloneElement(
-    props.children,
-    {
-      onClose: props.onClose,
-      classes: childClasses,
-    },
-    null
-  );
+  // const clonedChildren = cloneElement(
+  //   props.children,
+  //   {
+  //     onClose: props.onClose,
+  //     classes: childClasses,
+  //   },
+  //   null
+  // );
 
   return (
     <>
@@ -141,7 +89,7 @@ export default function StyledDialog(props) {
         aria-label={props.ariaLabel || "dialog"}
         className={dialogClasses.root}
       >
-        <Container className={containerClasses.root}>
+        <Box className={containerClasses.root}>
           {/* {!props.noClose && (
             <MuiDialogTitle>
               <>
@@ -155,8 +103,8 @@ export default function StyledDialog(props) {
               </>
             </MuiDialogTitle>
           )} */}
-          {clonedChildren}
-        </Container>
+          {props.children}
+        </Box>
       </Dialog>
     </>
   );

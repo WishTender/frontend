@@ -10,7 +10,7 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { useForm } from "react-hook-form";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import useScreenSize from "../../../../../hooks/useScreenSize";
-import ResponsiveDialogTitleSection from "../../../../common/StyledDialog/ResponsiveDialogTitleSection";
+import ResponsiveDialogCloseAndTitleSection from "../../../../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection";
 const useStyles = makeStyles((theme) => {
   return {
     root: {
@@ -97,9 +97,9 @@ export default function UpdateProfileForm(props) {
   };
   return (
     <>
-      <ResponsiveDialogTitleSection {...props}>
+      <ResponsiveDialogCloseAndTitleSection {...props}>
         Profile Info
-      </ResponsiveDialogTitleSection>
+      </ResponsiveDialogCloseAndTitleSection>
       <Container
         // className={classes.root}
         className={

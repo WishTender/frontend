@@ -1,5 +1,4 @@
 import React from "react";
-import useScreenSize from "../../../hooks/useScreenSize";
 
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";

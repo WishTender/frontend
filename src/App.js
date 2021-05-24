@@ -49,7 +49,6 @@ import AddToCart from "./components/WishlistPage/AddToCart/AddToCart";
 import EditWishForm from "./components/WishlistPage/EditWishForm/EditWishForm";
 import AddWish from "./components/WishlistPage/AddWish/AddWish";
 import UpdateProfileForm from "./components/WishlistPage/ProfileSection/UpdateProfileInfo/UpdateProfileForm/UpdateProfileForm";
-import CustomizedDialogs from "./components/WishlistPage/ProfileSection/UpdateProfileInfo/UpdateProfileForm/Test";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -126,26 +125,18 @@ function App(props) {
           );
         }}
       />
-      <Route
-        path="/add-to-cart"
-        render={(props) => {
-          return (
-            <StyledDialog
-              background="url(/images/background_bow_confetti-sm_optimized.png)"
-              background_xs="url(/images/background_bow_confetti_xs_optimized.png)"
-              onClose={props.onClose}
-              open={true}
-            >
-              <AddToCart
-                item={{
-                  itemImage:
-                    "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
-                }}
-              />
-            </StyledDialog>
-          );
-        }}
-      />
+      <Route path="/add-to-cart">
+        {/* <StyledDialog open={true}> */}
+        <AddToCart
+          onClose={props.onClose}
+          open={true}
+          item={{
+            itemImage:
+              "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
+          }}
+        />
+        {/* </StyledDialog> */}
+      </Route>
       <Route
         path="/add-to-cart2"
         render={(props) => {
@@ -207,12 +198,7 @@ function App(props) {
           );
         }}
       />
-      <Route
-        path="/updateinfotest"
-        render={(props) => {
-          return <CustomizedDialogs />;
-        }}
-      />
+
       <Route
         path="/add-wish"
         render={(props) => {
