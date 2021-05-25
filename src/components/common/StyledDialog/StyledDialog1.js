@@ -1,20 +1,29 @@
-import React, { cloneElement } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import Container from "@material-ui/core/Container";
+import React from "react";
 
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Typography } from "@material-ui/core";
 
+const buttonStyles = makeStyles((theme) => ({
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+}));
 const containerStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: "400px",
+    textAlign: "center",
     [theme.breakpoints.down("450")]: {
       //center
       display: "flex",
       flexDirection: "column",
+      //
       height: "100%",
       width: "100%",
     },
@@ -28,7 +37,7 @@ const containerStyles = makeStyles((theme) => ({
  * @param  props.onClose
  * @param  props.ariaLabel
  **/
-export default function StyledDialog(props) {
+export default function StyledDialog1(props) {
   const dialogStyles = makeStyles((theme) => {
     return {
       root: {
@@ -43,9 +52,10 @@ export default function StyledDialog(props) {
           maxHeight: "80%",
           margin: "auto",
           borderRadius: "6px",
-          // paddingTop: 0,
+          padding: theme.spacing(5, 1),
+          paddingTop: 0,
         },
-        [theme.breakpoints.down(props.mobileBreakPoint || "450")]: {
+        [theme.breakpoints.down("450")]: {
           "& .MuiDialog-paper": {
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
@@ -55,38 +65,43 @@ export default function StyledDialog(props) {
             maxHeight: "none",
             height: "100%",
             margin: "auto",
+            padding: "0px 0 0 0",
             boxSizing: "border-box",
             maxWidth: "none",
             borderRadius: "0",
-            // "& .MuiContainer-root": { padding: 0 },
           },
         },
       },
     };
   });
-
-  // const childClasses = childStyles();
+  const buttonClasses = buttonStyles();
   const dialogClasses = dialogStyles();
   const containerClasses = containerStyles();
-  // const clonedChildren = cloneElement(
-  //   props.children,
-  //   {
-  //     onClose: props.onClose,
-  //     classes: childClasses,
-  //   },
-  //   null
-  // );
 
   return (
     <>
       <Dialog
         scroll="body"
         open={props.open}
-        onClose={props.onClose} // when you click on the side
+        onClose={props.onClose}
+        // style={{ background: "url(/images/background_bow_confetti.png)" }}
         aria-label={props.ariaLabel || "dialog"}
         className={dialogClasses.root}
       >
-        <Box className={containerClasses.root}>{props.children}</Box>
+        <Container className={containerClasses.root}>
+          <MuiDialogTitle>
+            {!props.noClose && (
+              <IconButton
+                aria-label="close"
+                className={buttonClasses.closeButton}
+                onClick={props.onClose}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
+          </MuiDialogTitle>
+          {props.children}
+        </Container>
       </Dialog>
     </>
   );

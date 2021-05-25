@@ -3,11 +3,12 @@ import axios from "axios";
 import Search from "./Search.js";
 import filterOutSmallImages from "./filterImages";
 import WishForm from "./WishForm/WishForm";
+import useScreenSize from "../../../hooks/useScreenSize";
 import "./AddWish.css";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import StyledDialog from "../../common/StyledDialog/StyledDialog";
+import { Box } from "@material-ui/core";
+import ResponsiveDialogTitleSection from "../../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection.js";
 const fetchPostJson = async (data, route, callback) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
@@ -27,21 +28,12 @@ const fetchPostJson = async (data, route, callback) => {
     });
 };
 // import { fetchPostJson } from "../../../scripts/fetchHelper";
-const useStyles = makeStyles((theme) => {
-  return {
-    Container: {
-      display: "grid",
-      gap: "1.6em",
-      [theme.breakpoints.down(450)]: {
-        paddingBottom: "4em",
-      },
-    },
-  };
-});
-function AddWish(props) {
-  const theme = useTheme();
-  theme.shape = { borderRadius: 4 };
-  const classes = useStyles();
+
+function AddWish1(props) {
+  const screenSize = useScreenSize({
+    breakpoints: { xs: 0, sm: 450 },
+    useStandard: false,
+  });
   const [productInfo, setProductInfo] = useState({
     price: "",
     title: "",
@@ -49,6 +41,20 @@ function AddWish(props) {
     ogImageSrcs: [],
     imageSrcs: [],
   });
+  const useStyles = makeStyles((theme) => {
+    return {
+      container: {
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        height: "100%",
+
+        paddingBottom: screenSize === "sm" && theme.spacing(3),
+      },
+      input_container: { padding: theme.spacing(4, 4, 1, 4) },
+    };
+  });
+  const classes = useStyles();
   const [filteredImages, setFilteredImages] = useState([]);
   const [url, setUrl] = useState(null);
   const [retrieved, setRetrieved] = useState(null);
@@ -86,20 +92,34 @@ function AddWish(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <h2>Add A Wish</h2>
+    <StyledDialog onClose={props.onClose} open={props.open}>
+      <Box
+        style={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          width: screenSize === "sm" && "400px",
+        }}
+      >
+        <ResponsiveDialogTitleSection onClose={props.onClose}>
+          Add A Wish
+        </ResponsiveDialogTitleSection>
 
-      <Container className={classes.Container}>
-        <Search submit={(e) => handleScrapeProduct(e)} />
-        <WishForm
-          disabled={!retrieved}
-          info={productInfo}
-          images={filteredImages}
-          onSubmit={postWish}
-        />
-      </Container>
-    </ThemeProvider>
+        <Box className={classes.container}>
+          <Box className={classes.input_container}>
+            <Search submit={(e) => handleScrapeProduct(e)} />
+          </Box>
+          <WishForm
+            classes={classes}
+            disabled={!retrieved}
+            info={productInfo}
+            images={filteredImages}
+            onSubmit={postWish}
+          />
+        </Box>
+      </Box>
+    </StyledDialog>
   );
 }
 
-export default AddWish;
+export default AddWish1;

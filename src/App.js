@@ -42,8 +42,13 @@ import CheckOutSuccess from "./components/CheckOutSuccess/CheckOutSuccess";
 import ConnectSuccess from "./components/ConnectSuccess/ConnectSucess";
 import { CssBaseline, Dialog } from "@material-ui/core";
 import StyledDialog from "./components/common/StyledDialog/StyledDialog";
+import StyledDialog1 from "./components/common/StyledDialog/StyledDialog1";
 import CurrencyOptions from "./components/SelectCurrencyForm/SelectCurrencyForm";
 import SelectCurrencyForm from "./components/SelectCurrencyForm/SelectCurrencyForm";
+import AddToCart from "./components/WishlistPage/AddToCart/AddToCart";
+import EditWishForm from "./components/WishlistPage/EditWishForm/EditWishForm";
+import AddWish from "./components/WishlistPage/AddWish/AddWish";
+import UpdateProfileForm from "./components/WishlistPage/ProfileSection/UpdateProfileInfo/UpdateProfileForm/UpdateProfileForm";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -120,6 +125,7 @@ function App(props) {
           );
         }}
       />
+
       <Route
         path="/"
         exact
