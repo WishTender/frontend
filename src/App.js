@@ -125,8 +125,7 @@ function App(props) {
           );
         }}
       />
-      <Route path="/add-to-cart">
-        {/* <StyledDialog open={true}> */}
+      {/* <Route path="/add-to-cart">
         <AddToCart
           onClose={props.onClose}
           open={true}
@@ -135,7 +134,6 @@ function App(props) {
               "https://wishtender.s3.amazonaws.com/images/profileImages/2716d359-fd4e-43ed-ab4d-174664d2da0f.png",
           }}
         />
-        {/* </StyledDialog> */}
       </Route>
       <Route
         path="/add-to-cart2"
@@ -204,7 +202,7 @@ function App(props) {
         render={(props) => {
           return (
             <StyledDialog open={true}>
-              <AddWish></AddWish>
+              <AddWish1></AddWish1>
             </StyledDialog>
           );
         }}
@@ -218,7 +216,7 @@ function App(props) {
             </StyledDialog1>
           );
         }}
-      />
+      /> */}
       <Route
         path="/"
         exact

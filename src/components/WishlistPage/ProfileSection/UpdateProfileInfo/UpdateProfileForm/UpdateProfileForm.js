@@ -5,60 +5,21 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Container from "@material-ui/core/Container";
 import FormControl from "@material-ui/core/FormControl";
 import CloseIcon from "@material-ui/icons/Close";
-import { Button, Typography, IconButton, Dialog } from "@material-ui/core";
+import { Button, Typography, IconButton, Dialog, Box } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { useForm } from "react-hook-form";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import useScreenSize from "../../../../../hooks/useScreenSize";
 import ResponsiveDialogCloseAndTitleSection from "../../../../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection";
-const useStyles = makeStyles((theme) => {
-  return {
-    root: {
-      width: "90%",
-    },
-    title: {
-      // margin: theme.spacing(2),
-    },
-  };
-});
-
-const styles = (theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: "absolute",
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">Tooo</Typography>
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
+import themeStyles from "../../../../../themeStyles";
+import theme from "../../../../../theme";
 /**
  * Renders a <UpdateProfileForm /> component
  * @param  props
  * @param  props.handleCheckHandleAvailability
  **/
 export default function UpdateProfileForm(props) {
+  const themeClasses = themeStyles(props);
   const screenSize = useScreenSize({
     breakpoints: { xs: 0, sm: 450 },
     useStandard: false,
@@ -70,7 +31,6 @@ export default function UpdateProfileForm(props) {
 
   const [handle, setHandle] = useState(null);
   const input = useRef(null);
-  const classes = useStyles();
 
   const validateHandle = async (handle) => {
     if (!handle || handle.toLowerCase() === props.handle.toLowerCase()) return;
@@ -96,103 +56,131 @@ export default function UpdateProfileForm(props) {
     props.onClose();
   };
   return (
-    <>
-      <ResponsiveDialogCloseAndTitleSection {...props}>
+    <Box
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        width: screenSize === "sm" && "400px",
+      }}
+    >
+      <ResponsiveDialogCloseAndTitleSection onClose={props.onClose}>
         Profile Info
       </ResponsiveDialogCloseAndTitleSection>
-      <Container
-        // className={classes.root}
-        className={
-          screenSize === "xs"
-            ? props.classes.dialogContent_xs
-            : props.classes.dialogContent
-        }
-        width="100%"
+      <Box
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+
+          paddingBottom: screenSize === "sm" && theme.spacing(6),
+        }}
       >
         <form
-          style={{ display: "grid", gap: "1em" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "100%",
+            gap: "1em",
+            alignItems: "center",
+            paddingTop: theme.spacing(3),
+          }}
           onSubmit={handleSubmit(onSubmit)}
           autoComplete="off"
           id="update-profile-form"
         >
-          <FormControl
-            error={
-              errors.handle && !(errors.handle.type === "required")
-                ? true
-                : false
-            }
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "80%",
+            }}
           >
-            <InputLabel htmlFor="handle-input">handle</InputLabel>
-            <Input
-              onFocus={(e) => {
-                if (!e.target.value) e.target.value = props.handle;
-              }}
-              onBlur={(e) => {
-                if (e.target.value === props.handle) e.target.value = null;
-              }}
-              ref={input}
-              name="handle"
-              onChange={(e) => {
-                setHandle(e.target.value);
-                if (errors.handle !== undefined) {
-                  if (errors.handle.type === "validate") {
-                    clearErrors(["handle"]);
+            <FormControl
+              error={
+                errors.handle && !(errors.handle.type === "required")
+                  ? true
+                  : false
+              }
+            >
+              <InputLabel htmlFor="handle-input">handle</InputLabel>
+              <Input
+                onFocus={(e) => {
+                  if (!e.target.value) e.target.value = props.handle;
+                }}
+                onBlur={(e) => {
+                  if (e.target.value === props.handle) e.target.value = null;
+                }}
+                ref={input}
+                name="handle"
+                onChange={(e) => {
+                  setHandle(e.target.value);
+                  if (errors.handle !== undefined) {
+                    if (errors.handle.type === "validate") {
+                      clearErrors(["handle"]);
+                    }
                   }
-                }
-              }}
-              inputRef={register({
-                validate: async (value) => await validateHandle(value),
-                maxLength: {
-                  value: 24,
-                  message: "handle must be less than 25 characters",
-                },
-                pattern: {
-                  value: /^[0-9A-Za-z_-]+$/,
-                  message: `Your username can only contain letters, numbers, '_', or '-'`,
-                },
-              })}
-              spellCheck="false"
-              id="handle-input"
-              aria-describedby="handle-helper-text"
-            />
-            <FormHelperText id="handle-helper-text">
-              {errors.handle?.message ||
-                `www.wishtender.com/${
-                  handle || props.handle ? handle || props.handle : "handle"
-                }`}
-            </FormHelperText>
-          </FormControl>
-          <FormControl
-            error={
-              errors.wishlistName && !(errors.wishlistName.type === "required")
-                ? true
-                : false
-            }
-          >
-            <InputLabel htmlFor="wishlist-name-input">Wishlist Name</InputLabel>
-            <Input
-              onFocus={(e) => {
-                if (!e.target.value) e.target.value = props.wishlistName;
-              }}
-              onBlur={(e) => {
-                if (e.target.value === props.wishlistName)
-                  e.target.value = null;
-              }}
-              name="wishlistName"
-              inputRef={register({
-                maxLength: {
-                  value: 22,
-                  message: "wishlist name must be less than 23 characters",
-                },
-              })}
-              spellCheck="false"
-              id="wishlist-name-input"
-              aria-describedby="wishlist-name-helper-text"
-            />
-            <FormHelperText id="wishlist-name-helper-text">
-              {errors.wishlistName?.message || " "}
-            </FormHelperText>
-          </FormControl>
+                }}
+                inputRef={register({
+                  validate: async (value) => await validateHandle(value),
+                  maxLength: {
+                    value: 24,
+                    message: "handle must be less than 25 characters",
+                  },
+                  pattern: {
+                    value: /^[0-9A-Za-z_-]+$/,
+                    message: `Your username can only contain letters, numbers, '_', or '-'`,
+                  },
+                })}
+                spellCheck="false"
+                id="handle-input"
+                aria-describedby="handle-helper-text"
+              />
+              <FormHelperText id="handle-helper-text">
+                {errors.handle?.message ||
+                  `www.wishtender.com/${
+                    handle || props.handle ? handle || props.handle : "handle"
+                  }`}
+              </FormHelperText>
+            </FormControl>
+            <FormControl
+              error={
+                errors.wishlistName &&
+                !(errors.wishlistName.type === "required")
+                  ? true
+                  : false
+              }
+            >
+              <InputLabel htmlFor="wishlist-name-input">
+                Wishlist Name
+              </InputLabel>
+              <Input
+                onFocus={(e) => {
+                  if (!e.target.value) e.target.value = props.wishlistName;
+                }}
+                onBlur={(e) => {
+                  if (e.target.value === props.wishlistName)
+                    e.target.value = null;
+                }}
+                name="wishlistName"
+                inputRef={register({
+                  maxLength: {
+                    value: 22,
+                    message: "wishlist name must be less than 23 characters",
+                  },
+                })}
+                spellCheck="false"
+                id="wishlist-name-input"
+                aria-describedby="wishlist-name-helper-text"
+              />
+              <FormHelperText id="wishlist-name-helper-text">
+                {errors.wishlistName?.message || " "}
+              </FormHelperText>
+            </FormControl>
+          </div>
           <Button
             variant="contained"
             disableElevation
@@ -202,15 +190,15 @@ export default function UpdateProfileForm(props) {
             value="Submit"
             className={
               screenSize === "xs"
-                ? props.classes.submit_xs
-                : props.classes.submit
+                ? themeClasses.dialogSubmitMobile
+                : themeClasses.dialogSubmit
             }
           >
             Save
           </Button>
         </form>
-      </Container>
+      </Box>
       {/* </Dialog> */}
-    </>
+    </Box>
   );
 }

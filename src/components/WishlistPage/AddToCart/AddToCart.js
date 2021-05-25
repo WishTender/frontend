@@ -37,8 +37,8 @@ export default function AddToCart(props) {
     <StyledDialog
       background="url(/images/background_bow_confetti-sm_optimized.png)"
       background_xs="url(/images/background_bow_confetti_xs_optimized.png)"
-      //   onClose={() => {}}
-      open={true}
+      onClose={props.onClose}
+      open={props.open}
     >
       <>
         <DialogClose onClose={props.onClose} />

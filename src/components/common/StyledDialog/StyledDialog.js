@@ -15,7 +15,6 @@ const containerStyles = makeStyles((theme) => ({
       //center
       display: "flex",
       flexDirection: "column",
-      //
       height: "100%",
       width: "100%",
     },
@@ -87,14 +86,7 @@ export default function StyledDialog(props) {
         aria-label={props.ariaLabel || "dialog"}
         className={dialogClasses.root}
       >
-        <Box
-          display="flex"
-          justifyContent="center"
-          flexDirection="column"
-          className={containerClasses.root}
-        >
-          {props.children}
-        </Box>
+        <Box className={containerClasses.root}>{props.children}</Box>
       </Dialog>
     </>
   );

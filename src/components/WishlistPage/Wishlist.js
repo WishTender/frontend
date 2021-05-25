@@ -106,13 +106,15 @@ function Wishlist(props) {
           />
         </StyledDialog>
       )}
+      {/* {selectWish && !props.isAuth && (
+        <AddToCart open={selectWish} onClose={() => setSelectWish(null)} item={selectWish} />
+      )} */}
       {selectWish && !props.isAuth && (
-        <AddToCart onClose={() => setSelectWish(null)} item={selectWish} />
-      )}
-      {selectWish && (
         <AddToCart
           open={selectWish ? true : false}
-          onClose={() => setSelectWish(null)}
+          onClose={() => {
+            setSelectWish(null);
+          }}
           item={selectWish}
         />
       )}
@@ -121,20 +123,16 @@ function Wishlist(props) {
         <Typography> Wishes: {props?.items?.length}</Typography>
         {props.isAuth && (
           <div className="wrapper add_a_wish">
-            <StyledDialog
+            <AddWish
               open={addWishVisible}
               onClose={() => setAddWishVisible(false)}
-            >
-              {/* don't show unless authorized */}
-              <AddWish
-                wishlist={props.id}
-                currency={props.currency}
-                afterAddWish={(wish) => {
-                  setAddWishVisible(false);
-                  props.refreshWishlist();
-                }}
-              />
-            </StyledDialog>
+              wishlist={props.id}
+              currency={props.currency}
+              afterAddWish={(wish) => {
+                setAddWishVisible(false);
+                props.refreshWishlist();
+              }}
+            />
             <Button
               onClick={() => {
                 setAddWishVisible(true);

@@ -11,9 +11,13 @@ export default function ResponsiveDialogTitleSection(props) {
   return (
     <>
       {screenSize === "sm" ? (
-        <DialogTitleSection>{props.children}</DialogTitleSection>
+        <DialogTitleSection onClose={props.onClose}>
+          {props.children}
+        </DialogTitleSection>
       ) : (
-        <DialogTitleSectionXs>{props.children}</DialogTitleSectionXs>
+        <DialogTitleSectionXs onClose={props.onClose}>
+          {props.children}
+        </DialogTitleSectionXs>
       )}
     </>
   );
