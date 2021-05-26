@@ -77,7 +77,11 @@ export default function SelectCurrencyForm(props) {
   return (
     <>
       {props.currencies.length && (
-        <ResponsiveForm onSubmit={handleSubmit(submit)} title="Select Currency">
+        <ResponsiveForm
+          onClose={props.onClose}
+          onSubmit={handleSubmit(submit)}
+          title="Select Currency"
+        >
           <div
             style={{
               // width: "80%",
@@ -93,7 +97,7 @@ export default function SelectCurrencyForm(props) {
             {/* <Typography variant="h7">
               To Continue Please Select Currency
             </Typography> */}
-            <Typography variant="body2">
+            <Typography variant="body2" style={{ color: "rgba(0, 0, 0, 0.4)" }}>
               These settings can be changed in the menu bar at anytime.
             </Typography>
 
