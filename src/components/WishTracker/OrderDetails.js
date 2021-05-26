@@ -144,15 +144,17 @@ export default function OrderDetails({
                   "The tender didn't leave a note"
                 )}
                 <Box display="flex" justifyContent="flex-end">
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    disableElevation
-                    disabled={!!reply}
-                    onClick={() => setReply(order)}
-                  >
-                    Reply
-                  </Button>
+                  {!order.noteToTender && (
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      disableElevation
+                      disabled={!!reply}
+                      onClick={() => setReply(order)}
+                    >
+                      Reply
+                    </Button>
+                  )}
                 </Box>
               </TableCell>
             </TableRow>
