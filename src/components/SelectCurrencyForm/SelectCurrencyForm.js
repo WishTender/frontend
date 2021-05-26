@@ -1,23 +1,23 @@
 import React, { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import useScreenSize from "../../hooks/useScreenSize";
+import theme from "../../theme";
+
 import {
-  Button,
   Grid,
   Typography,
   InputLabel,
-  Box,
   Switch,
-  FormGroup,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@material-ui/core";
 import currenciesArray from "./currenciesMenuArray";
-import {
-  FormControl,
-  FormControlLabel,
-  FormInputLabel,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
+import { FormControl, Select } from "@material-ui/core";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
+import ResponsiveForm from "../common/StyledDialog/ResponsiveForm/ResponsiveForm";
+import ResponsiveFormButton from "../common/StyledDialog/ResponsiveForm/ResponsiveFormButton";
 function CurrencyOptions(props) {
   const { setCurrencyCookieAndContext, setCurrency } =
     useContext(CurrencyContext);
@@ -57,12 +57,16 @@ function CurrencyOptions(props) {
 }
 
 export default function SelectCurrencyForm(props) {
+  const screenSize = useScreenSize({
+    breakpoints: { xs: 0, sm: 450 },
+    useStandard: false,
+  });
   const { register, handleSubmit, error, control } = useForm();
-  const [checked, setChecked] = useState(true);
+  const [convert, setConvert] = useState(true);
   const { setCurrencyCookie, setCurrency, setCurrencyCookieAndContext } =
     useContext(CurrencyContext);
   const submit = (data) => {
-    if (!checked) {
+    if (!convert) {
       // setCurrencyCookieAndContext("noConversion", setCurrency);
       setCurrencyCookie("noConversion");
     } else {
@@ -73,61 +77,72 @@ export default function SelectCurrencyForm(props) {
   return (
     <>
       {props.currencies.length && (
-        <Box display="flex">
-          <form
+        <ResponsiveForm
+          onClose={props.onClose}
+          onSubmit={handleSubmit(submit)}
+          title="Select Currency"
+        >
+          <div
             style={{
+              // width: "80%",
               display: "flex",
               flexDirection: "column",
-              gap: "2rem",
-              // alignItems: "center",
+              gap: "2em",
+              padding:
+                screenSize === "xs"
+                  ? theme.spacing(6, 0, 1, 0)
+                  : theme.spacing(4, 0, 1, 0),
             }}
-            onSubmit={handleSubmit(submit)}
           >
-            <Typography variant="h5">
+            {/* <Typography variant="h7">
               To Continue Please Select Currency
+            </Typography> */}
+            <Typography variant="body2" style={{ color: "rgba(0, 0, 0, 0.4)" }}>
+              These settings can be changed in the menu bar at anytime.
             </Typography>
-            {/* <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                padding: "2rem 0rem",
-                gap: "8px",
-              }}
-            > */}
-            <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item style={checked ? { color: "grey" } : {}}>
-                Leave prices as listed.
-              </Grid>
-              <Grid item>
-                <Switch
-                  checked={checked}
-                  onChange={() => {
-                    setChecked(!checked);
-                  }}
-                  name="checkedB"
-                  color="secondary"
-                ></Switch>
-              </Grid>
-              <Grid style={!checked ? { color: "grey" } : {}} item>
-                Convert prices
-              </Grid>
-            </Grid>
+
+            <FormControl>
+              <FormLabel>Covert Prices?</FormLabel>
+              <RadioGroup
+                value={convert ? "convert" : "noConvert"}
+                onChange={(e) => {
+                  setConvert(
+                    e.currentTarget.value === "convert" ? true : false
+                  );
+                }}
+              >
+                <FormControlLabel
+                  // value={true}
+                  value="convert"
+                  label={
+                    <Typography variant="caption">
+                      Yes, convert prices to my currency.
+                    </Typography>
+                  }
+                  control={<Radio></Radio>}
+                ></FormControlLabel>
+                <FormControlLabel
+                  // value={false}
+                  value="noConvert"
+                  label={
+                    <Typography variant="caption">
+                      No, leave prices as listed.
+                    </Typography>
+                  }
+                  control={<Radio></Radio>}
+                ></FormControlLabel>
+              </RadioGroup>
+            </FormControl>
 
             <CurrencyOptions
-              disabled={!checked}
+              disabled={!convert}
               name="currency"
               control={control}
               currencies={props.currencies}
             />
-            {/* </div> */}
-            <Typography variant="body2">
-              These settings can be changed in the menu bar at anytime.
-            </Typography>
-            <Button type="submit" color="primary" variant="contained">
-              Set Currency
-            </Button>
-          </form>
-        </Box>
+          </div>
+          <ResponsiveFormButton>Set Currency</ResponsiveFormButton>
+        </ResponsiveForm>
       )}
     </>
   );

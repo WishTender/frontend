@@ -46,32 +46,35 @@ function WishlistPage(props) {
     // if (!clientCurrency) {
     //   setCurrencyNeeded(true);
     // }
+
     fetchGet(`${handleRoute}${aliasPath.toLowerCase()}`, async (alias) => {
       const wl = alias.wishlists[0];
       if (wl) {
-        if (
-          (currentUser && currentUser.currency === alias.currency) ||
-          clientCurrency === "noConversion" ||
-          clientCurrency === alias.currency
-        ) {
-          parseWishlistPrices(wl, alias.currency, localeContext);
-        } else {
-          if (!convertRate) {
-            const response = await fetch(
-              `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${alias.currency}&symbols=${clientCurrency}`
-            ).catch((r) => {
-              console.log(r);
-            });
+        if (clientCurrency) {
+          if (
+            (currentUser && currentUser.currency === alias.currency) ||
+            clientCurrency === "noConversion" ||
+            clientCurrency === alias.currency
+          ) {
+            parseWishlistPrices(wl, alias.currency, localeContext);
+          } else {
+            if (!convertRate) {
+              const response = await fetch(
+                `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${alias.currency}&symbols=${clientCurrency}`
+              ).catch((r) => {
+                console.log(r);
+              });
 
-            let res = await response.json();
-            setConvertRate(res.rate);
+              let res = await response.json();
+              setConvertRate(res.rate);
+            }
+            parseConvertWishlistPrices(
+              wl,
+              clientCurrency,
+              localeContext,
+              convertRate
+            );
           }
-          parseConvertWishlistPrices(
-            wl,
-            clientCurrency,
-            localeContext,
-            convertRate
-          );
         }
       }
       setIsCurrentUsersProfile(

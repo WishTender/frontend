@@ -32,31 +32,25 @@ export default function DialogTitleSectionXs(props) {
   const classes = useStyles();
 
   return (
-    <>
-      <DialogTitle className={classes.title_xs}>
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton_xs}
-          onClick={props.onClose}
-        >
-          <ArrowBackIcon color="primary" />
-        </IconButton>
+    <DialogTitle className={classes.title_xs}>
+      <IconButton
+        aria-label="close"
+        className={classes.closeButton_xs}
+        onClick={props.onClose}
+      >
+        <ArrowBackIcon color="primary" />
+      </IconButton>
 
-        <Typography
-          variant="h6"
-          className={classes.titleText_xs}
-          color="primary"
-        >
-          {props.children}
-        </Typography>
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton_xs}
-          onClick={props.onClose}
-        >
-          <CloseIcon color="primary" />
-        </IconButton>
-      </DialogTitle>
-    </>
+      <Typography variant="h6" className={classes.titleText_xs} color="primary">
+        {props.children}
+      </Typography>
+      <IconButton
+        aria-label="close"
+        className={classes.closeButton_xs}
+        onClick={props.onClose}
+      >
+        <CloseIcon color="primary" />
+      </IconButton>
+    </DialogTitle>
   );
 }
