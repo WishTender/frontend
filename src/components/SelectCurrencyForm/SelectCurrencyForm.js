@@ -18,6 +18,8 @@ import {
   Select,
 } from "@material-ui/core";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
+import ResponsiveForm from "../common/StyledDialog/ResponsiveForm/ResponsiveForm";
+import ResponsiveFormButton from "../common/StyledDialog/ResponsiveForm/ResponsiveFormButton";
 function CurrencyOptions(props) {
   const { setCurrencyCookieAndContext, setCurrency } =
     useContext(CurrencyContext);
@@ -73,61 +75,41 @@ export default function SelectCurrencyForm(props) {
   return (
     <>
       {props.currencies.length && (
-        <Box display="flex">
-          <form
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "2rem",
-              // alignItems: "center",
-            }}
-            onSubmit={handleSubmit(submit)}
-          >
-            <Typography variant="h5">
-              To Continue Please Select Currency
-            </Typography>
-            {/* <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                padding: "2rem 0rem",
-                gap: "8px",
-              }}
-            > */}
-            <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item style={checked ? { color: "grey" } : {}}>
-                Leave prices as listed.
-              </Grid>
-              <Grid item>
-                <Switch
-                  checked={checked}
-                  onChange={() => {
-                    setChecked(!checked);
-                  }}
-                  name="checkedB"
-                  color="secondary"
-                ></Switch>
-              </Grid>
-              <Grid style={!checked ? { color: "grey" } : {}} item>
-                Convert prices
-              </Grid>
-            </Grid>
+        <ResponsiveForm onSubmit={handleSubmit(submit)}>
+          <Typography variant="h5">
+            To Continue Please Select Currency
+          </Typography>
 
-            <CurrencyOptions
-              disabled={!checked}
-              name="currency"
-              control={control}
-              currencies={props.currencies}
-            />
-            {/* </div> */}
-            <Typography variant="body2">
-              These settings can be changed in the menu bar at anytime.
-            </Typography>
-            <Button type="submit" color="primary" variant="contained">
-              Set Currency
-            </Button>
-          </form>
-        </Box>
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item style={checked ? { color: "grey" } : {}}>
+              Leave prices as listed.
+            </Grid>
+            <Grid item>
+              <Switch
+                checked={checked}
+                onChange={() => {
+                  setChecked(!checked);
+                }}
+                name="checkedB"
+                color="secondary"
+              ></Switch>
+            </Grid>
+            <Grid style={!checked ? { color: "grey" } : {}} item>
+              Convert prices
+            </Grid>
+          </Grid>
+
+          <CurrencyOptions
+            disabled={!checked}
+            name="currency"
+            control={control}
+            currencies={props.currencies}
+          />
+          <Typography variant="body2">
+            These settings can be changed in the menu bar at anytime.
+          </Typography>
+          <ResponsiveFormButton>Set Currency</ResponsiveFormButton>
+        </ResponsiveForm>
       )}
     </>
   );
