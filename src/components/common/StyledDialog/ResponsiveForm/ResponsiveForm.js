@@ -16,8 +16,6 @@ export default function ResponsiveForm(props) {
     flexDirection: "column",
     height: "100%",
     justifyContent: "space-between",
-    // textAlign: "center",
-    // paddingBottom: screenSize === "sm" && theme.spacing(2),
   };
   const formContent = props.children.filter(
     (ch) => ch.type.name !== "ResponsiveFormButton"
@@ -27,7 +25,10 @@ export default function ResponsiveForm(props) {
   );
   return (
     <>
-      <ResponsiveDialogTitleSection onClose={props.onClose}>
+      <ResponsiveDialogTitleSection
+        style={{ textAlign: "center" }}
+        onClose={props.onClose}
+      >
         {props.title}
       </ResponsiveDialogTitleSection>
       <Box display="flex" flexDirection="column" style={{ height: "100%" }}>
@@ -37,17 +38,10 @@ export default function ResponsiveForm(props) {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "1em",
-              // padding:
-              //   screenSize === "xs"
-              //     ? theme.spacing(6, 0, 1, 0)
-              //     : theme.spacing(4, 0, 1, 0),
-              // width: "80%",
+              height: "100%",
             }}
           >
-            <div style={{ width: screenSize === "xs" ? "80%" : "80%" }}>
-              {formContent}
-            </div>
+            <div style={{ width: "80%", height: "100%" }}>{formContent}</div>
           </div>
           {button}
         </form>

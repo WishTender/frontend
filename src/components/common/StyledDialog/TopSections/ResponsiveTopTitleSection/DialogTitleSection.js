@@ -29,7 +29,7 @@ export default function DialogTitleSection(props) {
 
   return (
     <>
-      <DialogTitle className={classes.title}>
+      <div className={classes.title}>
         <IconButton
           aria-label="close"
           className={classes.closeButton}
@@ -37,7 +37,7 @@ export default function DialogTitleSection(props) {
         >
           <CloseIcon color="primary" />
         </IconButton>
-      </DialogTitle>
+      </div>
 
       <Box display="flex" justifyContent="center">
         <Typography className={classes.titleText} variant="h6" color="primary">
