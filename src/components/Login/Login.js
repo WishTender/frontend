@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import useSmallScreen from "../../hooks/useSmallScreen";
 import { UserContext } from "../../contexts/UserContext";
+import { withRouter } from "react-router";
+
 import {
   TextField,
   Link,
@@ -12,7 +14,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
-export default function Login() {
+export default withRouter(function Login(props) {
   const smallScreen = useSmallScreen(444);
   const [profile, setProfile] = useState(null);
   const { setUser, getUser } = useContext(UserContext);
@@ -33,6 +35,7 @@ export default function Login() {
         if (res.status === 200) {
           const user = await getUser();
           setUser(user);
+          if (!json.profile) props.history.push("/wishlist-setup");
           setProfile(json.profile);
           return;
         }
@@ -83,11 +86,6 @@ export default function Login() {
             type="email"
             inputRef={register({ required: "Email Required" })}
             variant="outlined"
-            // inputProps={{
-            //   form: {
-            //     autocomplete: "off",
-            //   },
-            // }}
           />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <TextField
@@ -95,7 +93,6 @@ export default function Login() {
               type="password"
               inputRef={register({ required: "Password Required" })}
               variant="outlined"
-              // autocomplete="new-password"
             />
             <Link
               style={{ marginTop: "5px" }}
@@ -127,4 +124,4 @@ export default function Login() {
       </Container>
     </Box>
   );
-}
+});
