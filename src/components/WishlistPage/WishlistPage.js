@@ -28,8 +28,11 @@ function WishlistPage(props) {
   const { user: currentUser } = useContext(UserContext);
   const localeContext = useContext(LocaleContext);
   useChooseCurrency();
-  const { currency: clientCurrency, setCurrencyNeeded } =
-    useContext(CurrencyContext);
+  const {
+    currency: clientCurrency,
+    setCurrency,
+    setCurrencyNeeded,
+  } = useContext(CurrencyContext);
 
   const { setIsCurrentUsersProfile } = useContext(RouteContext);
   let { alias: aliasPath } = useParams();
@@ -49,6 +52,10 @@ function WishlistPage(props) {
 
     fetchGet(`${handleRoute}${aliasPath.toLowerCase()}`, async (alias) => {
       const wl = alias.wishlists[0];
+      setIsCurrentUsersProfile(
+        currentUser?.aliases.includes(alias?._id) || false
+      );
+      if (setIsCurrentUsersProfile) setCurrency(alias.currency);
       if (wl) {
         if (clientCurrency) {
           if (
@@ -77,9 +84,7 @@ function WishlistPage(props) {
           }
         }
       }
-      setIsCurrentUsersProfile(
-        currentUser?.aliases.includes(alias?._id) || false
-      );
+
       setAlias(alias);
     });
   }, [
