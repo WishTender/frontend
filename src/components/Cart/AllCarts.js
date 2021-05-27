@@ -3,7 +3,8 @@ import AliasCart from "./AliasCart";
 import { CartContext } from "./CartContext";
 import { LocaleContext } from "../../contexts/LocaleContext";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
-
+import EmptyCart from "./EmptyCart";
+import { Box, Typography } from "@material-ui/core";
 export default function AllCarts() {
   const [cart, setCart] = useState(null);
   const [exchangeRates, setExchangeRates] = useState(null);
@@ -38,15 +39,25 @@ export default function AllCarts() {
   }, [cart, clientCurrency, exchangeRates, getCart, localeContext]);
   return (
     <CartContext.Provider value={{ cart, setCart, getCart }}>
-      {cart && Object.values(cart).length ? (
-        <>
-          {Object.values(cart.aliasCarts).map((cart) => (
-            <AliasCart exchangeRates={exchangeRates} cart={cart} />
-          ))}
-        </>
-      ) : (
-        "Empty Cart"
-      )}
+      {cart &&
+        (cart.aliasCarts && Object.values(cart.aliasCarts).length ? (
+          <>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography variant="h6" style={{ margin: "0 8px" }}>
+                Cart
+              </Typography>
+            </Box>
+            {Object.values(cart.aliasCarts).map((cart) => (
+              <AliasCart exchangeRates={exchangeRates} cart={cart} />
+            ))}
+          </>
+        ) : (
+          <EmptyCart></EmptyCart>
+        ))}
     </CartContext.Provider>
   );
 }

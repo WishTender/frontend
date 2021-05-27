@@ -221,15 +221,6 @@ export default withStyles(styles)(function Login(props) {
             </Button>
           </form>
         </Container>
-        {/* <img
-          src="images/gift_drawing_optimized_for_web.png"
-          style={{
-            position: "absolute",
-            bottom: "2vw",
-            right: "2vw",
-            width: "20vw",
-          }}
-        ></img> */}
       </Box>
     </>
   );

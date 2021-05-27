@@ -20,11 +20,6 @@ export default function Cart(props) {
           paddingLeft: "7vw",
         }}
       >
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Typography variant="h6" style={{ margin: "0 8px" }}>
-            Cart
-          </Typography>
-        </Box>
         <AllCarts />
       </Container>
     </div>
