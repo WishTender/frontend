@@ -69,7 +69,6 @@ export default function CheckOutSuccess() {
                 ? "images/piggy_bank_sleep_grey_optimized_for_web.png.png"
                 : "images/piggy_bank_optimized_for_web.png"
             }
-            // src={"images/piggy_bank.png"}
             style={{ maxHeight: "30vh" }}
           />
         </Box>
