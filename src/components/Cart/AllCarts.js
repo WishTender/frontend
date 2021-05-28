@@ -13,7 +13,7 @@ export default function AllCarts() {
   const localeContext = useContext(LocaleContext);
 
   useEffect(() => {
-    if (clientCurrency && clientCurrency !== "noConversion") {
+    if (clientCurrency && clientCurrency !== "noConversion" && !exchangeRates) {
       const fetchData = async () => {
         const response = await fetch(
           `${process.env.REACT_APP_BASE_URL}/api/exchange/all?base=${clientCurrency}`

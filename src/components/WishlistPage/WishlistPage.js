@@ -34,7 +34,8 @@ function WishlistPage(props) {
     setCurrencyNeeded,
   } = useContext(CurrencyContext);
 
-  const { setIsCurrentUsersProfile } = useContext(RouteContext);
+  const { setIsCurrentUsersProfile, isCurrentUsersProfile } =
+    useContext(RouteContext);
   let { alias: aliasPath } = useParams();
 
   const states = {
@@ -55,7 +56,7 @@ function WishlistPage(props) {
       setIsCurrentUsersProfile(
         currentUser?.aliases.includes(alias?._id) || false
       );
-      if (setIsCurrentUsersProfile) setCurrency(alias.currency);
+      if (isCurrentUsersProfile) setCurrency(alias.currency);
       if (wl) {
         if (clientCurrency) {
           if (
