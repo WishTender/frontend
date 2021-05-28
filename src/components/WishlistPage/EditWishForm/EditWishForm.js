@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+
 import SelectCropUpdateImage from "../ProfileSection/SelectCropUpdateImage/SelectCropUpdateImage";
 import {
   Button,
@@ -51,9 +52,11 @@ export default function EditWishForm(props) {
       },
     };
   });
+
   const themeClasses = themeStyles();
   const classes = useStyles();
   const [price, setPrice] = useState("");
+  const [price2, setPrice2] = useState("");
   const [itemName, setItemName] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [deleteWarningVisible, setDeleteWarningVisible] = useState(false);
@@ -170,12 +173,11 @@ export default function EditWishForm(props) {
               />
               <FormHelperText>{errors.itemName?.message}</FormHelperText>
             </FormControl>
-
             <PriceInput
               price={price}
               setPrice={setPrice}
-              onChange={(e) => {
-                setPrice(e.target.value);
+              onChange={(price) => {
+                setPrice(price);
               }}
               inputRef={register({
                 validate: async (value) => {
@@ -197,6 +199,7 @@ export default function EditWishForm(props) {
               })}
               error={errors.price?.message}
               symbol={currencyInfo(props.info.currency).symbol}
+              decimalPlaces={currencyInfo(props.info.currency).decimalPlaces}
             ></PriceInput>
 
             <Grid container justify="flex-end">
