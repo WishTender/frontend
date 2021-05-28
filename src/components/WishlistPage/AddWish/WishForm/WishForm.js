@@ -106,8 +106,8 @@ export default function WishForm(props) {
         <PriceInput
           price={price}
           setPrice={setPrice}
-          onChange={(e) => {
-            setPrice(e.target.value);
+          onChange={(price) => {
+            setPrice(price);
           }}
           inputRef={register({
             validate: (value) => {
@@ -129,6 +129,7 @@ export default function WishForm(props) {
           })}
           error={errors.price?.message}
           symbol={currencyInfo(clientCurrency).symbol}
+          decimalPlaces={currencyInfo(clientCurrency).decimalPlaces}
         ></PriceInput>
       </Box>
       <Button
