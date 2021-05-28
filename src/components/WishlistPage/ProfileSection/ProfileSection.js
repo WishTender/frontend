@@ -23,6 +23,7 @@ function ProfileSection(props) {
   const [wishlistId, setWishlistId] = useState(null);
   const [aliasId, setAliasId] = useState(null);
   const [handle, setHandle] = useState(null);
+  const [aliasName, setAliasName] = useState(null);
   const [wishlistMessage, setWishlistMessage] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const { user: currentUser } = useContext(UserContext);
@@ -47,6 +48,7 @@ function ProfileSection(props) {
           "/data/images/profileImages/default_profileImage.png"
       );
       setHandle(props.info.handle);
+      setAliasName(props.info.aliasName);
       setAliasId(props.info._id);
       setIsAuth(
         currentUser ? currentUser.aliases.includes(props.info._id) : false
@@ -84,6 +86,15 @@ function ProfileSection(props) {
       `${process.env.REACT_APP_BASE_URL}/api/aliases/${aliasId}`,
       () => {
         setHandle(handle);
+      }
+    );
+  };
+  const handleUpdateAliasName = (aliasName) => {
+    fetchPatchJson(
+      { aliasName },
+      `${process.env.REACT_APP_BASE_URL}/api/aliases/${aliasId}`,
+      () => {
+        setAliasName(aliasName);
       }
     );
   };
@@ -141,6 +152,8 @@ function ProfileSection(props) {
         <div className="edit_profile_button__container">
           <UpdateProfileInfo
             wishlistName={wishlistName}
+            aliasName={aliasName}
+            handleUpdateAliasName={handleUpdateAliasName}
             handleUpdateWishlistMessage={handleUpdateWishlistMessage}
             handle={handle}
             handleUpdateWishlistName={handleUpdateWishlistName}

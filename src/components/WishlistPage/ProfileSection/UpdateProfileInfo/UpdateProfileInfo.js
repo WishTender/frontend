@@ -46,8 +46,10 @@ export default withStyles(styles)(function UpdateProfileInfo(props) {
           handleCheckHandleAvailability={props.handleCheckHandleAvailability}
           handleUpdateHandle={props.handleUpdateHandle}
           handleUpdateWishlistName={props.handleUpdateWishlistName}
+          handleUpdateAliasName={props.handleUpdateAliasName}
           onClose={handleDialogClose}
           wishlistName={props.wishlistName}
+          aliasName={props.aliasName}
           handle={props.handle}
         ></UpdateProfileForm>
       </StyledDialog>

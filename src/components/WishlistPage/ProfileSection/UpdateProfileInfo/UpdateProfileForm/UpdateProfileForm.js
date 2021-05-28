@@ -53,6 +53,9 @@ export default function UpdateProfileForm(props) {
     if (data.wishlistName && data.wishlistName !== props.wishlistName) {
       props.handleUpdateWishlistName(data.wishlistName);
     }
+    if (data.aliasName && data.aliasName !== props.aliasName) {
+      props.handleUpdateAliasName(data.aliasName);
+    }
     props.onClose();
   };
   return (
@@ -95,11 +98,13 @@ export default function UpdateProfileForm(props) {
           <div
             style={{
               display: "flex",
+              gap: "15px",
               flexDirection: "column",
               width: "80%",
             }}
           >
             <FormControl
+              style={{ marginBottom: "25px" }}
               error={
                 errors.handle && !(errors.handle.type === "required")
                   ? true
@@ -108,12 +113,13 @@ export default function UpdateProfileForm(props) {
             >
               <InputLabel htmlFor="handle-input">handle</InputLabel>
               <Input
-                onFocus={(e) => {
-                  if (!e.target.value) e.target.value = props.handle;
-                }}
-                onBlur={(e) => {
-                  if (e.target.value === props.handle) e.target.value = null;
-                }}
+                // onFocus={(e) => {
+                //   if (!e.target.value) e.target.value = props.handle;
+                // }}
+                // onBlur={(e) => {
+                //   if (e.target.value === props.handle) e.target.value = null;
+                // }}
+                defaultValue={props.handle}
                 ref={input}
                 name="handle"
                 onChange={(e) => {
@@ -158,18 +164,19 @@ export default function UpdateProfileForm(props) {
                 Wishlist Name
               </InputLabel>
               <Input
-                onFocus={(e) => {
-                  if (!e.target.value) e.target.value = props.wishlistName;
-                }}
-                onBlur={(e) => {
-                  if (e.target.value === props.wishlistName)
-                    e.target.value = null;
-                }}
+                // onFocus={(e) => {
+                //   if (!e.target.value) e.target.value = props.wishlistName;
+                // }}
+                // onBlur={(e) => {
+                //   if (e.target.value === props.wishlistName)
+                //     e.target.value = null;
+                // }}
+                defaultValue={props.wishlistName}
                 name="wishlistName"
                 inputRef={register({
                   maxLength: {
-                    value: 22,
-                    message: "wishlist name must be less than 23 characters",
+                    value: 100,
+                    message: "wishlist name must be less than 100 characters",
                   },
                 })}
                 spellCheck="false"
@@ -178,6 +185,37 @@ export default function UpdateProfileForm(props) {
               />
               <FormHelperText id="wishlist-name-helper-text">
                 {errors.wishlistName?.message || " "}
+              </FormHelperText>
+            </FormControl>
+            <FormControl
+              error={
+                errors.aliasName && !(errors.aliasName.type === "required")
+                  ? true
+                  : false
+              }
+            >
+              <InputLabel htmlFor="alias-name-input">Alias Name</InputLabel>
+              <Input
+                // onFocus={(e) => {
+                //   if (!e.target.value) e.target.value = props.aliasName;
+                // }}
+                // onBlur={(e) => {
+                //   if (e.target.value === props.aliasName) e.target.value = null;
+                // }}
+                defaultValue={props.aliasName}
+                name="aliasName"
+                inputRef={register({
+                  maxLength: {
+                    value: 100,
+                    message: "alias name must be 100 characters or less",
+                  },
+                })}
+                spellCheck="false"
+                id="alias-name-input"
+                aria-describedby="alias-name-helper-text"
+              />
+              <FormHelperText id="alias-name-helper-text">
+                {errors.aliasName?.message || " "}
               </FormHelperText>
             </FormControl>
           </div>
