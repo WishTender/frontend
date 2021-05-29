@@ -118,7 +118,14 @@ function WishlistPage(props) {
       currentUser?.aliases.includes(alias._id) &&
       currentUser !== undefined);
   return (
-    <div>
+    <div
+      style={{
+        height: "100%",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       {alias && currentUser !== undefined && (
         <ProfileSection
           isAuth={currentUser?.aliases.includes(alias?._id) || false}
