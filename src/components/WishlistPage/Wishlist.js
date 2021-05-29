@@ -179,6 +179,7 @@ function Wishlist(props) {
         />
       )}
       <ArcherContainer style={{ display: "grid" }}>
+        {/* //test */}
         <Container className={customClasses.wishlistWrapper1}>
           <Typography> Wishes: {props?.items?.length}</Typography>
           {props.isAuth && (
