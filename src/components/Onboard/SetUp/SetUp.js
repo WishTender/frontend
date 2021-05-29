@@ -21,6 +21,7 @@ import {
   Typography,
   LinearProgress,
 } from "@material-ui/core";
+import HandleProgressBar from "./HandleProgressBar";
 
 export default withStyles(styles)(function Login(props) {
   const screenSize = useScreenSize({
@@ -163,35 +164,12 @@ export default withStyles(styles)(function Login(props) {
                 placeholder="handle"
                 variant="outlined"
               />
-              <FormHelperText id="handle-helper-text">
-                <LinearProgress
-                  className={
-                    handleStatus === "unavailable"
-                      ? classes.progressError
-                      : handleStatus === "available"
-                      ? classes.progressSuccess
-                      : ""
-                  }
-                  color={handleStatus === "loading" ? "secondary" : "primary"}
-                  variant={
-                    handleStatus === "loading" ? "indeterminate" : "determinate"
-                  }
-                  value={100}
-                />
-                {errors.handle?.message ||
-                  `www.wishtender.com/${
-                    handle || props.handle ? handle || props.handle : "handle"
-                  }`}{" "}
-                <div style={{ display: "inline", float: "right" }}>
-                  {handleStatus === "available"
-                    ? "Available"
-                    : handleStatus === "loading"
-                    ? "Checking availability..."
-                    : handleStatus === "unavailable"
-                    ? "Unavailable"
-                    : ""}
-                </div>
-              </FormHelperText>
+
+              <HandleProgressBar
+                handle={handle}
+                handleStatus={handleStatus}
+                errors={errors}
+              />
             </FormControl>
             <TextField
               label="Display Name"
