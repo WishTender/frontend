@@ -13,6 +13,7 @@ import useScreenSize from "../../../../../hooks/useScreenSize";
 import ResponsiveDialogCloseAndTitleSection from "../../../../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection";
 import themeStyles from "../../../../../themeStyles";
 import theme from "../../../../../theme";
+import HandleProgressBar from "../../../../common/HandleProgressBar";
 /**
  * Renders a <UpdateProfileForm /> component
  * @param  props
@@ -28,18 +29,25 @@ export default function UpdateProfileForm(props) {
     mode: "onChange",
     reValidateMode: "onChange",
   });
+  const [handleStatus, setHandleStatus] = useState("");
 
   const [handle, setHandle] = useState(null);
   const input = useRef(null);
 
   const validateHandle = async (handle) => {
-    if (!handle || handle.toLowerCase() === props.handle.toLowerCase()) return;
+    if (!handle || handle.toLowerCase() === props.handle.toLowerCase()) {
+      setHandleStatus("");
+      return true;
+    }
+    setHandleStatus("loading");
+
     const available = await new Promise((resolve) => {
       setTimeout(async function () {
         if (input.current) {
           if (handle === input.current.children[0].value) {
             const avail = await props.handleCheckHandleAvailability(handle);
             resolve(avail);
+            setHandleStatus(avail ? "available" : "unavailable");
           }
         }
       }, 1000);
@@ -145,12 +153,17 @@ export default function UpdateProfileForm(props) {
                 id="handle-input"
                 aria-describedby="handle-helper-text"
               />
-              <FormHelperText id="handle-helper-text">
+              {/* <FormHelperText id="handle-helper-text">
                 {errors.handle?.message ||
                   `www.wishtender.com/${
                     handle || props.handle ? handle || props.handle : "handle"
                   }`}
-              </FormHelperText>
+              </FormHelperText> */}
+              <HandleProgressBar
+                handle={handle}
+                handleStatus={handleStatus}
+                errors={errors}
+              />
             </FormControl>
             <FormControl
               error={
