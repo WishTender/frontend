@@ -1,3 +1,237 @@
+// // import React, { useState, useRef } from "react";
+// // import { useForm } from "react-hook-form";
+
+// // import { withStyles } from "@material-ui/core/styles";
+
+// // import styles from "./styles";
+// // import { FormControl, TextField } from "@material-ui/core";
+// // import HandleProgressBar from "./HandleProgressBar";
+
+// // export default withStyles(styles)(function Login(props) {
+// //   const { register, errors, clearErrors } = useForm({
+// //     mode: "onChange",
+// //     reValidateMode: "onChange",
+// //   });
+// //   const [handle, setHandle] = useState(null);
+// //   const input = useRef(null);
+
+// //   const handleRoute = "/api/aliases?handle_lowercased=";
+
+// //   const checkHandleAvailability = async (handle) => {
+// //     const available = await fetch(
+// //       `${process.env.REACT_APP_BASE_URL}${handleRoute}${handle.toLowerCase()}`,
+// //       {
+// //         credentials: "include",
+// //       }
+// //     )
+// //       .then((res) => {
+// //         return res.status === 204 ? true : false;
+// //       })
+// //       .catch((err) => {
+// //         console.log(`couldn't check handle availability: ${err}`);
+// //       });
+// //     return available;
+// //   };
+// //   const validateHandle = async (handle) => {
+// //     if (handle === "") {
+// //       return true;
+// //     }
+// //     const available = await new Promise((resolve) => {
+// //       setTimeout(async function () {
+// //         if (input.current) {
+// //           if (handle === input.current.children[0].children[0].value) {
+// //             const avail = await checkHandleAvailability(handle);
+// //             resolve(avail);
+// //           }
+// //         }
+// //       }, 1000);
+// //     });
+// //     return available || "This handle is unavailable";
+// //   };
+
+// //   return (
+// //     <>
+// //       <FormControl>
+// //         <TextField
+// //           type="text"
+// //           autoComplete="off"
+// //           ref={input}
+// //           name="handle"
+// //           value={handle}
+// //           onChange={(e) => {
+// //             setHandle(e.target.value);
+// //             if (errors.handle !== undefined) {
+// //               if (errors.handle.type === "validate") {
+// //                 clearErrors(["handle"]);
+// //               }
+// //             }
+// //           }}
+// //           inputRef={register({
+// //             validate: async (value) => await validateHandle(value),
+
+// //             maxLength: {
+// //               value: 24,
+// //               message: "handle must be less than 25 characters",
+// //             },
+// //             pattern: {
+// //               value: /^[0-9A-Za-z_-]+$/,
+// //               message: `Your handle can only contain letters, numbers, '_', or '-'`,
+// //             },
+// //           })}
+// //           spellCheck="false"
+// //           placeholder="handle"
+// //           variant="outlined"
+// //         />
+// //       </FormControl>
+// //     </>
+// //   );
+// // });
+// import React, { useState, useRef } from "react";
+// import Input from "@material-ui/core/Input";
+// import FormHelperText from "@material-ui/core/FormHelperText";
+// import InputLabel from "@material-ui/core/InputLabel";
+// import TextField from "@material-ui/core/TextField";
+
+// import FormControl from "@material-ui/core/FormControl";
+// import { useForm } from "react-hook-form";
+
+// const handleRoute = "/api/aliases?handle_lowercased=";
+// const handleCheckHandleAvailability = async (handle) => {
+//   const available = await fetch(
+//     `${process.env.REACT_APP_BASE_URL}${handleRoute}${handle.toLowerCase()}`,
+//     {
+//       credentials: "include",
+//     }
+//   )
+//     .then((res) => {
+//       return res.status === 204 ? true : false;
+//     })
+//     .catch((err) => {
+//       console.log(`couldn't check handle availability: ${err}`);
+//     });
+//   return available;
+// };
+// /**
+//  * Renders a <UpdateProfileForm /> component
+//  * @param  props
+//  * @param  props.handleCheckHandleAvailability
+//  **/
+// export default function UpdateProfileForm(props) {
+//   const { register, handleSubmit, errors, clearErrors } = useForm({
+//     mode: "onChange",
+//     reValidateMode: "onChange",
+//   });
+
+//   const [handle, setHandle] = useState(null);
+//   const input = useRef(null);
+
+//   // const validateHandle = async (handle) => {
+//   //   if (!handle) return;
+//   //   const available = await new Promise((resolve) => {
+//   //     setTimeout(async function () {
+//   //       if (input.current) {
+//   //         if (handle === input.current.children[0].value) {
+//   //           const avail = await handleCheckHandleAvailability(handle);
+//   //           resolve(avail);
+//   //         }
+//   //       }
+//   //     }, 1000);
+//   //   });
+//   //   return available || "This handle is unavailable";
+//   // };
+//   const validateHandle = async (handle) => {
+//     if (handle === "") {
+//       return true;
+//     }
+//     const available = await new Promise((resolve) => {
+//       setTimeout(async function () {
+//         if (input.current) {
+//           if (handle === input.current.children[0].value) {
+//             const avail = await handleCheckHandleAvailability(handle);
+//             resolve(avail);
+//           }
+//         }
+//       }, 1000);
+//     });
+//     return available || "This handle is unavailable";
+//   };
+
+//   return (
+//     <>
+//       {/* <FormControl
+//         error={
+//           errors.handle && !(errors.handle.type === "required") ? true : false
+//         }
+//       >
+//         <InputLabel htmlFor="handle-input">handle</InputLabel>
+//         <Input
+//           defaultValue={props.handle}
+//           ref={input}
+//           name="handle"
+//           onChange={(e) => {
+//             setHandle(e.target.value);
+//             if (errors.handle !== undefined) {
+//               if (errors.handle.type === "validate") {
+//                 clearErrors(["handle"]);
+//               }
+//             }
+//           }}
+//           inputRef={register({
+//             validate: async (value) => await validateHandle(value),
+//             maxLength: {
+//               value: 24,
+//               message: "handle must be less than 25 characters",
+//             },
+//             pattern: {
+//               value: /^[0-9A-Za-z_-]+$/,
+//               message: `Your username can only contain letters, numbers, '_', or '-'`,
+//             },
+//           })}
+//           spellCheck="false"
+//           id="handle-input"
+//           aria-describedby="handle-helper-text"
+//         />
+//         <FormHelperText id="handle-helper-text">
+//           {errors.handle?.message ||
+//             `www.wishtender.com/${
+//               handle || props.handle ? handle || props.handle : "handle"
+//             }`}
+//         </FormHelperText>
+//       </FormControl> */}
+//       <FormControl>
+//         <Input
+//           type="text"
+//           autoComplete="off"
+//           ref={input}
+//           name="handle"
+//           // value={handle},///this
+//           onChange={(e) => {
+//             setHandle(e.target.value);
+//             if (errors.handle !== undefined) {
+//               if (errors.handle.type === "validate") {
+//                 clearErrors(["handle"]);
+//               }
+//             }
+//           }}
+//           inputRef={register({
+//             validate: async (value) => await validateHandle(value),
+//             maxLength: {
+//               value: 24,
+//               message: "handle must be less than 25 characters",
+//             },
+//             pattern: {
+//               value: /^[0-9A-Za-z_-]+$/,
+//               message: `Your username can only contain letters, numbers, '_', or '-'`,
+//             },
+//           })}
+//           spellCheck="false"
+//           placeholder="handle"
+//           variant="outlined"
+//         />
+//       </FormControl>
+//     </>
+//   );
+// }
 import React, { useState, useRef, useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Redirect } from "react-router-dom";
@@ -59,7 +293,7 @@ export default withStyles(styles)(function Login(props) {
   const validateHandle = async (handle) => {
     if (handle === "") {
       setHandleStatus("");
-      return;
+      return true;
     }
     setHandleStatus("loading");
     const available = await new Promise((resolve) => {
@@ -139,7 +373,7 @@ export default withStyles(styles)(function Login(props) {
                 autoComplete="off"
                 ref={input}
                 name="handle"
-                value={handle}
+                // value={handle}
                 onChange={(e) => {
                   setHandle(e.target.value);
                   if (errors.handle !== undefined) {
