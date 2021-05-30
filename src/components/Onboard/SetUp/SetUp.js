@@ -6,21 +6,18 @@ import CountryOptions from "../../CountryOptions/CountryOptions";
 import themeStyles from "../../../themeStyles";
 import { withStyles } from "@material-ui/core/styles";
 import useScreenSize from "../../../hooks/useScreenSize";
-import SecondPanel from "../SignUp/SecondPanel";
 
-import Stepper from "../Stepper/Stepper";
 import styles from "./styles";
 import {
   Box,
-  FormHelperText,
   Container,
   FormControl,
   Button,
   Paper,
   TextField,
   Typography,
-  LinearProgress,
 } from "@material-ui/core";
+import HandleProgressBar from "../../common/HandleProgressBar";
 
 export default withStyles(styles)(function Login(props) {
   const screenSize = useScreenSize({
@@ -58,7 +55,7 @@ export default withStyles(styles)(function Login(props) {
   const validateHandle = async (handle) => {
     if (handle === "") {
       setHandleStatus("");
-      return;
+      return true;
     }
     setHandleStatus("loading");
     const available = await new Promise((resolve) => {
@@ -138,7 +135,7 @@ export default withStyles(styles)(function Login(props) {
                 autoComplete="off"
                 ref={input}
                 name="handle"
-                value={handle}
+                // value={handle}
                 onChange={(e) => {
                   setHandle(e.target.value);
                   if (errors.handle !== undefined) {
@@ -163,35 +160,12 @@ export default withStyles(styles)(function Login(props) {
                 placeholder="handle"
                 variant="outlined"
               />
-              <FormHelperText id="handle-helper-text">
-                <LinearProgress
-                  className={
-                    handleStatus === "unavailable"
-                      ? classes.progressError
-                      : handleStatus === "available"
-                      ? classes.progressSuccess
-                      : ""
-                  }
-                  color={handleStatus === "loading" ? "secondary" : "primary"}
-                  variant={
-                    handleStatus === "loading" ? "indeterminate" : "determinate"
-                  }
-                  value={100}
-                />
-                {errors.handle?.message ||
-                  `www.wishtender.com/${
-                    handle || props.handle ? handle || props.handle : "handle"
-                  }`}{" "}
-                <div style={{ display: "inline", float: "right" }}>
-                  {handleStatus === "available"
-                    ? "Available"
-                    : handleStatus === "loading"
-                    ? "Checking availability..."
-                    : handleStatus === "unavailable"
-                    ? "Unavailable"
-                    : ""}
-                </div>
-              </FormHelperText>
+
+              <HandleProgressBar
+                handle={handle}
+                handleStatus={handleStatus}
+                errors={errors}
+              />
             </FormControl>
             <TextField
               label="Display Name"
