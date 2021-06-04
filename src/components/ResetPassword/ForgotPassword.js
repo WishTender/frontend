@@ -17,6 +17,7 @@ import ProgressButton from "../common/ProgressButton";
 export default withRouter(function ForgotPassword(props) {
   const [reqStatus, setReqStatus] = useState(null);
   const [view, setView] = useState("forgot");
+  const [email, setEmail] = useState(null);
   const smallScreen = useSmallScreen(450);
   const {
     register,
@@ -37,6 +38,7 @@ export default withRouter(function ForgotPassword(props) {
     })
       .then(async (res) => {
         if (res.status === 201) {
+          setEmail(data.email);
           setReqStatus("success");
           setView("emailSent");
           return;
@@ -109,7 +111,7 @@ export default withRouter(function ForgotPassword(props) {
             </ProgressButton>
           </form>
         )}
-        {view === "emailSent" && <PasswordEmail />}
+        {view === "emailSent" && <PasswordEmail email={email} />}
       </Container>
     </Box>
   );
