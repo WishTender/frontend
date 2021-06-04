@@ -5,7 +5,11 @@ import { fetchPatchJson } from "../../scripts/fetchHelper";
 import { useForm } from "react-hook-form";
 
 export default function ReplyToTender(props) {
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (data) => {
     fetchPatchJson(

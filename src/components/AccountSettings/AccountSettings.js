@@ -5,10 +5,12 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import MenuItem from "@material-ui/core/MenuItem";
+import { fetchDelete } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import Form from "./Form";
+import { withRouter } from "react-router";
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -19,7 +21,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function AccountSettings() {
+export default withRouter(function AccountSettings(props) {
   const [dialog, setDialog] = useState(null);
   const { user } = useContext(UserContext);
 
@@ -55,6 +57,15 @@ export default function AccountSettings() {
           <ListItemText primary="Payment Dashboard" />
           <ArrowRightIcon />
         </StyledMenuItem>
+        <StyledMenuItem
+          onClick={() => {
+            setDialog("delete");
+          }}
+          color="primary"
+        >
+          <ListItemText primary="Delete Account" />
+          <ArrowRightIcon />
+        </StyledMenuItem>
       </Paper>
       <StyledDialog onClose={() => setDialog(null)} open={dialog === "email"}>
         <Form info={{ currency: "USD", itemName: "Purse" }}></Form>
@@ -63,10 +74,9 @@ export default function AccountSettings() {
         onClose={() => setDialog(null)}
         open={dialog === "password"}
       >
-        password Update old
-        <input type="text"></input>
-        new
-        <input type="text"></input>
+        <Button onClick={() => props.history.push("/request-password-reset")}>
+          Reset Password
+        </Button>
       </StyledDialog>
       <StyledDialog
         onClose={() => setDialog(null)}
@@ -74,6 +84,47 @@ export default function AccountSettings() {
       >
         payment
       </StyledDialog>
+      <StyledDialog onClose={() => setDialog(null)} open={dialog === "delete"}>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await fetchDelete(
+              `${process.env.REACT_APP_BASE_URL}/api/users/${user._id}`,
+              async (res) => {
+                if (res.status === 200) {
+                  alert("deleted");
+                }
+              }
+            );
+          }}
+        >
+          Are you sure you want to delete your account?
+          <Button onClick={() => setDialog(null)}>Cancel</Button>{" "}
+          <Button type="submit">Delete</Button>
+        </form>
+      </StyledDialog>
+      <StyledDialog
+        onClose={() => setDialog(null)}
+        open={dialog === "change email"}
+      >
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await fetchDelete(
+              `${process.env.REACT_APP_BASE_URL}/api/users/${user._id}`,
+              async (res) => {
+                if (res.status === 200) {
+                  alert("deleted");
+                }
+              }
+            );
+          }}
+        >
+          Are you sure you want to delete your account?
+          <Button onClick={() => setDialog(null)}>Cancel</Button>{" "}
+          <Button type="submit">Delete</Button>
+        </form>
+      </StyledDialog>
     </Container>
   );
-}
+});

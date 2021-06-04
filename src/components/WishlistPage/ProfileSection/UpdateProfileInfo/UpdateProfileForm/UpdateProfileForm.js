@@ -25,7 +25,12 @@ export default function UpdateProfileForm(props) {
     breakpoints: { xs: 0, sm: 450 },
     useStandard: false,
   });
-  const { register, handleSubmit, errors, clearErrors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+  } = useForm({
     mode: "onChange",
     reValidateMode: "onChange",
   });
