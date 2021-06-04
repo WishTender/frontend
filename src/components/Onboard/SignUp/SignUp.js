@@ -18,7 +18,11 @@ import useScreenSize from "../../../hooks/useScreenSize";
 
 export default withStyles(styles)(function SignUp(props) {
   const classes = themeStyles(props);
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [success, setSuccess] = useState(null);
   const [email, setEmail] = useState(null);
   const screenSize = useScreenSize({

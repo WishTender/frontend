@@ -22,7 +22,11 @@ export default function Form(props) {
     setEmail(props.email);
   }, [props.info]);
 
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const onSubmit = async () => {
     const response = await fetch("/api/email"); // not real endpoint
     const user = await response.json();
@@ -39,7 +43,6 @@ export default function Form(props) {
       <Typography>Change Email</Typography>
       <FormControl error={errors.email ? true : false}>
         <TextField
-          // inputRef={register()}
           name="email"
           variant="outlined"
           value={email}
@@ -53,7 +56,6 @@ export default function Form(props) {
       {verificationSent && (
         <FormControl error={errors.email ? true : false}>
           <TextField
-            // inputRef={register()}
             name="email"
             variant="outlined"
             value={email}

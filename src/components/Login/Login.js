@@ -45,6 +45,13 @@ export default withRouter(function Login(props) {
         console.log(err);
       });
   };
+
+  const { ref: emailRef, ...emailReg } = register("email", {
+    required: "Email Required",
+  });
+  const { ref: passwordRef, ...passwordReg } = register("password", {
+    required: "Password Required",
+  });
   return (
     <Box
       display="flex"
@@ -84,14 +91,16 @@ export default withRouter(function Login(props) {
           <TextField
             name="email"
             type="email"
-            inputRef={register({ required: "Email Required" })}
+            {...emailReg}
+            inputRef={emailRef}
             variant="outlined"
           />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <TextField
               name="password"
               type="password"
-              inputRef={register({ required: "Password Required" })}
+              {...passwordReg}
+              inputRef={passwordRef}
               variant="outlined"
             />
             <Link

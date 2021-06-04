@@ -28,7 +28,11 @@ export default function UpdateMessageForm({
   handleUpdateWishlistMessage,
   onClose,
 }) {
-  const { register, handleSubmit, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     mode: "onChange",
     reValidateMode: "onChange",
   });

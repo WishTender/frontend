@@ -27,6 +27,20 @@ import Gift from "./Gift";
 import { fetchPostJson } from "../../scripts/fetchHelper";
 import DisplayPrice from "../common/DisplayPrice";
 const TenderInfoInputs = ({ cart, register }) => {
+  const { ref: fromLineRef, ...fromLineReg } = register("fromLine", {
+    maxLength: {
+      value: 60,
+      message: `From line must be less than ${60 + 1} characters`,
+    },
+  });
+  const { ref: emailRef, emailReg } = register("email", {
+    required: "Email Required",
+    pattern: {
+      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+      message: "Enter a valid e-mail address",
+    },
+  });
+
   return (
     <>
       <FormControl variant="outlined">
@@ -37,12 +51,8 @@ const TenderInfoInputs = ({ cart, register }) => {
           label="From"
           name="fromLine"
           id="fromLine"
-          inputRef={register({
-            maxLength: {
-              value: 60,
-              message: `From line must be less than ${60 + 1} characters`,
-            },
-          })}
+          {...fromLineReg}
+          inputRef={fromLineRef}
           endAdornment={
             <InputAdornment position="end">
               <Tooltip title={`Visible to ${cart.alias.aliasName}`}>
@@ -57,13 +67,8 @@ const TenderInfoInputs = ({ cart, register }) => {
           Email <span style={{ color: "#b9b9b9" }}>Private</span>
         </InputLabel>
         <OutlinedInput
-          inputRef={register({
-            required: "Email Required",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              message: "Enter a valid e-mail address",
-            },
-          })}
+          {...emailReg}
+          inputRef={emailRef}
           color="primary"
           variant="outlined"
           label="Email: Private"
@@ -86,7 +91,11 @@ const TenderInfoInputs = ({ cart, register }) => {
 };
 
 export default function AliasCart({ cart, exchangeRates }) {
-  const { errors, handleSubmit, register } = useForm();
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm();
   const [message, setMessage] = useState("");
   const smallScreen = useSmallScreen();
   const checkoutCart = (data) => {
@@ -135,6 +144,12 @@ export default function AliasCart({ cart, exchangeRates }) {
       exchangeRates["USD"];
     messageLength = Math.round(30 + totalPriceUSD);
   }
+  const { ref: messageRef, ...messageReg } = register("message ", {
+    maxLength: {
+      value: messageLength,
+      message: `message must be less than ${messageLength + 1} characters`,
+    },
+  });
 
   return (
     <TableContainer
@@ -194,14 +209,8 @@ export default function AliasCart({ cart, exchangeRates }) {
                     error={messageLength - message.length < 0}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    inputRef={register({
-                      maxLength: {
-                        value: messageLength,
-                        message: `message must be less than ${
-                          messageLength + 1
-                        } characters`,
-                      },
-                    })}
+                    {...messageReg}
+                    inputRef={messageRef}
                     multiline
                     rows={10}
                     variant="filled"

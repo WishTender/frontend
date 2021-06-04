@@ -53,7 +53,7 @@ export default function ResetPasswordForm(props) {
       message: `Password must be at least 8 characters long.`,
     },
   });
-  const { refConfirm, ...restConfirm } = register("passwordConfirm", {
+  const { ref: refConfirm, ...restConfirm } = register("passwordConfirm", {
     required: "Password Confirm Required",
     validate: (value) => {
       return value === watch("password") || `Passwords do not match.`;

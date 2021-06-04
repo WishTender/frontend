@@ -24,7 +24,13 @@ export default withStyles(styles)(function Login(props) {
     breakpoints: { xs: "0", sm: "600" },
     useStandard: false,
   });
-  const { register, handleSubmit, errors, control, clearErrors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    clearErrors,
+  } = useForm({
     mode: "onChange",
     reValidateMode: "onChange",
   });

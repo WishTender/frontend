@@ -12,7 +12,11 @@ const useStyles = makeStyles((theme) => {
   };
 });
 export default function HandleProgressBar(props) {
-  const { handleStatus, errors, handle } = props;
+  const {
+    handleStatus,
+    formState: { errors },
+    handle,
+  } = props;
   const classes = useStyles(props);
   return (
     <FormHelperText id="handle-helper-text">
