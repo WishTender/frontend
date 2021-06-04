@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import useSmallScreen from "../../hooks/useSmallScreen";
-import { UserContext } from "../../contexts/UserContext";
 import { withRouter } from "react-router";
 import SendIcon from "@material-ui/icons/Send";
 
@@ -9,18 +8,16 @@ import {
   Paper,
   Container,
   Box,
-  Button,
   Typography,
 } from "@material-ui/core";
 
 import { useForm } from "react-hook-form";
-import PasswordEmail from "./TokenEmail/PasswordEmail";
+import PasswordEmail from "./PasswordEmail/PasswordEmail";
 import ProgressButton from "../common/ProgressButton";
 export default withRouter(function ForgotPassword(props) {
   const [reqStatus, setReqStatus] = useState(null);
   const [view, setView] = useState("forgot");
   const smallScreen = useSmallScreen(450);
-  const { user } = useContext(UserContext);
   const {
     register,
     handleSubmit,

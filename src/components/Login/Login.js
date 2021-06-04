@@ -98,7 +98,9 @@ export default withRouter(function Login(props) {
               style={{ marginTop: "5px" }}
               align="right"
               href="#"
-              onClick={() => {}}
+              onClick={() => {
+                props.history.push("/request-password-reset");
+              }}
               variant="caption"
             >
               Forgot Password?

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import useSmallScreen from "../../../../hooks/useSmallScreen";
 import { useForm } from "react-hook-form";
+import { UserContext } from "../../../../contexts/UserContext";
+
 import { TextField, Paper, Container, Typography } from "@material-ui/core";
 import ProgressButton from "../../../common/ProgressButton";
 export default function ResetPasswordForm(props) {
   const { setView } = props;
   const [reqStatus, setReqStatus] = useState(null);
+  const { user, setUser, getUser } = useContext(UserContext);
 
   const smallScreen = useSmallScreen(450);
   const { register, handleSubmit, watch, formState } = useForm({
@@ -34,6 +37,10 @@ export default function ResetPasswordForm(props) {
         if (res.status === 410) setView("expired");
       }
       if (res.status === 200) {
+        if (!user) {
+          const loggedInUser = await getUser();
+          setUser(loggedInUser);
+        }
         setReqStatus("success");
         setView("success");
       }

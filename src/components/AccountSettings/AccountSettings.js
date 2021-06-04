@@ -10,6 +10,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import Form from "./Form";
+import { withRouter } from "react-router";
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -20,7 +21,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function AccountSettings() {
+export default withRouter(function AccountSettings(props) {
   const [dialog, setDialog] = useState(null);
   const { user } = useContext(UserContext);
 
@@ -73,10 +74,9 @@ export default function AccountSettings() {
         onClose={() => setDialog(null)}
         open={dialog === "password"}
       >
-        password Update old
-        <input type="text"></input>
-        new
-        <input type="text"></input>
+        <Button onClick={() => props.history.push("/request-password-reset")}>
+          Reset Password
+        </Button>
       </StyledDialog>
       <StyledDialog
         onClose={() => setDialog(null)}
@@ -127,4 +127,4 @@ export default function AccountSettings() {
       </StyledDialog>
     </Container>
   );
-}
+});
