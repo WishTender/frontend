@@ -43,6 +43,9 @@ import ConnectSuccess from "./components/ConnectSuccess/ConnectSucess";
 import { CssBaseline, Dialog } from "@material-ui/core";
 import StyledDialog from "./components/common/StyledDialog/StyledDialog";
 import SelectCurrencyForm from "./components/SelectCurrencyForm/SelectCurrencyForm";
+import ForgotPassword from "./components/ResetPassword/ForgotPassword";
+import SendResetPassword from "./components/ResetPassword/SendResetPassword";
+import ResetPassword from "./components/ResetPassword/ResetLinkFlow/ResetPassword";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -155,6 +158,14 @@ function App(props) {
           return <Cart cart={props?.location?.props?.cart} />;
         }}
       />
+
+      <Route path="/request-password-reset">
+        {user ? <SendResetPassword></SendResetPassword> : <ForgotPassword />}
+      </Route>
+
+      <Route path="/reset-password">
+        <ResetPassword />
+      </Route>
 
       <Route
         path="/connect-success"

@@ -5,6 +5,7 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import MenuItem from "@material-ui/core/MenuItem";
+import { fetchDelete } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 
 import StyledDialog from "../common/StyledDialog/StyledDialog";
@@ -55,6 +56,15 @@ export default function AccountSettings() {
           <ListItemText primary="Payment Dashboard" />
           <ArrowRightIcon />
         </StyledMenuItem>
+        <StyledMenuItem
+          onClick={() => {
+            setDialog("delete");
+          }}
+          color="primary"
+        >
+          <ListItemText primary="Delete Account" />
+          <ArrowRightIcon />
+        </StyledMenuItem>
       </Paper>
       <StyledDialog onClose={() => setDialog(null)} open={dialog === "email"}>
         <Form info={{ currency: "USD", itemName: "Purse" }}></Form>
@@ -73,6 +83,47 @@ export default function AccountSettings() {
         open={dialog === "payment-dashboard"}
       >
         payment
+      </StyledDialog>
+      <StyledDialog onClose={() => setDialog(null)} open={dialog === "delete"}>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await fetchDelete(
+              `${process.env.REACT_APP_BASE_URL}/api/users/${user._id}`,
+              async (res) => {
+                if (res.status === 200) {
+                  alert("deleted");
+                }
+              }
+            );
+          }}
+        >
+          Are you sure you want to delete your account?
+          <Button onClick={() => setDialog(null)}>Cancel</Button>{" "}
+          <Button type="submit">Delete</Button>
+        </form>
+      </StyledDialog>
+      <StyledDialog
+        onClose={() => setDialog(null)}
+        open={dialog === "change email"}
+      >
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await fetchDelete(
+              `${process.env.REACT_APP_BASE_URL}/api/users/${user._id}`,
+              async (res) => {
+                if (res.status === 200) {
+                  alert("deleted");
+                }
+              }
+            );
+          }}
+        >
+          Are you sure you want to delete your account?
+          <Button onClick={() => setDialog(null)}>Cancel</Button>{" "}
+          <Button type="submit">Delete</Button>
+        </form>
       </StyledDialog>
     </Container>
   );
