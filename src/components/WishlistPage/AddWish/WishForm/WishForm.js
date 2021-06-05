@@ -70,7 +70,16 @@ export default function WishForm(props) {
     console.log(price);
   }, [price]);
 
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+  useEffect(() => {
+    if (price !== "") setValue("itemName", name, { shouldValidate: true });
+    if (price !== "") setValue("price", price, { shouldValidate: true });
+  }, [name, price, setValue]);
   const onSubmit = (data) => {
     //send data to backend post wish item
     data.price = toSmallestUnit(data.price, clientCurrency);
@@ -78,6 +87,20 @@ export default function WishForm(props) {
     props.onSubmit(data);
   };
   console.log("props.price, ", props.info.price);
+  const { ref: itemNameRef, itemNameReg } = register("itemName");
+  const { ref: priceRef, ...priceReg } = register("price", {
+    validate: (value) => {
+      console.log("validation change from ", price, value, isValidPrice(value));
+
+      const currency = currencyInfo(clientCurrency);
+
+      const valid = isValidPrice(value, currency.decimalPlaces);
+
+      if (errors.price || !valid) setPrice(value);
+
+      return valid || `${value} is not a valid price.`;
+    },
+  });
   return (
     <form
       style={props.disabled ? { opacity: ".3", pointerEvents: "none" } : {}}
@@ -94,7 +117,8 @@ export default function WishForm(props) {
         <ChooseImage onImageChosen={setCrop} images={props.images} />
         <Typography>Set Wish Info</Typography>
         <TextField
-          inputRef={register()}
+          {...itemNameReg}
+          inputRef={itemNameRef}
           name="itemName"
           variant="outlined"
           value={name}
@@ -103,30 +127,15 @@ export default function WishForm(props) {
             setName(e.target.value);
           }}
         />
+
         <PriceInput
           price={price}
           setPrice={setPrice}
           onChange={(price) => {
             setPrice(price);
           }}
-          inputRef={register({
-            validate: (value) => {
-              console.log(
-                "validation change from ",
-                price,
-                value,
-                isValidPrice(value)
-              );
-
-              const currency = currencyInfo(clientCurrency);
-
-              const valid = isValidPrice(value, currency.decimalPlaces);
-
-              if (errors.price || !valid) setPrice(value);
-
-              return valid || `${value} is not a valid price.`;
-            },
-          })}
+          register={priceReg}
+          inputRef={priceRef}
           error={errors.price?.message}
           symbol={currencyInfo(clientCurrency).symbol}
           decimalPlaces={currencyInfo(clientCurrency).decimalPlaces}

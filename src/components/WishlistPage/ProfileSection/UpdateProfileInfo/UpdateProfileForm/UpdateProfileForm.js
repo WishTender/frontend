@@ -71,6 +71,32 @@ export default function UpdateProfileForm(props) {
     }
     props.onClose();
   };
+  const { ref: handleRef, ...handleReg } = register("handle", {
+    validate: async (value) => await validateHandle(value),
+    maxLength: {
+      value: 24,
+      message: "handle must be less than 25 characters",
+    },
+    pattern: {
+      value: /^[0-9A-Za-z_-]+$/,
+      message: `Your username can only contain letters, numbers, '_', or '-'`,
+    },
+  });
+  const { ref: wishlistNameRef, ...wishlistNameReg } = register(
+    "wishlistName",
+    {
+      maxLength: {
+        value: 100,
+        message: "wishlist name must be less than 100 characters",
+      },
+    }
+  );
+  const { ref: aliasNameRef, ...aliasNameReg } = register("aliasName", {
+    maxLength: {
+      value: 100,
+      message: "alias name must be 100 characters or less",
+    },
+  });
   return (
     <Box
       style={{
@@ -143,17 +169,8 @@ export default function UpdateProfileForm(props) {
                     }
                   }
                 }}
-                inputRef={register({
-                  validate: async (value) => await validateHandle(value),
-                  maxLength: {
-                    value: 24,
-                    message: "handle must be less than 25 characters",
-                  },
-                  pattern: {
-                    value: /^[0-9A-Za-z_-]+$/,
-                    message: `Your username can only contain letters, numbers, '_', or '-'`,
-                  },
-                })}
+                {...handleReg}
+                inputRef={handleRef}
                 spellCheck="false"
                 id="handle-input"
                 aria-describedby="handle-helper-text"
@@ -191,12 +208,8 @@ export default function UpdateProfileForm(props) {
                 // }}
                 defaultValue={props.wishlistName}
                 name="wishlistName"
-                inputRef={register({
-                  maxLength: {
-                    value: 100,
-                    message: "wishlist name must be less than 100 characters",
-                  },
-                })}
+                {...wishlistNameReg}
+                inputRef={wishlistNameRef}
                 spellCheck="false"
                 id="wishlist-name-input"
                 aria-describedby="wishlist-name-helper-text"
@@ -222,12 +235,8 @@ export default function UpdateProfileForm(props) {
                 // }}
                 defaultValue={props.aliasName}
                 name="aliasName"
-                inputRef={register({
-                  maxLength: {
-                    value: 100,
-                    message: "alias name must be 100 characters or less",
-                  },
-                })}
+                {...aliasNameReg}
+                inputRef={aliasNameRef}
                 spellCheck="false"
                 id="alias-name-input"
                 aria-describedby="alias-name-helper-text"

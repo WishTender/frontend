@@ -36,8 +36,9 @@ export default function CountryOptions(props) {
         control={props.control}
         name={props.name}
         defaultValue={country}
-        as={
+        render={({ field, fieldState }) => (
           <Select
+            {...field}
             labelId={props.labelId}
             id={props.id}
             name={props.name}
@@ -47,7 +48,7 @@ export default function CountryOptions(props) {
           >
             {countrySelection}
           </Select>
-        }
+        )}
       />
     </FormControl>
   );

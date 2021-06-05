@@ -14,7 +14,7 @@ export default function ReplyToTender(props) {
   const onSubmit = (data) => {
     fetchPatchJson(
       {
-        message: data.message || "test",
+        message: data.message,
       },
       `${process.env.REACT_APP_BASE_URL}/api/orders/reply/${props.order._id}`,
       (res) => {
@@ -25,6 +25,8 @@ export default function ReplyToTender(props) {
       }
     );
   };
+  const { ref: messageRef, ...messageReg } = register("message");
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography align="left">Reply to {props.to}</Typography>
@@ -33,7 +35,8 @@ export default function ReplyToTender(props) {
         id="outlined-multiline-static"
         label="Message"
         name="message"
-        inputRef={register()}
+        {...messageReg}
+        inputRef={messageRef}
         multiline
         rows={10}
         variant="filled"

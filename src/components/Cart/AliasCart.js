@@ -33,7 +33,7 @@ const TenderInfoInputs = ({ cart, register }) => {
       message: `From line must be less than ${60 + 1} characters`,
     },
   });
-  const { ref: emailRef, emailReg } = register("email", {
+  const { ref: emailRef, ...emailReg } = register("email", {
     required: "Email Required",
     pattern: {
       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
@@ -208,8 +208,10 @@ export default function AliasCart({ cart, exchangeRates }) {
                     name="message"
                     error={messageLength - message.length < 0}
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
                     {...messageReg}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                    }}
                     inputRef={messageRef}
                     multiline
                     rows={10}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { RouteContext } from "./contexts/RouteContext";
+import Test from "./components/WishlistPage/Test.js";
 
 import { CurrencyContext } from "./contexts/CurrencyContext";
 import { CountryContext } from "./contexts/CountryContext";
@@ -151,6 +152,9 @@ function App(props) {
       </Route>
       <Route path="/logout">
         <Logout />
+      </Route>
+      <Route path="/test">
+        <Test />
       </Route>
       <Route
         path="/cart"

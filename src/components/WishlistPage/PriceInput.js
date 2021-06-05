@@ -44,8 +44,10 @@ function NumberFormatCustom(props) {
   return (
     <NumberFormat
       {...other}
+      {...props.register}
       decimalScale={props.decimalPlaces}
       fixedDecimalScale={true}
+      inputRef={inputRef}
       getInputRef={inputRef}
       onValueChange={(price) => {
         onChange(price.formattedValue);
@@ -75,6 +77,7 @@ export default function PriceInputs(props) {
       <OutlinedInput
         inputProps={{
           decimalPlaces: props.decimalPlaces,
+          register: props.register,
         }}
         inputComponent={NumberFormatCustom}
         inputRef={props.inputRef}
