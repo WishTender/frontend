@@ -58,6 +58,20 @@ export default withStyles(styles)(function SignUp(props) {
       })
       .catch(console.log);
   };
+  const { ref: emailRef, ...emailReg } = register("email", {
+    required: "Email Required",
+    pattern: {
+      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+      message: "Enter a valid e-mail address",
+    },
+  });
+  const { ref: passwordRef, ...passwordReg } = register("password", {
+    required: "Password Required",
+    minLength: {
+      value: 8,
+      message: "Password must be at least 8 characters",
+    },
+  });
   return (
     <Box
       id="sign-up-wrapper"
@@ -107,32 +121,24 @@ export default withStyles(styles)(function SignUp(props) {
             ) : (
               ""
             )}
+
             <TextField
               label="Email"
               variant="outlined"
               autoComplete="off"
               name="email"
-              inputRef={register({
-                required: "Email Required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                  message: "Enter a valid e-mail address",
-                },
-              })}
+              {...emailReg}
+              inputRef={emailRef}
             />
             {errors.email && <p>{errors.email.message}</p>}
+
             <TextField
               variant="outlined"
               type="password"
               label="Password"
               name="password"
-              inputRef={register({
-                required: "Password Required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-              })}
+              {...passwordReg}
+              inputRef={passwordRef}
             />
             {errors.password && <p>{errors.password.message}</p>}
             <Button

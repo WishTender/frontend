@@ -42,6 +42,12 @@ export default function UpdateMessageForm({
     if (data.message) handleUpdateWishlistMessage(data.message);
     onClose(false);
   };
+  const { ref: messageRef, ...messageReg } = register("message", {
+    maxLength: {
+      value: 29,
+      message: "message must be less than 30 characters",
+    },
+  });
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <TextField
@@ -51,12 +57,8 @@ export default function UpdateMessageForm({
         variant="outlined"
         style={{ width: "60%" }}
         spellCheck="false"
-        inputRef={register({
-          maxLength: {
-            value: 29,
-            message: "message must be less than 30 characters",
-          },
-        })}
+        {...messageReg}
+        inputRef={messageRef}
       />
 
       <IconButton type="submit" size="small" aria-label="edit">

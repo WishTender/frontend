@@ -109,6 +109,29 @@ export default function EditWishForm(props) {
       () => props.onClose({ refresh: true })
     );
   };
+  const { ref: itemNameRef, ...itemNameReg } = register("itemName", {
+    maxLength: {
+      value: 199,
+      message: "Product name must be less than 200 characters",
+    },
+    minLength: {
+      value: 5,
+      message: "Product name must be more than 4 characters",
+    },
+  });
+  const { ref: priceRef, ...priceReg } = register("price", {
+    validate: async (value) => {
+      console.log("validation change from ", price, value, isValidPrice(value));
+
+      const currency = currencyInfo(props.info.currency);
+
+      const valid = isValidPrice(value, currency.decimalPlaces);
+
+      if (errors.price || !valid) setPrice(value);
+
+      return valid || `${value} is not a valid price.`;
+    },
+  });
   return (
     <>
       {/* <DialogClose onClose={props.onClose} /> */}
@@ -157,16 +180,8 @@ export default function EditWishForm(props) {
             <Typography>Edit Wish Info</Typography>
             <FormControl error={errors.itemName ? true : false}>
               <TextField
-                inputRef={register({
-                  maxLength: {
-                    value: 199,
-                    message: "Product name must be less than 200 characters",
-                  },
-                  minLength: {
-                    value: 5,
-                    message: "Product name must be more than 4 characters",
-                  },
-                })}
+                {...itemNameReg}
+                inputRef={itemNameRef}
                 name="itemName"
                 variant="outlined"
                 value={itemName}
@@ -177,30 +192,15 @@ export default function EditWishForm(props) {
               />
               <FormHelperText>{errors.itemName?.message}</FormHelperText>
             </FormControl>
+
             <PriceInput
               price={price}
               setPrice={setPrice}
               onChange={(price) => {
                 setPrice(price);
               }}
-              inputRef={register({
-                validate: async (value) => {
-                  console.log(
-                    "validation change from ",
-                    price,
-                    value,
-                    isValidPrice(value)
-                  );
-
-                  const currency = currencyInfo(props.info.currency);
-
-                  const valid = isValidPrice(value, currency.decimalPlaces);
-
-                  if (errors.price || !valid) setPrice(value);
-
-                  return valid || `${value} is not a valid price.`;
-                },
-              })}
+              register={priceReg}
+              inputRef={priceRef}
               error={errors.price?.message}
               symbol={currencyInfo(props.info.currency).symbol}
               decimalPlaces={currencyInfo(props.info.currency).decimalPlaces}

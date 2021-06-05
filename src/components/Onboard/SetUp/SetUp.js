@@ -98,6 +98,24 @@ export default withStyles(styles)(function Login(props) {
       }
     });
   };
+  const { ref: messageRef, ...messageReg } = register("message", {
+    validate: async (value) => await validateHandle(value),
+
+    maxLength: {
+      value: 24,
+      message: "handle must be less than 25 characters",
+    },
+    pattern: {
+      value: /^[0-9A-Za-z_-]+$/,
+      message: `Your handle can only contain letters, numbers, '_', or '-'`,
+    },
+  });
+  const { ref: aliasNameRef, ...aliasNameReg } = register("aliasName", {
+    required: "Display Name Required",
+  });
+  const { ref: countryRef, ...countryReg } = register("country", {
+    required: "Country Required",
+  });
   return (
     <>
       {/* <Stepper></Stepper> */}
@@ -150,18 +168,8 @@ export default withStyles(styles)(function Login(props) {
                     }
                   }
                 }}
-                inputRef={register({
-                  validate: async (value) => await validateHandle(value),
-
-                  maxLength: {
-                    value: 24,
-                    message: "handle must be less than 25 characters",
-                  },
-                  pattern: {
-                    value: /^[0-9A-Za-z_-]+$/,
-                    message: `Your handle can only contain letters, numbers, '_', or '-'`,
-                  },
-                })}
+                {...messageReg}
+                inputRef={messageRef}
                 spellCheck="false"
                 placeholder="handle"
                 variant="outlined"
@@ -179,9 +187,8 @@ export default withStyles(styles)(function Login(props) {
               type="text"
               variant="outlined"
               name="aliasName"
-              inputRef={register({
-                required: "Display Name Required",
-              })}
+              {...aliasNameReg}
+              inputRef={aliasNameRef}
             />
             {errors.aliasName && <p>{errors.aliasName.message}</p>}
 
@@ -189,9 +196,8 @@ export default withStyles(styles)(function Login(props) {
               control={control}
               name="country"
               label="Country of bank account"
-              inputRef={register({
-                required: "Country Required",
-              })}
+              {...countryReg}
+              inputRef={countryRef}
               labelId="country-select-label"
               id="country-select"
             />
