@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
     position: "relative",
     display: "flex",
     alignItems: "stretch",
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ProgressButton(props) {
   const classes = useStyles(props);
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper + " " + props.wrapperClassName}>
       <Button
         {...props}
         disabled={props.loading || props.disabled}

@@ -1,17 +1,11 @@
 import { useForm } from "react-hook-form";
-import React from "react";
+import React, { useState } from "react";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
-import {
-  makeStyles,
-  TextField,
-  Button,
-  Box,
-  useTheme,
-} from "@material-ui/core";
+import { makeStyles, TextField, Box, useTheme } from "@material-ui/core";
 import useScreenSize from "../../hooks/useScreenSize";
 import themeStyles from "../../themeStyles";
 import ResponsiveDialogTitleSection from "../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection";
-import { fetchPatchJson } from "../../scripts/fetchHelper";
+import ProgressButton from "../common/ProgressButton";
 
 export default function UpdateEmail(props) {
   const theme = useTheme();
@@ -40,7 +34,9 @@ export default function UpdateEmail(props) {
     formState: { errors },
   } = useForm();
 
+  const [reqStatus, setReqStatus] = useState(null);
   const onSubmit = async (data) => {
+    setReqStatus("loading");
     const { password } = data;
     delete data.password;
     const headers = new Headers();
@@ -53,10 +49,11 @@ export default function UpdateEmail(props) {
     })
       .then(async (res) => {
         if (res.status >= 200 && res.status < 300) {
-          // return setActivatedStatus("success");
+          setReqStatus("success");
         }
         const json = await res.json();
         if (res.status >= 400 && res.status < 500) {
+          setReqStatus("error");
           console.log(json);
         }
       })
@@ -79,95 +76,100 @@ export default function UpdateEmail(props) {
       message: "Password must be at least 8 characters",
     },
   });
-  const classes = useStyles(props);
   const themeClasses = themeStyles(props);
 
   return (
-    <StyledDialog open={true}>
+    // <StyledDialog open={true}>
+    <Box
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        width: screenSize === "sm" && "400px",
+      }}
+    >
+      <ResponsiveDialogTitleSection onClose={props.onClose}>
+        Update Email
+      </ResponsiveDialogTitleSection>
       <Box
         style={{
+          width: "100%",
           height: "100%",
           display: "flex",
+          justifyContent: "space-between",
           flexDirection: "column",
-          width: screenSize === "sm" && "400px",
+
+          paddingBottom: screenSize === "sm" && theme.spacing(6),
         }}
       >
-        <ResponsiveDialogTitleSection onClose={props.onClose}>
-          Update Email
-        </ResponsiveDialogTitleSection>
-        <Box
+        <form
           style={{
-            width: "100%",
-            height: "100%",
             display: "flex",
-            justifyContent: "space-between",
             flexDirection: "column",
-
-            paddingBottom: screenSize === "sm" && theme.spacing(6),
+            justifyContent: "space-between",
+            height: "100%",
+            gap: "1em",
+            alignItems: "center",
+            paddingTop: theme.spacing(3),
           }}
+          onSubmit={handleSubmit(onSubmit)}
+          autoComplete="off"
+          id="update-profile-form"
         >
-          <form
+          <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+              gap: screenSize === "xs" ? "2em" : "1em",
               height: "100%",
-              gap: "1em",
-              alignItems: "center",
-              paddingTop: theme.spacing(3),
+              flexDirection: "column",
+              width: "80%",
+              justifyContent: "center",
             }}
-            onSubmit={handleSubmit(onSubmit)}
-            autoComplete="off"
-            id="update-profile-form"
           >
-            <div
-              style={{
-                display: "flex",
-                gap: "15px",
-                flexDirection: "column",
-                width: "80%",
-              }}
-            >
-              <TextField
-                size="small"
-                label="New Email"
-                variant="outlined"
-                autoComplete="off"
-                name="email"
-                {...emailReg}
-                inputRef={emailRef}
-              />
-              {errors.email && <p>{errors.email.message}</p>}
+            <TextField
+              size="small"
+              label="New Email"
+              variant="outlined"
+              autoComplete="off"
+              name="email"
+              {...emailReg}
+              inputRef={emailRef}
+            />
+            {errors.email && <p>{errors.email.message}</p>}
 
-              <TextField
-                size="small"
-                variant="outlined"
-                type="password"
-                label="Password"
-                name="password"
-                {...passwordReg}
-                inputRef={passwordRef}
-              />
-              {errors.password && <p>{errors.password.message}</p>}
-            </div>
-            <Button
-              variant="contained"
-              disableElevation
-              color="primary"
-              type="submit"
-              form="update-profile-form"
-              value="Submit"
-              className={
-                screenSize === "xs"
-                  ? themeClasses.dialogSubmitMobile
-                  : themeClasses.dialogSubmit
-              }
-            >
-              Update Email
-            </Button>
-          </form>
-        </Box>
+            <TextField
+              size="small"
+              variant="outlined"
+              type="password"
+              label="Password"
+              name="password"
+              {...passwordReg}
+              inputRef={passwordRef}
+            />
+            {errors.password && <p>{errors.password.message}</p>}
+          </div>
+
+          <ProgressButton
+            type="submit"
+            loading={reqStatus === "loading"}
+            success={reqStatus === "success"}
+            successMessage="Successfully Updated"
+            wrapperClassName={
+              screenSize === "xs"
+                ? themeClasses.dialogSubmitMobileProgressWrap
+                : themeClasses.dialogSubmitProgressWrap
+            }
+            className={
+              screenSize === "xs"
+                ? themeClasses.dialogSubmitMobileProgress
+                : themeClasses.dialogSubmitProgress
+            }
+          >
+            Update Email
+          </ProgressButton>
+        </form>
       </Box>
-    </StyledDialog>
+    </Box>
+    // </StyledDialog>
   );
 }

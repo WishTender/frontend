@@ -11,6 +11,7 @@ import { UserContext } from "../../contexts/UserContext";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import Form from "./Form";
 import { withRouter } from "react-router";
+import UpdateEmail from "./UpdateEmail";
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -68,7 +69,7 @@ export default withRouter(function AccountSettings(props) {
         </StyledMenuItem>
       </Paper>
       <StyledDialog onClose={() => setDialog(null)} open={dialog === "email"}>
-        <Form info={{ currency: "USD", itemName: "Purse" }}></Form>
+        <UpdateEmail onClose={() => setDialog(null)} />
       </StyledDialog>
       <StyledDialog
         onClose={() => setDialog(null)}
