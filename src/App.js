@@ -47,6 +47,7 @@ import SelectCurrencyForm from "./components/SelectCurrencyForm/SelectCurrencyFo
 import ForgotPassword from "./components/ResetPassword/ForgotPassword";
 import SendResetPassword from "./components/ResetPassword/SendResetPassword";
 import ResetPassword from "./components/ResetPassword/ResetLinkFlow/ResetPassword";
+import UpdateEmail from "./components/AccountSettings/UpdateEmail";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -137,6 +138,9 @@ function App(props) {
       />
       <Route path="/sign-up" exact>
         <SignUp />
+      </Route>
+      <Route path="/email" exact>
+        <UpdateEmail />
       </Route>
       <Route path="/wishlist-setup">
         <SetUp />
