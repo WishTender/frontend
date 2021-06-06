@@ -11,6 +11,7 @@ import { UserContext } from "../../contexts/UserContext";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import Form from "./Form";
 import { withRouter } from "react-router";
+import UpdateEmail from "./UpdateEmail";
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -23,7 +24,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 export default withRouter(function AccountSettings(props) {
   const [dialog, setDialog] = useState(null);
-  const { user } = useContext(UserContext);
+  const { user, getUser, setUser } = useContext(UserContext);
 
   return (
     <Container style={{ maxWidth: "750px" }}>
@@ -68,7 +69,12 @@ export default withRouter(function AccountSettings(props) {
         </StyledMenuItem>
       </Paper>
       <StyledDialog onClose={() => setDialog(null)} open={dialog === "email"}>
-        <Form info={{ currency: "USD", itemName: "Purse" }}></Form>
+        <UpdateEmail
+          onClose={async () => {
+            setDialog(null);
+            setUser(await getUser());
+          }}
+        />
       </StyledDialog>
       <StyledDialog
         onClose={() => setDialog(null)}

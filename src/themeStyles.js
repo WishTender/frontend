@@ -83,7 +83,6 @@ const styles = makeStyles({
     left: "0",
     height: "3em",
     borderRadius: "0",
-    border: "1ps solid red",
     width: "100%",
     fontWeight: "900",
   },
@@ -91,9 +90,35 @@ const styles = makeStyles({
     position: "relative",
     height: "3em",
     borderRadius: "0",
-    border: "1ps solid red",
     fontWeight: "900",
     width: "80%",
+  },
+  dialogSubmitMobileProgressWrap: {
+    position: "relative",
+    bottom: "0",
+    left: "0",
+    height: "3em",
+    borderRadius: "0",
+    width: "100%",
+    fontWeight: "900",
+  },
+  dialogSubmitMobileProgress: {
+    position: "relative",
+
+    height: "3em",
+    borderRadius: "0",
+    width: "100%",
+    fontWeight: "900",
+  },
+  dialogSubmitProgressWrap: {
+    position: "relative",
+    width: "80%",
+  },
+  dialogSubmitProgress: {
+    position: "relative",
+    height: "3em",
+    borderRadius: "0",
+    fontWeight: "900",
   },
 });
 
