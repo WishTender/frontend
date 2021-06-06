@@ -7,7 +7,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import MenuItem from "@material-ui/core/MenuItem";
 import { fetchDelete } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
-
+import SendResetPassword from "../ResetPassword/SendResetPassword.js";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import Form from "./Form";
 import { withRouter } from "react-router";
@@ -80,9 +80,7 @@ export default withRouter(function AccountSettings(props) {
         onClose={() => setDialog(null)}
         open={dialog === "password"}
       >
-        <Button onClick={() => props.history.push("/request-password-reset")}>
-          Reset Password
-        </Button>
+        <SendResetPassword />
       </StyledDialog>
       <StyledDialog
         onClose={() => setDialog(null)}
