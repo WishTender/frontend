@@ -24,7 +24,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 export default withRouter(function AccountSettings(props) {
   const [dialog, setDialog] = useState(null);
-  const { user } = useContext(UserContext);
+  const { user, getUser, setUser } = useContext(UserContext);
 
   return (
     <Container style={{ maxWidth: "750px" }}>
@@ -69,7 +69,12 @@ export default withRouter(function AccountSettings(props) {
         </StyledMenuItem>
       </Paper>
       <StyledDialog onClose={() => setDialog(null)} open={dialog === "email"}>
-        <UpdateEmail onClose={() => setDialog(null)} />
+        <UpdateEmail
+          onClose={async () => {
+            setDialog(null);
+            setUser(await getUser());
+          }}
+        />
       </StyledDialog>
       <StyledDialog
         onClose={() => setDialog(null)}

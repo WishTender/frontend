@@ -1,7 +1,13 @@
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
-import { makeStyles, TextField, Box, useTheme } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  TextField,
+  Box,
+  useTheme,
+} from "@material-ui/core";
 import useScreenSize from "../../hooks/useScreenSize";
 import themeStyles from "../../themeStyles";
 import ResponsiveDialogTitleSection from "../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection";
@@ -50,6 +56,7 @@ export default function UpdateEmail(props) {
       .then(async (res) => {
         if (res.status >= 200 && res.status < 300) {
           setReqStatus("success");
+          props.onClose();
         }
         const json = await res.json();
         if (res.status >= 400 && res.status < 500) {
@@ -148,7 +155,20 @@ export default function UpdateEmail(props) {
             />
             {errors.password && <p>{errors.password.message}</p>}
           </div>
-
+          {/* <Button
+            disableElevation={true}
+            className={
+              screenSize === "xs"
+                ? themeClasses.dialogSubmitMobile
+                : themeClasses.dialogSubmit
+            }
+            variant="contained"
+            color="primary"
+            size="large"
+            type="submit"
+          >
+            Update Email
+          </Button> */}
           <ProgressButton
             type="submit"
             loading={reqStatus === "loading"}
