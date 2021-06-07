@@ -61,7 +61,7 @@ export default function ProgressButton(props) {
         {props.success
           ? props.successMessage || "Success"
           : props.error
-          ? props.successMessage || "Retry"
+          ? props.errorMessage || "Retry"
           : props.children}
       </Button>
       {props.loading && (

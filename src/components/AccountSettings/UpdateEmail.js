@@ -137,23 +137,25 @@ export default function UpdateEmail(props) {
               size="small"
               label="New Email"
               variant="outlined"
+              style={{ height: "4em" }}
               autoComplete="off"
               name="email"
+              helperText={errors.email && errors.email.message}
               {...emailReg}
               inputRef={emailRef}
             />
-            {errors.email && <p>{errors.email.message}</p>}
 
             <TextField
               size="small"
+              style={{ height: "4em" }}
               variant="outlined"
               type="password"
               label="Password"
               name="password"
+              helperText={errors.password && errors.password.message}
               {...passwordReg}
               inputRef={passwordRef}
             />
-            {errors.password && <p>{errors.password.message}</p>}
           </div>
           {/* <Button
             disableElevation={true}
