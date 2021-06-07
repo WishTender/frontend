@@ -7,11 +7,12 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import MenuItem from "@material-ui/core/MenuItem";
 import { fetchDelete } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
-
+import SendResetPassword from "../ResetPassword/SendResetPassword.js";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import Form from "./Form";
 import { withRouter } from "react-router";
 import UpdateEmail from "./UpdateEmail";
+import DeleteAccount from "./DeleteAccount";
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -80,9 +81,7 @@ export default withRouter(function AccountSettings(props) {
         onClose={() => setDialog(null)}
         open={dialog === "password"}
       >
-        <Button onClick={() => props.history.push("/request-password-reset")}>
-          Reset Password
-        </Button>
+        <SendResetPassword />
       </StyledDialog>
       <StyledDialog
         onClose={() => setDialog(null)}
@@ -91,23 +90,13 @@ export default withRouter(function AccountSettings(props) {
         payment
       </StyledDialog>
       <StyledDialog onClose={() => setDialog(null)} open={dialog === "delete"}>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            await fetchDelete(
-              `${process.env.REACT_APP_BASE_URL}/api/users/${user._id}`,
-              async (res) => {
-                if (res.status === 200) {
-                  alert("deleted");
-                }
-              }
-            );
+        <DeleteAccount
+          user={user}
+          onClose={async () => {
+            props.history.push("/");
+            setUser(await getUser());
           }}
-        >
-          Are you sure you want to delete your account?
-          <Button onClick={() => setDialog(null)}>Cancel</Button>{" "}
-          <Button type="submit">Delete</Button>
-        </form>
+        />
       </StyledDialog>
       <StyledDialog
         onClose={() => setDialog(null)}

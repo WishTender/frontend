@@ -12,6 +12,7 @@ import useScreenSize from "../../hooks/useScreenSize";
 import themeStyles from "../../themeStyles";
 import ResponsiveDialogTitleSection from "../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection";
 import ProgressButton from "../common/ProgressButton";
+import userEvent from "@testing-library/user-event";
 
 export default function UpdateEmail(props) {
   const theme = useTheme();
@@ -20,20 +21,7 @@ export default function UpdateEmail(props) {
     breakpoints: { xs: 0, sm: 450 },
     useStandard: false,
   });
-  const useStyles = makeStyles((theme) => {
-    return {
-      root: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "1em",
-        padding:
-          screenSize === "xs"
-            ? theme.spacing(6, 0, 1, 0)
-            : theme.spacing(4, 0, 1, 0),
-        width: "80%",
-      },
-    };
-  });
+
   const {
     register,
     handleSubmit,
@@ -43,20 +31,19 @@ export default function UpdateEmail(props) {
   const [reqStatus, setReqStatus] = useState(null);
   const onSubmit = async (data) => {
     setReqStatus("loading");
-    const { password } = data;
-    delete data.password;
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    fetch(process.env.REACT_APP_BASE_URL + "/api/users", {
+    fetch(process.env.REACT_APP_BASE_URL + "/api/users/" + props.user._id, {
       credentials: "include",
-      body: JSON.stringify({ email: data.email, password }),
-      method: "PATCH",
+      body: JSON.stringify(data),
+      method: "DELETE",
       headers,
     })
       .then(async (res) => {
         if (res.status >= 200 && res.status < 300) {
           setReqStatus("success");
           props.onClose();
+          // go to home
         }
         const json = await res.json();
         if (res.status >= 400 && res.status < 500) {
@@ -69,13 +56,6 @@ export default function UpdateEmail(props) {
       });
   };
 
-  const { ref: emailRef, ...emailReg } = register("email", {
-    required: "Email Required",
-    pattern: {
-      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-      message: "Enter a valid e-mail address",
-    },
-  });
   const { ref: passwordRef, ...passwordReg } = register("password", {
     required: "Password Required",
     minLength: {
@@ -83,10 +63,20 @@ export default function UpdateEmail(props) {
       message: "Password must be at least 8 characters",
     },
   });
+  const { ref: phraseRef, ...phraseReg } = register("phrase", {
+    required: "Confirmation phrase require.",
+    pattern: {
+      value: /^permanently delete$/,
+      message: (
+        <span>
+          Write <i>permanently delete</i> to continue
+        </span>
+      ),
+    },
+  });
   const themeClasses = themeStyles(props);
 
   return (
-    // <StyledDialog open={true}>
     <Box
       style={{
         height: "100%",
@@ -96,7 +86,7 @@ export default function UpdateEmail(props) {
       }}
     >
       <ResponsiveDialogTitleSection onClose={props.onClose}>
-        Update Email
+        Delete Account
       </ResponsiveDialogTitleSection>
       <Box
         style={{
@@ -134,20 +124,8 @@ export default function UpdateEmail(props) {
             }}
           >
             <TextField
-              size="small"
-              label="New Email"
-              variant="outlined"
               style={{ height: "4em" }}
-              autoComplete="off"
-              name="email"
-              helperText={errors.email && errors.email.message}
-              {...emailReg}
-              inputRef={emailRef}
-            />
-
-            <TextField
               size="small"
-              style={{ height: "4em" }}
               variant="outlined"
               type="password"
               label="Password"
@@ -156,26 +134,30 @@ export default function UpdateEmail(props) {
               {...passwordReg}
               inputRef={passwordRef}
             />
+
+            <TextField
+              style={{ height: "4em" }}
+              size="small"
+              label={
+                <span>
+                  Type <i>permanently delete</i> to continue
+                </span>
+              }
+              variant="outlined"
+              autoComplete="off"
+              name="phrase"
+              helperText={errors.phrase && errors.phrase.message}
+              {...phraseReg}
+              inputRef={phraseRef}
+            />
           </div>
-          {/* <Button
-            disableElevation={true}
-            className={
-              screenSize === "xs"
-                ? themeClasses.dialogSubmitMobile
-                : themeClasses.dialogSubmit
-            }
-            variant="contained"
-            color="primary"
-            size="large"
-            type="submit"
-          >
-            Update Email
-          </Button> */}
+
           <ProgressButton
             type="submit"
             loading={reqStatus === "loading"}
+            error={reqStatus === "error"}
             success={reqStatus === "success"}
-            successMessage="Successfully Updated"
+            successMessage="Successfully Deleted"
             wrapperClassName={
               screenSize === "xs"
                 ? themeClasses.dialogSubmitMobileProgressWrap
@@ -187,11 +169,10 @@ export default function UpdateEmail(props) {
                 : themeClasses.dialogSubmitProgress
             }
           >
-            Update Email
+            Delete Account
           </ProgressButton>
         </form>
       </Box>
     </Box>
-    // </StyledDialog>
   );
 }
