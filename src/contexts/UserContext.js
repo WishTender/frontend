@@ -9,7 +9,6 @@ export const UserContext = createContext({
         credentials: "include",
       }
     ).then(async (res) => {
-      console.log(res);
       if (res.status === 204) return Promise.resolve(null);
       const user = await res.json();
       return user;

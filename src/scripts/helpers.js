@@ -1,20 +1,6 @@
 import getCurrencies from "./getCurrencies";
 const countryData = require("country-data");
 
-const fetchUser = (callback) => {
-  return fetch(process.env.REACT_APP_BASE_URL + "/api/users/current", {
-    credentials: "include",
-  })
-    .then((res) => {
-      if (res.status === 204) return null;
-      return res.json();
-    })
-    .then((user) => {
-      callback(user);
-      return user;
-    });
-};
-
 const parsedCookies = () => {
   const str = decodeURIComponent(document.cookie).split("; ");
   const result = {};
@@ -396,7 +382,6 @@ export {
   clientLocale,
   displayCurrency,
   parsedCookies,
-  fetchUser,
   chooseCurrency,
   displayConversion,
   displayPriceFromUnit,

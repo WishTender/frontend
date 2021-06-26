@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { UserContext } from "../../../contexts/UserContext";
 
 import SelectCropUpdateImage from "../ProfileSection/SelectCropUpdateImage/SelectCropUpdateImage";
 import {
@@ -34,6 +35,8 @@ import ResponsiveDialogTitleSection from "../../common/StyledDialog/TopSections/
  * @param  props.onClose
  **/
 export default function EditWishForm(props) {
+  const { user } = useContext(UserContext);
+
   const screenSize = useScreenSize({
     breakpoints: { xs: 0, sm: 450 },
     useStandard: false,
@@ -56,7 +59,6 @@ export default function EditWishForm(props) {
   const themeClasses = themeStyles();
   const classes = useStyles();
   const [price, setPrice] = useState("");
-  const [price2, setPrice2] = useState("");
   const [itemName, setItemName] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [deleteWarningVisible, setDeleteWarningVisible] = useState(false);
@@ -89,13 +91,37 @@ export default function EditWishForm(props) {
     if (data.price)
       data.price = toSmallestUnit(data.price, props.info.currency);
     if (Object.keys(data).length) {
-      fetchPatchMulti(
-        data,
-        `${process.env.REACT_APP_BASE_URL}/api/wishlistItems/${props.id}`,
-        () => {
+      // fetchPatchMulti(
+      //   data,
+      //   `${process.env.REACT_APP_BASE_URL}/api/wishlistItems/${props.id}`,
+      //   () => {
+      //     props.onClose({ refresh: true });
+      //   }
+      // );
+      const fd = new FormData();
+      const dataArray = Object.entries(data);
+      dataArray.forEach((datum) => fd.append(datum[0], datum[1]));
+      const headers = new Headers();
+      headers.append("CSRF-Token", user.csrfToken);
+      fetch(`${process.env.REACT_APP_BASE_URL}/api/wishlistItems/${props.id}`, {
+        credentials: "include",
+        method: "PATCH",
+        body: fd,
+        headers,
+      })
+        .then(async (response) => {
+          if (response.status === 500) {
+            let responseText = await response.text();
+            throw new Error(responseText);
+          }
+          return response.text();
+        })
+        .then((res) => {
           props.onClose({ refresh: true });
-        }
-      );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       props.onClose({ refresh: false });
     }
