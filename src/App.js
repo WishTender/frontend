@@ -207,7 +207,7 @@ function App(props) {
       </Route>
     </Switch>
   );
-
+  // testetstest
   const routesArray = SwitchRoutes.props.children.map(
     (child) => child.props.path
   );
