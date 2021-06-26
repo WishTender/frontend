@@ -69,7 +69,11 @@ function WishTracker(props) {
                 style={{ fontWeight: "500" }}
                 // variant="outlined"
                 disableElevation
-                href="http://localhost:4000/api/stripe/login"
+                href={`http${
+                  process.env.REACT_APP_BASE_URL.slice(0, 5) === "local"
+                    ? "s"
+                    : ""
+                }://${process.env.REACT_APP_BASE_URL}/api/stripe/login`}
               >
                 Payment Dashboard <RightIcon color="primary" />
               </Button>

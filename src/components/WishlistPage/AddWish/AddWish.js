@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../../../contexts/UserContext";
+
 import axios from "axios";
 import Search from "./Search.js";
 import filterOutSmallImages from "./filterImages";
@@ -9,27 +11,29 @@ import { makeStyles } from "@material-ui/core/styles";
 import StyledDialog from "../../common/StyledDialog/StyledDialog";
 import { Box } from "@material-ui/core";
 import ResponsiveDialogTitleSection from "../../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection.js";
-const fetchPostJson = async (data, route, callback) => {
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-  await fetch(route, {
-    credentials: "include",
-    method: "POST",
-    body: JSON.stringify(data),
-    headers,
-  })
-    // .then((res) => res.json())
-    .then((response) => {
-      console.log("server response: ", response);
-      if (callback) callback();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+// const fetchPostJson = async (data, route, callback) => {
+//   const headers = new Headers();
+//   headers.append("Content-Type", "application/json");
+//   await fetch(route, {
+//     credentials: "include",
+//     method: "POST",
+//     body: JSON.stringify(data),
+//     headers,
+//   })
+//     // .then((res) => res.json())
+//     .then((response) => {
+//       console.log("server response: ", response);
+//       if (callback) callback();
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
 // import { fetchPostJson } from "../../../scripts/fetchHelper";
 
 function AddWish1(props) {
+  const { user } = useContext(UserContext);
+
   const screenSize = useScreenSize({
     breakpoints: { xs: 0, sm: 450 },
     useStandard: false,
@@ -79,16 +83,32 @@ function AddWish1(props) {
         filterAndSetImages(uniqueImages);
       });
   }
-  const postWish = (data) => {
-    const wishInfo = data;
-    wishInfo.url = url;
-    wishInfo.currency = props.currency;
-    wishInfo.wishlist = props.wishlist;
-    fetchPostJson(
-      wishInfo,
-      process.env.REACT_APP_BASE_URL + "/api/wishlistItems",
-      () => props.afterAddWish(wishInfo)
-    );
+  const postWish = async (data) => {
+    data.url = url;
+    data.currency = props.currency;
+    data.wishlist = props.wishlist;
+    const headers = new Headers();
+    headers.append("CSRF-Token", user.csrfToken);
+    headers.append("Content-Type", "application/json");
+    await fetch(process.env.REACT_APP_BASE_URL + "/api/wishlistItems", {
+      credentials: "include",
+      method: "POST",
+      body: JSON.stringify(data),
+      headers,
+    })
+      // .then((res) => res.json())
+      .then((response) => {
+        console.log("server response: ", response);
+        props.afterAddWish(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // fetchPostJson(
+    //   wishInfo,
+    //   process.env.REACT_APP_BASE_URL + "/api/wishlistItems",
+    //   () => props.afterAddWish(wishInfo)
+    // );
   };
 
   return (

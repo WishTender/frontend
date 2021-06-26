@@ -57,18 +57,18 @@ export default function WishForm(props) {
   });
   const customClasses = customStyles(props);
   const classes = useStyles();
+
   const [price, setPrice] = useState("");
   const [name, setName] = useState("");
   const [crop, setCrop] = useState("");
   const { currency: clientCurrency } = useContext(CurrencyContext);
-
   useEffect(() => {
     setName(props.info && props.info.title);
     setPrice(props.info && props.info.price);
   }, [props.info]);
-  useEffect(() => {
-    console.log(price);
-  }, [price]);
+  // useEffect(() => {
+  //   console.log(price);
+  // }, [price]);
 
   const {
     register,
@@ -76,6 +76,7 @@ export default function WishForm(props) {
     setValue,
     formState: { errors },
   } = useForm();
+
   useEffect(() => {
     if (price !== "") setValue("itemName", name, { shouldValidate: true });
     if (price !== "") setValue("price", price, { shouldValidate: true });
@@ -86,7 +87,7 @@ export default function WishForm(props) {
     data.imageCrop = crop;
     props.onSubmit(data);
   };
-  console.log("props.price, ", props.info.price);
+  // console.log("props.price, ", props.info.price);
   const { ref: itemNameRef, itemNameReg } = register("itemName");
   const { ref: priceRef, ...priceReg } = register("price", {
     validate: (value) => {

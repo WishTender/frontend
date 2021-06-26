@@ -50,7 +50,7 @@ export default withRouter(function AccountSettings(props) {
           <ListItemText primary="Password" />
           <ArrowRightIcon />
         </StyledMenuItem>
-        <StyledMenuItem
+        {/* <StyledMenuItem
           onClick={() => {
             setDialog("payment-dashboard");
           }}
@@ -58,7 +58,7 @@ export default withRouter(function AccountSettings(props) {
         >
           <ListItemText primary="Payment Dashboard" />
           <ArrowRightIcon />
-        </StyledMenuItem>
+        </StyledMenuItem> */}
         <StyledMenuItem
           onClick={() => {
             setDialog("delete");

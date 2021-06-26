@@ -31,15 +31,22 @@ export default withRouter(function Login(props) {
       headers,
     })
       .then(async (res) => {
-        const json = await res.json();
+        if (res.status === 429) {
+          const json = await res.json();
+
+          alert(json.message);
+
+          return;
+        }
         if (res.status === 200) {
+          const json = await res.json();
           const user = await getUser();
           setUser(user);
           if (!json.profile) props.history.push("/wishlist-setup");
           setProfile(json.profile);
+          // alert(res.status + json.message);
           return;
         }
-        alert(res.status + json);
       })
       .catch((err) => {
         console.log(err);
