@@ -48,6 +48,7 @@ import ForgotPassword from "./components/ResetPassword/ForgotPassword";
 import SendResetPassword from "./components/ResetPassword/SendResetPassword";
 import ResetPassword from "./components/ResetPassword/ResetLinkFlow/ResetPassword";
 import UpdateEmail from "./components/AccountSettings/UpdateEmail";
+import LandingPageMenu from "./components/LandingPage/LandingPageMenu";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -131,7 +132,18 @@ function App(props) {
         render={(props) => {
           return (
             <div>
-              <LandingPage />
+              <LandingPage signUp={false} />
+            </div>
+          );
+        }}
+      />
+      <Route
+        path="/secret-door"
+        exact
+        render={(props) => {
+          return (
+            <div>
+              <LandingPage signUp={true} />
             </div>
           );
         }}
@@ -207,7 +219,6 @@ function App(props) {
       </Route>
     </Switch>
   );
-  // testetstest
   const routesArray = SwitchRoutes.props.children.map(
     (child) => child.props.path
   );
@@ -283,9 +294,9 @@ function App(props) {
                           </StyledDialog>
                         )}
                         <Switch>
-                          {/* <Route path="/" exact>
-                          <LandingPageMenu />
-                        </Route> */}
+                          <Route path="/" exact>
+                            <LandingPageMenu />
+                          </Route>
                           <Route path="/">
                             <Menu />
                           </Route>
