@@ -2,6 +2,8 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import useStyles from "../../themeStyles";
+import { Link } from "react-router-dom";
+
 // import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
@@ -18,14 +20,26 @@ const heroSection = (props) => {
           {/*Contact{" "}
           <a href="https://www.twitter.com/DashBarkHuss">@DashBarkHuss</a> on
           twitter for more information. */}
-          <Button
-            className={props.classes.gradient + " " + props.classes.margin}
-            style={{ fontWeight: 600, marginLeft: 0 }}
-            href="https://landing.mailerlite.com/webforms/landing/k3y1m6"
-            variant="contained"
-          >
-            Create Your Free Wishlist
-          </Button>
+          {!props.signUp ? (
+            <Button
+              className={props.classes.gradient + " " + props.classes.margin}
+              style={{ fontWeight: 600, marginLeft: 0 }}
+              href={"https://landing.mailerlite.com/webforms/landing/k3y1m6"}
+              variant="contained"
+            >
+              Get Early Access
+            </Button>
+          ) : (
+            <Link to="/sign-up">
+              <Button
+                className={props.classes.gradient + " " + props.classes.margin}
+                style={{ fontWeight: 600, marginLeft: 0 }}
+                variant="contained"
+              >
+                Create Your Free Wishlist
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
@@ -97,7 +111,7 @@ function LandingPage(props) {
 
   return (
     <div>
-      {heroSection({ classes })}
+      {heroSection({ classes, ...props })}
       {fourPointExplanation()}
       <Grid container spacing={3} className="large_explanation">
         <Grid item xs={12} m={6}>
