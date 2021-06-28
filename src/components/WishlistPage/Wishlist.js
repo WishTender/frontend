@@ -130,7 +130,7 @@ function Wishlist(props) {
           container
           spacing={2}
         >
-          <div onClick={() => setSelectWish(item)}>
+          <div style={{ width: "100%" }} onClick={() => setSelectWish(item)}>
             <WishItem
               itemName={item.itemName}
               price={item.price}
