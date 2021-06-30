@@ -45,7 +45,7 @@ function ProfileSection(props) {
       setWishlistId(props.info.wishlists[0]?._id || null);
       setProfilePicture(
         props.info.profileImage ||
-          "/data/images/profileImages/default_profileImage.png"
+          "/data/images/profileImages/default_profileimage.png"
       );
       setHandle(props.info.handle);
       setAliasName(props.info.aliasName);
