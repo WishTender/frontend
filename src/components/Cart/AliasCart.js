@@ -143,8 +143,10 @@ export default function AliasCart({ cart, exchangeRates }) {
       (Math.round(cart.totalPrice.float) * exchangeRates[cart.alias.currency]) /
       exchangeRates["USD"];
     messageLength = Math.round(30 + totalPriceUSD);
+  } else if (!exchangeRates && cart.alias.currency === "USD") {
+    messageLength = Math.round(cart.totalPrice.float) + 30;
   }
-  const { ref: messageRef, ...messageReg } = register("message ", {
+  const { ref: messageRef, ...messageReg } = register("message", {
     maxLength: {
       value: messageLength,
       message: `message must be less than ${messageLength + 1} characters`,

@@ -3,6 +3,7 @@ export const UserContext = createContext({
   user: null,
   setUser: () => {},
   getUser: async () => {
+    // const l = process.env.REACT_APP_BASE_URL + "/api/users/current";
     let user = await fetch(
       process.env.REACT_APP_BASE_URL + "/api/users/current",
       {
