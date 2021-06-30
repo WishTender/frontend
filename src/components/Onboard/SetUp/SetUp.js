@@ -98,7 +98,7 @@ export default withStyles(styles)(function Login(props) {
       }
     });
   };
-  const { ref: messageRef, ...messageReg } = register("message", {
+  const { ref: handleRef, ...handleReg } = register("handle", {
     validate: async (value) => await validateHandle(value),
 
     maxLength: {
@@ -168,8 +168,8 @@ export default withStyles(styles)(function Login(props) {
                     }
                   }
                 }}
-                {...messageReg}
-                inputRef={messageRef}
+                {...handleReg}
+                inputRef={handleRef}
                 spellCheck="false"
                 placeholder="handle"
                 variant="outlined"

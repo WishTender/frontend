@@ -25,11 +25,17 @@ function CurrencyOptions(props) {
     <FormControl
       style={{
         minWidth: 220,
-        width: 220,
+        width: "100%",
         textAlign: "left",
       }}
     >
-      <InputLabel>Select Your Preferred Currency</InputLabel>
+      <InputLabel
+        style={{
+          color: props.disabled && "lightgrey",
+        }}
+      >
+        Select Your Preferred Currency
+      </InputLabel>
       <Controller
         control={props.control}
         name={props.name}
@@ -51,6 +57,22 @@ function CurrencyOptions(props) {
             })}
           </Select>
         }
+        render={() => (
+          <Select
+            disabled={props.disabled || false}
+            labelId={props.labelId}
+            id={props.id}
+            name={props.name}
+          >
+            {currenciesArray({
+              currencies: props.currencies,
+              onClick: (curCode) => {
+                setCurrencyCookieAndContext(curCode, setCurrency);
+              },
+              disabled: props.disabled,
+            })}
+          </Select>
+        )}
       />
     </FormControl>
   );
@@ -133,7 +155,6 @@ export default function SelectCurrencyForm(props) {
                 ></FormControlLabel>
               </RadioGroup>
             </FormControl>
-
             <CurrencyOptions
               disabled={!convert}
               name="currency"
