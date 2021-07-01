@@ -4,6 +4,8 @@ import { RouteContext } from "../../../contexts/RouteContext";
 import { UserContext } from "../../../contexts/UserContext";
 import { NotificationContext } from "../../../contexts/NotificationContext";
 import theme from "../../../theme";
+import { withRouter } from "react-router";
+
 import themeStyles from "../../../themeStyles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -40,7 +42,7 @@ const TabTooltip = withStyles({
     margin: 2,
   },
 })(Tooltip);
-export default function AccountTabs(props) {
+export default withRouter(function AccountTabs(props) {
   const classes = themeStyles(props);
   const [activeTab, setActiveTab] = useState(false);
   const [alias, setAlias] = useState(false);
@@ -83,6 +85,9 @@ export default function AccountTabs(props) {
                 `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${userContext.user._id}`,
                 { credentials: "include" }
               );
+              if (res.status === 204) {
+                props.history.push("/wishlist-setup");
+              }
               const json = await res.json();
               setAlias(json.handle);
               setAlias(false);
@@ -111,4 +116,4 @@ export default function AccountTabs(props) {
       </Tabs>
     </div>
   );
-}
+});
