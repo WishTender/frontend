@@ -165,7 +165,7 @@ function ProfileSection(props) {
       )}
       {isAuth &&
         !props.info.activated &&
-        props.info.wishlists[0].wishlistItems.length && <ActivateAccount />}
+        !!props.info.wishlists[0].wishlistItems.length && <ActivateAccount />}
     </div>
   );
 }
