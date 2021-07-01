@@ -71,7 +71,9 @@ function AddWish1(props) {
   function handleScrapeProduct(url) {
     setUrl(url);
     axios
-      .post("http://localhost:4000/api/wishes/productInfo", { url: url })
+      .post(`${process.env.REACT_APP_BASE_URL}/api/wishes/productInfo`, {
+        url: url,
+      })
       .then((res) => {
         const info = res.data;
         const images = info.imageSrcs;

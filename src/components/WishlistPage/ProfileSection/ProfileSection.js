@@ -33,7 +33,7 @@ function ProfileSection(props) {
     if (props.info) {
       setCoverImage(
         props.info.wishlists[0]?.coverImage ||
-          "/data/images/coverImages/default_coverimage2.jpg"
+          `${process.env.REACT_APP_BASE_URL}/data/images/coverImages/default_coverimage2.jpg`
       );
       setWishlistName(
         props.info.wishlists[0]?.wishlistName || "Name your wishlist"
@@ -45,7 +45,7 @@ function ProfileSection(props) {
       setWishlistId(props.info.wishlists[0]?._id || null);
       setProfilePicture(
         props.info.profileImage ||
-          "/data/images/profileImages/default_profileImage.png"
+          `${process.env.REACT_APP_BASE_URL}/data/images/profileImages/default_profileimage.png`
       );
       setHandle(props.info.handle);
       setAliasName(props.info.aliasName);
@@ -163,9 +163,9 @@ function ProfileSection(props) {
           ></UpdateProfileInfo>
         </div>
       )}
-      {isAuth && !props.info.activated && props.info.wishlists[0].length && (
-        <ActivateAccount />
-      )}
+      {isAuth &&
+        !props.info.activated &&
+        props.info.wishlists[0].wishlistItems.length && <ActivateAccount />}
     </div>
   );
 }

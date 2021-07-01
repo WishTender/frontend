@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import { Button, Typography } from "@material-ui/core";
 import { fetchPatchJson } from "../../scripts/fetchHelper";
 import { useForm } from "react-hook-form";
-
+import ProgressButton from "../common/ProgressButton";
+import themeStyles from "../../themeStyles";
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles((theme) => {
+  return {
+    reply_buttons: {
+      marginTop: "8px",
+      float: "right",
+    },
+  };
+});
 export default function ReplyToTender(props) {
+  const [reqStatus, setReqStatus] = useState(null);
+  const classes = useStyles();
   const {
     register,
     handleSubmit,
@@ -12,6 +24,7 @@ export default function ReplyToTender(props) {
   } = useForm();
 
   const onSubmit = (data) => {
+    setReqStatus("loading");
     fetchPatchJson(
       {
         message: data.message,
@@ -19,9 +32,12 @@ export default function ReplyToTender(props) {
       `${process.env.REACT_APP_BASE_URL}/api/orders/reply/${props.order._id}`,
       (res) => {
         if (res.messageSent) {
+          setReqStatus("success");
+
           props.setReply(null);
           props.setRefreshOrders(true);
         }
+        setReqStatus("error");
       }
     );
   };
@@ -41,7 +57,7 @@ export default function ReplyToTender(props) {
         rows={10}
         variant="filled"
       ></TextField>
-      <Button
+      {/* <Button
         type="submit"
         color="primary"
         disableElevation
@@ -49,7 +65,27 @@ export default function ReplyToTender(props) {
         style={{ marginTop: "8px", float: "right" }}
       >
         Send
-      </Button>
+      </Button> */}
+      <ProgressButton
+        type="submit"
+        loading={reqStatus === "loading"}
+        error={reqStatus === "error"}
+        success={reqStatus === "success"}
+        successMessage="Sent"
+        wrapperClassName={classes.reply_buttons}
+        // wrapperClassName={
+        //   screenSize === "xs"
+        //     ? themeClasses.dialogSubmitMobileProgressWrap
+        //     : themeClasses.dialogSubmitProgressWrap
+        // }
+        // className={
+        //   screenSize === "xs"
+        //     ? themeClasses.dialogSubmitMobileProgress
+        //     : themeClasses.dialogSubmitProgress
+        // }
+      >
+        Send
+      </ProgressButton>
       <Button
         onClick={() => props.setReply(null)}
         disableElevation

@@ -66,7 +66,7 @@ export default function CheckOutSuccess() {
             alt="gift graphic"
             src={
               activatedStatus === ""
-                ? "images/piggy_bank_sleep_grey_optimized_for_web.png.png"
+                ? "images/piggy_bank_sleep_grey_optimized_for_web.png"
                 : "images/piggy_bank_optimized_for_web.png"
             }
             style={{ maxHeight: "30vh" }}

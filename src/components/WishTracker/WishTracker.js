@@ -27,7 +27,11 @@ function WishTracker(props) {
   // const [refreshWishlist, setRefreshWishlist] = useState(null);
   // const [reply, setReply] = useState(null);
   const [refreshOrders, setRefreshOrders] = useState(null);
+  const paymentLink = `${process.env.REACT_APP_BASE_URL}/api/stripe/login`;
 
+  // local 4000 if startlocal
+  // api staging if startstaging
+  // api if start
   useEffect(() => {
     if (currentUser || (refreshOrders && currentUser))
       fetchGet(
@@ -69,11 +73,10 @@ function WishTracker(props) {
                 style={{ fontWeight: "500" }}
                 // variant="outlined"
                 disableElevation
-                href={`http${
-                  process.env.REACT_APP_BASE_URL.slice(0, 5) === "local"
-                    ? "s"
-                    : ""
-                }://${process.env.REACT_APP_BASE_URL}/api/stripe/login`}
+                href={paymentLink}
+                onClick={() => {
+                  fetch();
+                }}
               >
                 Payment Dashboard <RightIcon color="primary" />
               </Button>
@@ -90,10 +93,11 @@ function WishTracker(props) {
                 style={{ fontWeight: "500" }}
                 // variant="outlined"
                 disableElevation
-                href="http://localhost:4000/api/stripe/login"
+                href={paymentLink}
               >
                 Payment Dashboard <RightIcon color="primary" />
               </Button>
+
               <Typography variant="h6" style={{ margin: "0 8px" }}>
                 Wish-Tracker
               </Typography>

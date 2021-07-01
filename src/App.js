@@ -83,6 +83,13 @@ function App(props) {
     });
   }, [currency, currencyNeeded, getUser]);
 
+  //
+  useEffect(() => {
+    if (user && user?.currency) {
+      setCurrency(user.currency);
+    }
+  }, [user]);
+
   useEffect(() => {
     if (!user) return;
     getNotifications(user.aliases[0]).then((notifications) => {
