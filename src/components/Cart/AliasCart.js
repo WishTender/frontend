@@ -128,7 +128,9 @@ export default function AliasCart({ cart, exchangeRates }) {
     };
 
     var stripe = window.Stripe(
-      "pk_test_51HAi5vLLBOhef2QNgeOEgpmhxfegnaTxArp0ri2QR4e7c4HxayuuHv8jWN9AzTuLKKEIztnhXgvss5P70Gs4A7kI00052oBzNQ"
+      process.env.REACT_APP_BASE_URL === "https://api.wishtender.com"
+        ? "pk_live_51HAi5vLLBOhef2QNhhHrfudI6iPcLyU4ormSu1hzexYSQqAg3uZNjDRZhEeNkvbOUweMONdLq3qhBqWUKIKMpnGN00VFBBOH8U"
+        : "pk_test_51HAi5vLLBOhef2QNgeOEgpmhxfegnaTxArp0ri2QR4e7c4HxayuuHv8jWN9AzTuLKKEIztnhXgvss5P70Gs4A7kI00052oBzNQ"
     );
 
     stripe
