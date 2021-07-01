@@ -91,7 +91,7 @@ function App(props) {
   }, [user]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !user.aliases || !user.aliases.length) return;
     getNotifications(user.aliases[0]).then((notifications) => {
       setNotifications(notifications);
     });
