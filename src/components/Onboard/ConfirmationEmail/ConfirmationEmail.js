@@ -13,7 +13,7 @@ export default withRouter(
       breakpoints: { xs: 0, sm: 600 },
       useStandard: false,
     });
-    const { user } = useContext(UserContext);
+    const { user, setUser, getUser } = useContext(UserContext);
 
     const classes = useStyles();
     const [message, setMessage] = useState(null);
@@ -37,25 +37,28 @@ export default withRouter(
         if (res.status === 201) setMessage("Sent");
       });
     };
-    const goToNext = () => {
-      (async () => {
-        const res = await fetch(
-          `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${user._id}`,
-          { credentials: "include" }
-        );
-        if (res.status === 204) {
-          return props.history.push("/wishlist-setup");
-        }
-        const json = await res.json();
-        return props.history.push(json.profile);
-      })();
-    };
 
     useEffect(() => {
-      if (user.confirmed) {
+      const goToNext = () => {
+        (async () => {
+          const res = await fetch(
+            `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${user._id}`,
+            { credentials: "include" }
+          );
+          if (res.status === 204) {
+            return props.history.push("/wishlist-setup");
+          }
+          const json = await res.json();
+          return props.history.push(json.profile);
+        })();
+      };
+      if (!user) {
+        (async () => setUser(await getUser))();
+      }
+      if (user && user.confirmed) {
         goToNext();
       }
-    });
+    }, [getUser, props.history, setUser, user]);
 
     return (
       <Container
