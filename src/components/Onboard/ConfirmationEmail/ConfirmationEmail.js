@@ -44,10 +44,10 @@ export default withRouter(
           { credentials: "include" }
         );
         if (res.status === 204) {
-          props.history.push("/wishlist-setup");
+          return props.history.push("/wishlist-setup");
         }
         const json = await res.json();
-        props.history.push("/wishlist-setup");
+        return props.history.push(json.profile);
       })();
     };
 
