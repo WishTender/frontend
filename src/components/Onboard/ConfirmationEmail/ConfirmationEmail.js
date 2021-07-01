@@ -49,7 +49,7 @@ export default withRouter(
             return props.history.push("/wishlist-setup");
           }
           const json = await res.json();
-          return props.history.push(json.profile);
+          return props.history.push(json.handle);
         })();
       };
       if (!user) {
