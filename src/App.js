@@ -311,6 +311,7 @@ function App(props) {
                           </Route>
                         </Switch>
                         {SwitchRoutes}
+                        <a href="files/terms.pdf">Terms and Conditions</a>
                         <span style={{ float: "right" }}>
                           Contact: support[at]wishtender[.]com
                         </span>
