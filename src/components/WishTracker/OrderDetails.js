@@ -104,7 +104,7 @@ export default function OrderDetails({
               >
                 {order.tender.afterConversion ? (
                   <>
-                    {screen !== "xs" && order.tender.afterConversion}
+                    {screen !== "xs" && order.tender.afterConversion.display}
                     <Tooltip
                       title={`You received ${order.tender.afterConversion.display} instead of ${order.tender.amount.display} because there
                         was a currency conversion. Sometimes our predicted
