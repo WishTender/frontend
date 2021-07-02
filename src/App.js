@@ -309,6 +309,9 @@ function App(props) {
                           </Route>
                         </Switch>
                         {SwitchRoutes}
+                        <span style={{ float: "right" }}>
+                          Contact: support[at]wishtender[.]com
+                        </span>
                       </RouteContext.Provider>
                     </NotificationContext.Provider>
                   </UserContext.Provider>
