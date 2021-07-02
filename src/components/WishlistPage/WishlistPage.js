@@ -47,6 +47,21 @@ function WishlistPage(props) {
   useTraceUpdate(WishlistPage.name, props, states);
 
   useEffect(() => {
+    if (alias && alias.currency) {
+      fetch(
+        `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${alias.currency}&symbols=${clientCurrency}`
+      )
+        .then(async (response) => {
+          let res = await response.json();
+          setConvertRate(res.rate);
+        })
+        .catch((r) => {
+          console.log(r);
+        });
+    }
+  }, [alias, clientCurrency]);
+
+  useEffect(() => {
     // if (!clientCurrency) {
     //   setCurrencyNeeded(true);
     // }
