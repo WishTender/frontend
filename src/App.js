@@ -210,7 +210,7 @@ function App(props) {
       <Route
         path="/wish-tracker"
         render={(props) => {
-          return <WishTracker />;
+          return <>{user ? <WishTracker /> : <Login />}</>;
         }}
       />
       <Route path="/confirmation-email">
