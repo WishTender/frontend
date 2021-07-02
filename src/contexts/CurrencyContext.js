@@ -10,6 +10,8 @@ export const CurrencyContext = createContext({
   },
   setCurrencyCookie: (cur) => {
     console.log("cookie logs");
+    debugger;
+    console.log("currency=" + cur);
     console.log(
       "currency=" + cur + process.env.REACT_APP_BASE_URL ===
         "https://api.wishtender.com" ||
