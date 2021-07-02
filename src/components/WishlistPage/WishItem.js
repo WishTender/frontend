@@ -4,6 +4,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import DisplayPrice from "../common/DisplayPrice";
+import DisplayPrice2 from "../common/DisplayPrice2";
 
 export default function MediaCard(props) {
   return (
@@ -29,7 +30,7 @@ export default function MediaCard(props) {
             {props.itemName}
           </Typography>
           <Typography color="textPrimary" className="price">
-            <DisplayPrice priceObject={props.price} />
+            <DisplayPrice2 priceObject={props.price} type="" />
           </Typography>
         </CardContent>
       </CardActionArea>
