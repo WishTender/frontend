@@ -9,6 +9,15 @@ export const CurrencyContext = createContext({
     return cookie;
   },
   setCurrencyCookie: (cur) => {
+    console.log("cookie logs");
+    console.log(
+      "currency=" + cur + process.env.REACT_APP_BASE_URL ===
+        "https://api.wishtender.com" ||
+        process.env.REACT_APP_BASE_URL === "https://api-staging.wishtender.com"
+        ? "domain=wishtender.com"
+        : ""
+    );
+    console.log(process.env.REACT_APP_BASE_URL);
     document.cookie =
       "currency=" + cur + process.env.REACT_APP_BASE_URL ===
         "https://api.wishtender.com" ||
