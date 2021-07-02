@@ -73,7 +73,9 @@ function App(props) {
         setCurrency(getCurrencyCookie());
       }
       setUser(user);
-      const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
+      const cookies = parsedCookies();
+      const locale = cookies.locale ? JSON.parse(cookies.locale) : null;
+      const currencies = getCurrencyList(locale);
       setCurrencyList(currencies);
       if (currencyNeeded) {
         // const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
