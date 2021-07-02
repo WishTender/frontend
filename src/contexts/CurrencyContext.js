@@ -9,23 +9,14 @@ export const CurrencyContext = createContext({
     return cookie;
   },
   setCurrencyCookie: (cur) => {
-    console.log("cookie logs");
-    debugger;
-    console.log("currency=" + cur);
-    console.log(
-      "currency=" + cur + process.env.REACT_APP_BASE_URL ===
-        "https://api.wishtender.com" ||
-        process.env.REACT_APP_BASE_URL === "https://api-staging.wishtender.com"
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+    const cookie = `cookie=${cur}${
+      baseUrl === "https://api.wishtender.com" ||
+      baseUrl === "https://api-staging.wishtender.com"
         ? "; domain=wishtender.com"
         : ""
-    );
-    console.log(process.env.REACT_APP_BASE_URL);
-    document.cookie =
-      "currency=" + cur + process.env.REACT_APP_BASE_URL ===
-        "https://api.wishtender.com" ||
-      process.env.REACT_APP_BASE_URL === "https://api-staging.wishtender.com"
-        ? "domain=wishtender.com"
-        : "";
+    }`;
+    document.cookie = cookie;
   },
   setCurrencyCookieAndContext: (cur, setCurrency) => {
     document.cookie = "currency=" + cur;
