@@ -211,7 +211,7 @@ export default function Gift({ gift, screen, exchangeRates }) {
             </Button>
           </TableCell>
           <TableCell>
-            <Quantity gift={gift} />
+            <Quantity gift={gift} exchangeRates={exchangeRates} />
           </TableCell>
 
           <TableCell>

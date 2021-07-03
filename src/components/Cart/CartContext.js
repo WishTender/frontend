@@ -15,6 +15,7 @@ export const CartContext = createContext({
         if (!Object.keys(cart).length || !Object.keys(cart.aliasCarts).length)
           return;
         parseCartPrices(cart, clientCurrency, localeContext, exchangeRates);
+        console.log(cart);
       })
       .catch((err) => {
         console.log(`couldn't get cart`);
