@@ -69,12 +69,17 @@ export default function EditWishForm(props) {
     setItemName(props.info && props.info.itemName);
     setPrice(props.info && props.info.price);
   }, [props.info]);
-
   const {
     register,
+    setValue,
+
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (price !== "") setValue("price", price, { shouldValidate: true });
+  }, [price, setValue]);
 
   const onSubmit = (data) => {
     if (imageFile) data.image = imageFile;
