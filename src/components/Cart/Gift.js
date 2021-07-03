@@ -12,6 +12,7 @@ import { CartContext } from "./CartContext";
 import DisplayPrice from "../common/DisplayPrice";
 import { LocaleContext } from "../../contexts/LocaleContext";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
+import DisplayPrice2 from "../common/DisplayPrice2";
 const useStyles = makeStyles((theme) => {
   return {
     est: { color: theme.palette.error[300] },
@@ -164,7 +165,7 @@ export default function Gift({ gift, screen, exchangeRates }) {
       {screen === "xs" ? (
         <TableCell className={classes.cell2_xs}>
           <Quantity gift={gift} screen="xs" exchangeRates={exchangeRates} />
-          <DisplayPrice priceObject={gift.price} />
+          <DisplayPrice2 priceObject={gift.price} type="" />
 
           <Button
             size="small"
@@ -214,7 +215,7 @@ export default function Gift({ gift, screen, exchangeRates }) {
           </TableCell>
 
           <TableCell>
-            <DisplayPrice priceObject={gift.price} />
+            <DisplayPrice2 priceObject={gift.price} type="" />
           </TableCell>
         </>
       )}

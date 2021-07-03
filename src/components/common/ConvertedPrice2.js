@@ -9,15 +9,15 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function ConvertedPrice({ formattedPrice }) {
+export default function ConvertedPrice2({ formattedPrice, type }) {
   const classes = useStyles();
   return (
     <Tooltip
-      title={`estimated conversion from ${formattedPrice.displayWithFee}`}
+      title={`estimated conversion from ${formattedPrice["display" + type]}`}
     >
       <div>
         <span className={classes.est}>est.</span>
-        {formattedPrice.convertedWithFee}
+        {formattedPrice["converted" + type]}
         <Help color="error" style={{ fontSize: "15" }} />
       </div>
     </Tooltip>

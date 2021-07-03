@@ -63,8 +63,8 @@ export default function Menu(props) {
       console.log("set to null");
     } else {
       var header = document.getElementsByTagName("header")[0];
-      var button = document.getElementsByTagName("header")[0].children[0]
-        .children[0];
+      var button =
+        document.getElementsByTagName("header")[0].children[0].children[0];
 
       setHeaderHeight(header.clientHeight);
       setButtonHeight(header.clientHeight);

@@ -73,7 +73,9 @@ function App(props) {
         setCurrency(getCurrencyCookie());
       }
       setUser(user);
-      const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
+      const cookies = parsedCookies();
+      const locale = cookies.locale ? JSON.parse(cookies.locale) : null;
+      const currencies = getCurrencyList(locale);
       setCurrencyList(currencies);
       if (currencyNeeded) {
         // const currencies = getCurrencyList(JSON.parse(parsedCookies().locale));
@@ -208,7 +210,7 @@ function App(props) {
       <Route
         path="/wish-tracker"
         render={(props) => {
-          return <WishTracker />;
+          return <>{user ? <WishTracker /> : <Login />}</>;
         }}
       />
       <Route path="/confirmation-email">
@@ -309,6 +311,10 @@ function App(props) {
                           </Route>
                         </Switch>
                         {SwitchRoutes}
+                        <a href="files/terms.pdf">Terms and Conditions</a>
+                        <span style={{ float: "right" }}>
+                          Contact: support[at]wishtender[.]com
+                        </span>
                       </RouteContext.Provider>
                     </NotificationContext.Provider>
                   </UserContext.Provider>

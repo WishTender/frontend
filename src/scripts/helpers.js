@@ -56,6 +56,9 @@ const displayPrice = (price, currencyFrom, currencyTo, convertRate, locale) => {
         )
       : {
           display: displayCurrency(price, currencyFrom, currencyTo, "en-US"),
+          fee: displayCurrency(price * 0.1, currencyFrom, currencyTo),
+
+          displayWithFee: displayCurrency(price * 1.1, currencyTo, locale),
           float: price,
         };
   return display;
@@ -181,7 +184,16 @@ const displayConversion = (
 ) => {
   return {
     converted: displayCurrency(convertedPrice, toCurrency, toLocale),
+    // convertedFloat: toCurrencyDecimals(convertedPrice, "AUD"),
+    convertedFee: displayCurrency(convertedPrice * 0.1, toCurrency, toLocale),
+    convertedWithFee: displayCurrency(
+      convertedPrice * 1.1,
+      toCurrency,
+      toLocale
+    ),
     display: displayCurrency(price, fromCurrency, fromLocale),
+    fee: displayCurrency(price * 0.1, fromCurrency, fromLocale),
+    displayWithFee: displayCurrency(price * 1.1, toCurrency, toLocale),
     float: price,
   };
 };

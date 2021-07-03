@@ -1,12 +1,12 @@
 import React from "react";
-import ConvertedPrice from "./ConvertedPrice";
+import ConvertedPrice2 from "./ConvertedPrice2";
 export default function DisplayPrice({ priceObject }) {
   return (
     <>
       {priceObject.converted ? (
-        <ConvertedPrice formattedPrice={priceObject} />
+        <ConvertedPrice2 formattedPrice={priceObject} />
       ) : (
-        priceObject.display
+        priceObject.displayWithFee
       )}
     </>
   );

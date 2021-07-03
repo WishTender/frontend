@@ -26,6 +26,7 @@ import theme from "../../theme";
 import Gift from "./Gift";
 import { fetchPostJson } from "../../scripts/fetchHelper";
 import DisplayPrice from "../common/DisplayPrice";
+import DisplayPrice2 from "../common/DisplayPrice2";
 const TenderInfoInputs = ({ cart, register }) => {
   const { ref: fromLineRef, ...fromLineReg } = register("fromLine", {
     maxLength: {
@@ -196,9 +197,23 @@ export default function AliasCart({ cart, exchangeRates }) {
                   <TableCell></TableCell>
                 </>
               )}
-              <TableCell align="right">Subtotal:</TableCell>
+              <TableCell align="right">10% Fee:</TableCell>
+              <TableCell>
+                <div style={{ float: "right" }}>
+                  {cart.totalPrice.convertedFee || cart.totalPrice.fee}
+                </div>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              {!smallScreen && (
+                <>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                </>
+              )}
+              <TableCell align="right">Total:</TableCell>
               <TableCell style={{ minWidth: "133px" }} align="right">
-                <DisplayPrice priceObject={cart.totalPrice} />
+                <DisplayPrice2 priceObject={cart.totalPrice} type="WithFee" />
               </TableCell>
             </TableRow>
             <TableRow>
