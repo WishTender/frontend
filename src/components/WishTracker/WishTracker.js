@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { WishlistContext } from "./WishlistContext";
+import { WishlistContext } from "../../contexts/WishlistContext";
 import { fetchGet } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 import DisplayOrder from "./DisplayOrder";

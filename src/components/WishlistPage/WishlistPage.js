@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import ProfileSection from "./ProfileSection/ProfileSection";
 import { UserContext } from "../../contexts/UserContext";
+import { WishlistContext } from "../../contexts/WishlistContext";
 import { LocaleContext } from "../../contexts/LocaleContext";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { RouteContext } from "../../contexts/RouteContext";
@@ -75,6 +76,7 @@ function WishlistPage(props) {
       if (wl) {
         if (clientCurrency) {
           if (
+            // if we don't need conversion rates
             (currentUser && currentUser.currency === alias.currency) ||
             clientCurrency === "noConversion" ||
             clientCurrency === alias.currency
