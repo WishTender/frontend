@@ -10,7 +10,7 @@ export default function CheckOutSuccess() {
 
   useEffect(() => {
     fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/aliases/${userContext.user.aliases[0]}`,
+      `${process.env.REACT_APP_BASE_URL}/api/aliases?_id=${userContext.user.aliases[0]}`,
       {
         credentials: "include",
 
