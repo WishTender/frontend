@@ -38,9 +38,12 @@ function ProfileSection(props) {
       setWishlistName(
         props.info.wishlists[0]?.wishlistName || "Name your wishlist"
       );
+      setIsAuth(
+        currentUser ? currentUser.aliases.includes(props.info._id) : false
+      );
       setWishlistMessage(
         props.info.wishlists[0]?.wishlistMessage ||
-          "Write a message for your fans."
+          (isAuth ? "Write a message for your fans." : "")
       );
       setWishlistId(props.info.wishlists[0]?._id || null);
       setProfilePicture(
@@ -50,9 +53,6 @@ function ProfileSection(props) {
       setHandle(props.info.handle);
       setAliasName(props.info.aliasName);
       setAliasId(props.info._id);
-      setIsAuth(
-        currentUser ? currentUser.aliases.includes(props.info._id) : false
-      );
     }
   }, [props.info, currentUser]);
 
