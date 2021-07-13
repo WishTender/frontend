@@ -9,11 +9,14 @@ export default function CheckOutSuccess() {
   const [alias, setAlias] = useState("");
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_BASE_URL + "/api/aliases/", {
-      credentials: "include",
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/aliases?_id=${userContext.user.aliases[0]}`,
+      {
+        credentials: "include",
 
-      method: "GET",
-    }).then(async (res) => {
+        method: "GET",
+      }
+    ).then(async (res) => {
       const json = await res.json();
       setActivatedStatus(json.activated ? "activated" : "");
     });
