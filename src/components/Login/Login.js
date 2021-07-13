@@ -98,6 +98,7 @@ export default withRouter(function Login(props) {
           <TextField
             name="email"
             type="email"
+            label="Email"
             {...emailReg}
             inputRef={emailRef}
             variant="outlined"
@@ -106,6 +107,7 @@ export default withRouter(function Login(props) {
             <TextField
               name="password"
               type="password"
+              label="Password"
               {...passwordReg}
               inputRef={passwordRef}
               variant="outlined"
@@ -130,14 +132,23 @@ export default withRouter(function Login(props) {
           >
             Login
           </Button>
-          <Button
-            color="primary"
-            variant="outlined"
-            value="Sign Up"
-            href="/sign-up"
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            Sign Up
-          </Button>
+            Don't have an account?
+            <Link
+              style={{ paddingLeft: ".2em", fontWeight: "bold" }}
+              color="primary"
+              variant="outlined"
+              value="Sign Up"
+              href="/sign-up"
+            >
+              Sign Up
+            </Link>
+          </div>
         </form>
       </Container>
     </Box>
