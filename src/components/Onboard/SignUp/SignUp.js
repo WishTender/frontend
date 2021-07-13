@@ -4,10 +4,12 @@ import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import themeStyles from "../../../themeStyles";
 import styles from "./styles";
+import theme from "../../../theme";
 
 import SecondPanel from "./SecondPanel";
 import {
   Box,
+  Link,
   Container,
   Button,
   Paper,
@@ -141,6 +143,7 @@ export default withStyles(styles)(function SignUp(props) {
               inputRef={passwordRef}
             />
             {errors.password && <p>{errors.password.message}</p>}
+
             <Button
               color="primary"
               className={classes.gradient + " " + classes.button}
@@ -149,15 +152,26 @@ export default withStyles(styles)(function SignUp(props) {
             >
               Sign Up
             </Button>
-            <Button
-              variant="outlined"
-              id="sign-up-login_button"
-              className={classes["sign-up-login_button"] + " " + classes.button}
-              value="Log In"
-              href="/login"
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: theme.palette.primary.extraLight,
+              }}
             >
-              Log In
-            </Button>
+              Already have an account?
+              <Link
+                style={{
+                  paddingLeft: ".2em",
+                  fontWeight: "bold",
+                  color: theme.palette.primary.extraLight,
+                }}
+                href="/login"
+              >
+                Login
+              </Link>
+            </div>
           </form>
           {(screenSize === "xs" || screenSize === "mobile") && (
             <div
