@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { fetchDelete } from "../../scripts/fetchHelper";
 import { Tooltip } from "@material-ui/core";
-import { WishlistContext } from "./WishlistContext";
+import { WishlistContext } from "../../contexts/WishlistContext";
 import { UserContext } from "../../contexts/UserContext";
 
 export default function RemoveWish(props) {

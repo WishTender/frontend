@@ -10,6 +10,7 @@ import useTraceUpdate from "../../scripts/useTraceUpdate";
 import AddToCart from "./AddToCart/AddToCart";
 import { withStyles } from "@material-ui/core/styles";
 import useCustomStyles from "../../themeStyles";
+import { WishlistContext } from "../../contexts/WishlistContext";
 
 import { ArcherContainer, ArcherElement } from "react-archer";
 import theme from "../../theme";
@@ -97,6 +98,7 @@ function Wishlist(props) {
   const [addWishVisible, setAddWishVisible] = useState(false);
   const [textStoppedBouncing, setTextStoppedBouncing] = useState(false);
   const { currency: clientCurrency } = useContext(CurrencyContext);
+  const { getWishlist, setWishlist } = useContext(CurrencyContext);
   useTraceUpdate(Wishlist.name, props, {
     selectWish,
     addWishVisible,
