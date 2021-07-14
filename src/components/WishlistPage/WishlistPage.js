@@ -28,6 +28,9 @@ function WishlistPage(props) {
   const [refreshWishlist, setRefreshWishlist] = useState(null);
   const { user: currentUser } = useContext(UserContext);
   const localeContext = useContext(LocaleContext);
+  const { getWishlistAndParse, getWishlist } = useContext(WishlistContext);
+  const [customGetWishlistAndParse, setCustomGetWishlistAndParse] =
+    useState(null);
   useChooseCurrency();
   const {
     currency: clientCurrency,
@@ -82,7 +85,16 @@ function WishlistPage(props) {
             clientCurrency === alias.currency
           ) {
             parseWishlistPrices(wl, alias.currency, localeContext);
+            setCustomGetWishlistAndParse({
+              function: async () =>
+                await getWishlistAndParse(
+                  wl._id,
+                  alias.currency,
+                  localeContext
+                ),
+            });
           } else {
+            // if we DO need conversion rate and there isn't one, get it
             if (!convertRate) {
               const response = await fetch(
                 `${process.env.REACT_APP_BASE_URL}/api/exchange?base=${alias.currency}&symbols=${clientCurrency}`
@@ -101,6 +113,7 @@ function WishlistPage(props) {
             );
           }
         }
+        setWishlist(wl);
       }
 
       setAlias(alias);
@@ -135,44 +148,60 @@ function WishlistPage(props) {
       currentUser?.aliases.includes(alias._id) &&
       currentUser !== undefined);
   return (
-    <div
-      style={{
-        height: "100%",
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
+    <WishlistContext.Provider
+      value={{
+        setWishlist,
+        wishlist,
+        getWishlistAndParseWithArgs: customGetWishlistAndParse?.function,
+        getWishlistAndParse,
+        getWishlist,
       }}
     >
-      {alias && currentUser !== undefined && (
-        <ProfileSection
-          isAuth={currentUser?.aliases.includes(alias?._id) || false}
-          info={alias}
-        />
-      )}
-      {
-        showWishlist && (
-          <Wishlist
-            isAuth={currentUser?.aliases.includes(alias._id) || false}
-            id={
-              wishlist?._id || (alias?.wishlists[0] && alias.wishlists[0]._id)
-            }
-            currency={alias?.currency}
-            items={
-              wishlist?.wishlistItems ||
-              (alias?.wishlists[0] && alias.wishlists[0].wishlistItems)
-            }
-            refreshWishlist={() => {
-              setRefreshWishlist(true);
-            }}
+      <div
+        style={{
+          height: "100%",
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {alias && currentUser !== undefined && (
+          <ProfileSection
+            isAuth={currentUser?.aliases.includes(alias?._id) || false}
+            info={alias}
           />
-        )
-        // ))
-      }
-      {alias &&
-        !alias.activated &&
-        !currentUser?.aliases.includes(alias?._id) &&
-        "This user hasn't activated their wishlist."}
-    </div>
+        )}
+        {
+          showWishlist && (
+            <Wishlist
+              isAuth={currentUser?.aliases.includes(alias._id) || false}
+              id={
+                wishlist?._id || (alias?.wishlists[0] && alias.wishlists[0]._id)
+              }
+              currency={alias?.currency}
+              items={
+                wishlist?.wishlistItems ||
+                (alias?.wishlists[0] && alias.wishlists[0].wishlistItems)
+              }
+              refreshWishlist={async () => {
+                setWishlist(
+                  await getWishlistAndParse(
+                    alias.wishlists[0]._id,
+                    alias.currency,
+                    localeContext
+                  )
+                );
+              }}
+            />
+          )
+          // ))
+        }
+        {alias &&
+          !alias.activated &&
+          !currentUser?.aliases.includes(alias?._id) &&
+          "This user hasn't activated their wishlist."}
+      </div>
+    </WishlistContext.Provider>
   );
 }
 

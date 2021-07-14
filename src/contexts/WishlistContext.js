@@ -5,6 +5,7 @@ import { parseWishlistPrices } from "../scripts/helpers";
 export const WishlistContext = createContext({
   wishlist: null,
   setWishlist: () => {},
+  getWishlistAndParseWithArgs: () => {},
   getWishlist: async (wishlistId) => {
     let wishlist;
     await fetchGet(

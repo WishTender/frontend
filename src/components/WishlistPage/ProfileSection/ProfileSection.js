@@ -4,10 +4,12 @@ import EditableProfileInfo from "./EditbableProfileInfo/EditableProfileInfo.js";
 import EditableCoverImage from "./EditableCoverImage/EditableCoverImage";
 import UpdateProfileInfo from "./UpdateProfileInfo/UpdateProfileInfo";
 import { UserContext } from "../../../contexts/UserContext";
+import { WishlistContext } from "../../../contexts/WishlistContext";
 import { useParams } from "react-router-dom";
 import { fetchPatchImage, fetchPatchJson } from "../../../scripts/fetchHelper";
 import { Redirect } from "react-router-dom";
 import ActivateAccount from "./ActivateAccount";
+import { withRouter } from "react-router";
 const handleRoute = "/api/aliases?handle_lowercased=";
 
 /**
@@ -17,6 +19,13 @@ const handleRoute = "/api/aliases?handle_lowercased=";
  * @param  props.isAuth
  */
 function ProfileSection(props) {
+  const {
+    getWishlistAndParse,
+    getWishlistAndParseWithArgs,
+    setWishlist,
+    wishlist,
+  } = useContext(WishlistContext);
+
   const [profilePicture, setProfilePicture] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const [wishlistName, setWishlistName] = useState(null);
@@ -31,19 +40,8 @@ function ProfileSection(props) {
 
   useEffect(() => {
     if (props.info) {
-      setCoverImage(
-        props.info.wishlists[0]?.coverImage ||
-          `${process.env.REACT_APP_BASE_URL}/data/images/coverImages/default_coverimage2.jpg`
-      );
-      setWishlistName(
-        props.info.wishlists[0]?.wishlistName || "Name your wishlist"
-      );
       setIsAuth(
         currentUser ? currentUser.aliases.includes(props.info._id) : false
-      );
-      setWishlistMessage(
-        props.info.wishlists[0]?.wishlistMessage ||
-          (isAuth ? "Write a message for your fans." : "")
       );
       setWishlistId(props.info.wishlists[0]?._id || null);
       setProfilePicture(
@@ -80,23 +78,31 @@ function ProfileSection(props) {
       });
     return available;
   };
-  const handleUpdateHandle = (handle) => {
-    fetchPatchJson(
-      { handle },
-      `${process.env.REACT_APP_BASE_URL}/api/aliases/${aliasId}`,
-      () => {
-        setHandle(handle);
-      }
-    );
+  const handleUpdateHandle = async (handle) => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    await fetch(`${process.env.REACT_APP_BASE_URL}/api/aliases/${aliasId}`, {
+      credentials: "include",
+      method: "PATCH",
+      body: JSON.stringify({ handle }),
+      headers,
+    }).then(async (res) => {
+      setHandle(handle);
+      props.history.push("/" + handle);
+    });
   };
-  const handleUpdateAliasName = (aliasName) => {
-    fetchPatchJson(
-      { aliasName },
-      `${process.env.REACT_APP_BASE_URL}/api/aliases/${aliasId}`,
-      () => {
-        setAliasName(aliasName);
-      }
-    );
+  const handleUpdateAliasName = async (aliasName) => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    await fetch(`${process.env.REACT_APP_BASE_URL}/api/aliases/${aliasId}`, {
+      credentials: "include",
+      method: "PATCH",
+      body: JSON.stringify({ aliasName }),
+      headers,
+    }).then(async (res) => {
+      setAliasName(aliasName);
+    });
   };
 
   const handleUpdateCoverImage = (image) => {
@@ -104,27 +110,41 @@ function ProfileSection(props) {
       image,
       "image",
       `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlistId}`,
-      setCoverImage
-    );
-  };
-  const handleUpdateWishlistMessage = (wishlistMessage) => {
-    fetchPatchJson(
-      { wishlistMessage },
-      `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlistId}`,
-      () => {
-        setWishlistMessage(wishlistMessage);
+      async () => {
+        setWishlist(await getWishlistAndParseWithArgs());
       }
     );
+  };
+  const handleUpdateWishlistMessage = async (wishlistMessage) => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlistId}`,
+      {
+        credentials: "include",
+        method: "PATCH",
+        body: JSON.stringify({ wishlistMessage }),
+        headers,
+      }
+    ).then(async (res) => {
+      setWishlist(await getWishlistAndParseWithArgs());
+    });
   };
 
-  const handleUpdateWishlistName = (wishlistName) => {
-    fetchPatchJson(
-      { wishlistName },
+  const handleUpdateWishlistName = async (wishlistName) => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    await fetch(
       `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlistId}`,
-      () => {
-        setWishlistName(wishlistName);
+      {
+        credentials: "include",
+        method: "PATCH",
+        body: JSON.stringify({ wishlistName }),
+        headers,
       }
-    );
+    ).then(async (res) => {
+      setWishlist(await getWishlistAndParseWithArgs());
+    });
   };
 
   return (
@@ -134,15 +154,23 @@ function ProfileSection(props) {
       )}
 
       <EditableCoverImage
-        coverPicUrl={coverImage}
+        coverPicUrl={
+          wishlist.coverImage ||
+          `${process.env.REACT_APP_BASE_URL}/data/images/coverImages/default_coverimage2.jpg`
+        }
         handleUpdateCoverImage={handleUpdateCoverImage}
         isAuth={isAuth}
       ></EditableCoverImage>
 
       <EditableProfileInfo
-        wishlistName={wishlistName}
+        wishlistName={
+          wishlist.wishlistName || (isAuth ? "Name your wishlist" : "")
+        }
         handle={handle}
-        wishlistMessage={wishlistMessage}
+        wishlistMessage={
+          wishlist.wishlistMessage ||
+          (isAuth ? "Write a message for your fans." : "")
+        }
         profilePic={profilePicture}
         handleUpdateProfilePicture={handleUpdateProfilePicture}
         handleUpdateWishlistMessage={handleUpdateWishlistMessage}
@@ -151,7 +179,9 @@ function ProfileSection(props) {
       {isAuth && (
         <div className="edit_profile_button__container">
           <UpdateProfileInfo
-            wishlistName={wishlistName}
+            wishlistName={
+              wishlist.wishlistName || (isAuth ? "Name your wishlist" : "")
+            }
             aliasName={aliasName}
             handleUpdateAliasName={handleUpdateAliasName}
             handleUpdateWishlistMessage={handleUpdateWishlistMessage}
@@ -163,11 +193,11 @@ function ProfileSection(props) {
           ></UpdateProfileInfo>
         </div>
       )}
-      {isAuth &&
-        !props.info.activated &&
-        !!props.info.wishlists[0].wishlistItems.length && <ActivateAccount />}
+      {isAuth && !wishlist.activated && !!wishlist.wishlistItems.length && (
+        <ActivateAccount />
+      )}
     </div>
   );
 }
 
-export default ProfileSection;
+export default withRouter(ProfileSection);
