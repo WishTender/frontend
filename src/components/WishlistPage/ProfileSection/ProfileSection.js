@@ -193,7 +193,7 @@ function ProfileSection(props) {
           ></UpdateProfileInfo>
         </div>
       )}
-      {isAuth && !wishlist.activated && !!wishlist.wishlistItems.length && (
+      {isAuth && !props.info.activated && !!wishlist.wishlistItems.length && (
         <ActivateAccount />
       )}
     </div>
