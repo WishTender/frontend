@@ -1,4 +1,4 @@
-import { Container, Paper, Button, Dialog } from "@material-ui/core";
+import { Container, Paper, Button, Dialog, Link } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import React, { useState, useContext, useEffect } from "react";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
@@ -9,10 +9,12 @@ import { fetchDelete } from "../../scripts/fetchHelper";
 import { UserContext } from "../../contexts/UserContext";
 import SendResetPassword from "../ResetPassword/SendResetPassword.js";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
+import RightIcon from "@material-ui/icons/KeyboardArrowRight";
 import Form from "./Form";
 import { withRouter } from "react-router";
 import UpdateEmail from "./UpdateEmail";
 import DeleteAccount from "./DeleteAccount";
+const paymentLink = `${process.env.REACT_APP_BASE_URL}/api/stripe/login?from=account-settings`;
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -30,6 +32,16 @@ export default withRouter(function AccountSettings(props) {
   return (
     <Container style={{ maxWidth: "750px" }}>
       <Paper style={{ marginTop: "7vw" }}>
+        <StyledMenuItem
+          href={paymentLink}
+          style={{ borderBottom: "1px solid #e6e6e6" }}
+          component={Link}
+          color="primary"
+        >
+          <ListItemText primary="Payment Dashboard" />
+          <ArrowRightIcon />
+        </StyledMenuItem>
+
         <StyledMenuItem
           color="primary"
           onClick={() => {
@@ -50,15 +62,7 @@ export default withRouter(function AccountSettings(props) {
           <ListItemText primary="Password" />
           <ArrowRightIcon />
         </StyledMenuItem>
-        {/* <StyledMenuItem
-          onClick={() => {
-            setDialog("payment-dashboard");
-          }}
-          color="primary"
-        >
-          <ListItemText primary="Payment Dashboard" />
-          <ArrowRightIcon />
-        </StyledMenuItem> */}
+
         <StyledMenuItem
           onClick={() => {
             setDialog("delete");

@@ -27,7 +27,7 @@ function WishTracker(props) {
   // const [refreshWishlist, setRefreshWishlist] = useState(null);
   // const [reply, setReply] = useState(null);
   const [refreshOrders, setRefreshOrders] = useState(null);
-  const paymentLink = `${process.env.REACT_APP_BASE_URL}/api/stripe/login`;
+  const paymentLink = `${process.env.REACT_APP_BASE_URL}/api/stripe/login?from=wish-tracker`;
 
   // local 4000 if startlocal
   // api staging if startstaging
@@ -74,9 +74,6 @@ function WishTracker(props) {
                 // variant="outlined"
                 disableElevation
                 href={paymentLink}
-                onClick={() => {
-                  fetch();
-                }}
               >
                 Payment Dashboard <RightIcon color="primary" />
               </Button>
