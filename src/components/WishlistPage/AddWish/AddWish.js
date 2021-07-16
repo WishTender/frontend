@@ -69,20 +69,46 @@ function AddWish1(props) {
   }
 
   function handleScrapeProduct(url) {
+    // setUrl(url);
+    // axios
+    //   .get(`${process.env.REACT_APP_BASE_URL}/api/wishes/productInfo`, {
+    //     url: url,
+    //   })
+    //   .then(async (res) => {
+    //     // if (res.status !== 200) {
+    //     //   const json = await res.json();
+    //     //   alert(json.message);
+    //     // }
+    //     const info = res.data;
+    //     const images = info.imageSrcs;
+    //     delete info.imageSrcs;
+    //     setProductInfo(info);
+    //     if (res.data) setRetrieved("true");
+
+    //     const uniqueImages = [...new Set(images)];
+    //     filterAndSetImages(uniqueImages);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     setUrl(url);
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}/api/wishes/productInfo`, {
-        url: url,
-      })
-      .then((res) => {
-        const info = res.data;
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/wishes/productInfo?url=${url}`)
+      .then(async (res) => {
+        if (res.status !== 200) {
+          const json = await res.json();
+          alert(json.message);
+        }
+        const info = await res.json();
         const images = info.imageSrcs;
         delete info.imageSrcs;
         setProductInfo(info);
-        if (res.data) setRetrieved("true");
+        if (info) setRetrieved("true");
 
         const uniqueImages = [...new Set(images)];
         filterAndSetImages(uniqueImages);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
   const postWish = async (data) => {
@@ -106,6 +132,7 @@ function AddWish1(props) {
       .catch((err) => {
         console.log(err);
       });
+    console.log("hi");
     // fetchPostJson(
     //   wishInfo,
     //   process.env.REACT_APP_BASE_URL + "/api/wishlistItems",
