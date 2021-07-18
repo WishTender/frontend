@@ -43,36 +43,7 @@ export const Item = forwardRef(({ id, ...props }, ref) => {
     </div>
   );
 });
-
 const SortableItem = ({ id }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    // transition,
-    isDragging,
-  } = useSortable({ id });
-
-  const style = {
-    height: "100px",
-    background: "grey",
-    transform: CSS.Transform.toString(transform),
-    // transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
-  return (
-    <Item
-      ref={setNodeRef}
-      style={style}
-      // {...attributes}
-      {...listeners}
-      id={id}
-    />
-  );
-};
-const MySortableItem = ({ id }) => {
   const {
     attributes,
     listeners,
@@ -211,6 +182,62 @@ function Wishlist(props) {
       return () => text.removeEventListener("animationend", handleAnimationEnd);
     }
   }, [props.isAuth, props?.items.length]);
+  const MyItem = forwardRef(({ item, id, ...props }, ref) => {
+    return (
+      <Grid
+        {...props}
+        ref={ref}
+        key={item._id}
+        item
+        xs={6}
+        sm={4}
+        md={3}
+        lg={2}
+        xl={1}
+        container
+        spacing={2}
+      >
+        <div style={{ width: "100%" }} onClick={() => setSelectWish(item)}>
+          <WishItem
+            itemName={item.itemName}
+            price={item.price}
+            imageUrl={item.itemImage}
+            currency={item.currency}
+          />
+        </div>
+      </Grid>
+    );
+  });
+
+  const MySortableItem = ({ id, item }) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      // transition,
+      isDragging,
+    } = useSortable({ id });
+
+    const style = {
+      // height: "100px",
+      // background: "grey",
+      transform: CSS.Transform.toString(transform),
+      // transition,
+      opacity: isDragging ? 0.5 : 1,
+    };
+
+    return (
+      <MyItem
+        item={item}
+        ref={setNodeRef}
+        style={style}
+        // {...attributes}
+        {...listeners}
+        id={id}
+      />
+    );
+  };
 
   const SortableItem2 = SortableElement(({ value }) => {
     return (
@@ -477,7 +504,7 @@ function Wishlist(props) {
           setActiveId(null);
         }}
       >
-        <div
+        {/* <div
           style={{
             display: "grid",
             width: "400px",
@@ -494,7 +521,8 @@ function Wishlist(props) {
           //   grid-template-columns: repeat(3, 1fr);
           //   gap: 30px;
           // `}
-        >
+        > */}
+        <Grid container spacing={2}>
           <SortableContext items={items} strategy={rectSortingStrategy}>
             {items.map((item, index) => {
               return (
@@ -507,13 +535,14 @@ function Wishlist(props) {
               );
             })}
           </SortableContext>
-        </div>
+          {/* </div> */}
+        </Grid>
         <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
       </DndContext>
-      <Grid container spacing={2}>
-        {innerGrid}
-        <SortableList />
-      </Grid>
+      {/* <Grid container spacing={2}> */}
+      {/* {innerGrid}
+        <SortableList /> */}
+      {/* </Grid> */}
     </div>
   );
 }
