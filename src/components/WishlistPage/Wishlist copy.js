@@ -72,34 +72,6 @@ const SortableItem = ({ id }) => {
     />
   );
 };
-const MySortableItem = ({ id }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    // transition,
-    isDragging,
-  } = useSortable({ id });
-
-  const style = {
-    height: "100px",
-    background: "grey",
-    transform: CSS.Transform.toString(transform),
-    // transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
-  return (
-    <Item
-      ref={setNodeRef}
-      style={style}
-      // {...attributes}
-      {...listeners}
-      id={id}
-    />
-  );
-};
 
 const styles = (theme) => ({
   animatedBounce: {
@@ -180,12 +152,6 @@ const styles = (theme) => ({
 
 function Wishlist(props) {
   const [data, setData] = useState(["1", "2", "3", "4", "5", "6"]);
-  const [items, setItems] = useState(
-    props.items.map((item, i) => {
-      item.id = i + 1;
-      return item;
-    })
-  );
   const [activeId, setActiveId] = useState(null);
 
   const customClasses = useCustomStyles(props);
@@ -241,11 +207,11 @@ function Wishlist(props) {
     return (
       <>
         {props.items.map((item, index) => (
-          <SortableItem2
+          <SortableItem
             key={`item-${index}`}
             value={item}
             index={index}
-          ></SortableItem2>
+          ></SortableItem>
         ))}
       </>
     );
@@ -450,58 +416,9 @@ function Wishlist(props) {
           <SortableContext items={data} strategy={rectSortingStrategy}>
             {data.map((item, index) => {
               return (
-                <SortableItem
+                <SortableItem2
                   id={item}
                   key={item}
-                  // isDragging={activeId === item}
-                />
-              );
-            })}
-          </SortableContext>
-        </div>
-        <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
-      </DndContext>
-      <DndContext
-        // sensors={sensors}
-        // collisionDetection={closestCenter}
-        // onDragStart={(event) => {
-        //   setActiveId(event.active.id);
-        // }}
-        onDragEnd={({ active, over }) => {
-          if (!over) return null;
-          if (active.id === over.id) return null;
-          const oldIndex = items.map((item) => item.id).indexOf(active.id);
-          const newIndex = items.map((item) => item.id).indexOf(over.id);
-          const newItems = arrayMove(items, oldIndex, newIndex);
-          setItems(newItems);
-          setActiveId(null);
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            width: "400px",
-            alignItems: "center",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "30px",
-          }}
-          // css={css`
-          //   width: 400px;
-          //   margin-top: 45px;
-          //   display: grid;
-          //   align-items: center;
-          //   max-width: 100%;
-          //   grid-template-columns: repeat(3, 1fr);
-          //   gap: 30px;
-          // `}
-        >
-          <SortableContext items={items} strategy={rectSortingStrategy}>
-            {items.map((item, index) => {
-              return (
-                <MySortableItem
-                  id={item.id}
-                  key={index}
-                  item={item}
                   isDragging={activeId === item}
                 />
               );
