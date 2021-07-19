@@ -127,12 +127,21 @@ function AddWish1(props) {
       // .then((res) => res.json())
       .then((response) => {
         console.log("server response: ", response);
-        props.afterAddWish(data);
+        if (response.status >= 200 && response.status < 300) {
+          props.afterAddWish(data);
+        }
+        setProductInfo({
+          price: "",
+          title: "",
+          currency: "",
+          ogImageSrcs: [],
+          imageSrcs: [],
+        });
+        setFilteredImages([]);
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log("hi");
     // fetchPostJson(
     //   wishInfo,
     //   process.env.REACT_APP_BASE_URL + "/api/wishlistItems",
