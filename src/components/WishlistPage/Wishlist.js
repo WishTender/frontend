@@ -12,6 +12,8 @@ import { withStyles } from "@material-ui/core/styles";
 import useCustomStyles from "../../themeStyles";
 import { WishlistContext } from "../../contexts/WishlistContext";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
+import useScreenSize from "../../hooks/useScreenSize";
+
 // import arrayMove from "array-move";
 // import "./styles.css";
 // import { css } from "@emotion/react";
@@ -116,7 +118,15 @@ const styles = (theme) => ({
 function Wishlist(props) {
   const [data, setData] = useState(["1", "2", "3", "4", "5", "6"]);
 
+  function isTouchDevice() {
+    return (
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      navigator.msMaxTouchPoints > 0
+    );
+  }
   const [activeId, setActiveId] = useState(null);
+  const touch = isTouchDevice();
 
   const customClasses = useCustomStyles(props);
   // const [updateOrder, setUpdateOrder] = useState(false);
@@ -208,7 +218,32 @@ function Wishlist(props) {
       </Grid>
     );
   });
-
+  const innerGrid =
+    props.items &&
+    props.items.map((item, i) => {
+      return (
+        <Grid
+          key={item._id}
+          item
+          xs={6}
+          sm={4}
+          md={3}
+          lg={2}
+          xl={1}
+          container
+          spacing={2}
+        >
+          <div style={{ width: "100%" }} onClick={() => setSelectWish(item)}>
+            <WishItem
+              itemName={item.itemName}
+              price={item.price}
+              imageUrl={item.itemImage}
+              currency={item.currency}
+            />
+          </div>
+        </Grid>
+      );
+    });
   const MySortableItem = ({ id, item }) => {
     const {
       attributes,
@@ -374,56 +409,64 @@ function Wishlist(props) {
         )}
       </ArcherContainer>
 
-      <DndContext
-        // sensors={sensors}
-        // collisionDetection={closestCenter}
-        // onDragStart={(event) => {
-        //   setActiveId(event.active.id);
-        // }}
-        onDragEnd={async ({ active, over }) => {
-          if (!over) return null;
-          if (active.id === over.id) return null;
-          const oldIndex = items.map((item) => item.id).indexOf(active.id);
-          const newIndex = items.map((item) => item.id).indexOf(over.id);
-          const newItems = arrayMove(items, oldIndex, newIndex);
-          setItems(newItems);
-          // items state wasn't always updating in time
-          const headers = new Headers();
-          headers.append("Content-Type", "application/json");
-          await fetch(
-            `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlist._id}`,
-            {
-              credentials: "include",
-              method: "PATCH",
-              body: JSON.stringify({
-                wishlistItems: newItems.map((i) => i._id),
-              }),
-              headers,
-            }
-          )
-            .then(async (res) => {
-              setWishlist(await getWishlistAndParseWithArgs());
-            })
-            .catch((err) => alert(err));
-          setActiveId(null);
-        }}
-      >
+      {!touch ? (
+        <DndContext
+          // sensors={sensors}
+          // collisionDetection={closestCenter}
+          // onDragStart={(event) => {
+          //   setActiveId(event.active.id);
+          // }}
+          onDragEnd={async ({ active, over }) => {
+            if (!over) return null;
+            if (active.id === over.id) return null;
+            const oldIndex = items.map((item) => item.id).indexOf(active.id);
+            const newIndex = items.map((item) => item.id).indexOf(over.id);
+            const newItems = arrayMove(items, oldIndex, newIndex);
+            setItems(newItems);
+            // items state wasn't always updating in time
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            await fetch(
+              `${process.env.REACT_APP_BASE_URL}/api/wishlists/${wishlist._id}`,
+              {
+                credentials: "include",
+                method: "PATCH",
+                body: JSON.stringify({
+                  wishlistItems: newItems.map((i) => i._id),
+                }),
+                headers,
+              }
+            )
+              .then(async (res) => {
+                setWishlist(await getWishlistAndParseWithArgs());
+              })
+              .catch((err) => alert(err));
+            setActiveId(null);
+          }}
+        >
+          <Grid container spacing={2}>
+            <SortableContext items={items} strategy={rectSortingStrategy}>
+              {items.map((item, index) => {
+                return (
+                  <MySortableItem
+                    id={item.id}
+                    key={index}
+                    item={item}
+                    isDragging={activeId === item}
+                  />
+                );
+              })}
+            </SortableContext>
+          </Grid>
+          <DragOverlay>
+            {activeId ? <MyItem id={activeId} /> : null}
+          </DragOverlay>
+        </DndContext>
+      ) : (
         <Grid container spacing={2}>
-          <SortableContext items={items} strategy={rectSortingStrategy}>
-            {items.map((item, index) => {
-              return (
-                <MySortableItem
-                  id={item.id}
-                  key={index}
-                  item={item}
-                  isDragging={activeId === item}
-                />
-              );
-            })}
-          </SortableContext>
+          {innerGrid}
         </Grid>
-        <DragOverlay>{activeId ? <MyItem id={activeId} /> : null}</DragOverlay>
-      </DndContext>
+      )}
     </div>
   );
 }
