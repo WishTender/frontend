@@ -82,12 +82,12 @@ export default function OrderDetails({
                 <>
                   <TableCell rowSpan={1} />
                   <TableCell style={{ minWidth: "140px" }}>
-                    Total Wishtender
+                    Total WishTender
                   </TableCell>
                 </>
               ) : (
                 <TableCell style={{ textAlign: "right" }}>
-                  Total Wishtender
+                  Total WishTender
                 </TableCell>
               )}
               <TableCell
