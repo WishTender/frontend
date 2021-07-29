@@ -94,18 +94,22 @@ function AddWish1(props) {
     setUrl(url);
     fetch(`${process.env.REACT_APP_BASE_URL}/api/wishes/productInfo?url=${url}`)
       .then(async (res) => {
-        if (res.status !== 200) {
+        if (res.status >= 400 && res.status < 500) {
           const json = await res.json();
           alert(json.message);
-        }
-        const info = await res.json();
-        const images = info.imageSrcs;
-        delete info.imageSrcs;
-        setProductInfo(info);
-        if (info) setRetrieved("true");
+        } else if (res.status >= 500 && res.status < 600) {
+          const msg = await res.text();
+          alert(msg);
+        } else {
+          const info = await res.json();
+          const images = info.imageSrcs;
+          delete info.imageSrcs;
+          setProductInfo(info);
+          if (info) setRetrieved("true");
 
-        const uniqueImages = [...new Set(images)];
-        filterAndSetImages(uniqueImages);
+          const uniqueImages = [...new Set(images)];
+          filterAndSetImages(uniqueImages);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -148,9 +152,24 @@ function AddWish1(props) {
     //   () => props.afterAddWish(wishInfo)
     // );
   };
-
+  const clearProduct = () => {
+    setProductInfo({
+      price: "",
+      title: "",
+      currency: "",
+      ogImageSrcs: [],
+      imageSrcs: [],
+    });
+    setFilteredImages([]);
+  };
   return (
-    <StyledDialog onClose={props.onClose} open={props.open}>
+    <StyledDialog
+      onClose={() => {
+        clearProduct();
+        props.onClose();
+      }}
+      open={props.open}
+    >
       <Box
         style={{
           height: "100%",
@@ -159,7 +178,12 @@ function AddWish1(props) {
           width: screenSize === "sm" && "400px",
         }}
       >
-        <ResponsiveDialogTitleSection onClose={props.onClose}>
+        <ResponsiveDialogTitleSection
+          onClose={() => {
+            clearProduct();
+            props.onClose();
+          }}
+        >
           Add A Wish
         </ResponsiveDialogTitleSection>
 
