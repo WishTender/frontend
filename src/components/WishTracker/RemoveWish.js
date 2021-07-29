@@ -11,7 +11,7 @@ export default function RemoveWish(props) {
     await fetchDelete(
       `${process.env.REACT_APP_BASE_URL}/api/wishlistItems/${props.wish}`,
       async (res) => {
-        if (res.status <= 200 && res.status > 300) {
+        if (res.status >= 200 && res.status > 300) {
           setWishlist(await getWishlist(user.aliases[0]));
         }
       }

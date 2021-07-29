@@ -318,7 +318,9 @@ function Wishlist(props) {
             <div className="wrapper add_a_wish">
               <AddWish
                 open={addWishVisible}
-                onClose={() => setAddWishVisible(false)}
+                onClose={() => {
+                  setAddWishVisible(false);
+                }}
                 wishlist={props.id}
                 currency={props.currency}
                 afterAddWish={(wish) => {
