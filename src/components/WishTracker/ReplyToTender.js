@@ -16,8 +16,8 @@ import ImageIcon from "@material-ui/icons/Image";
 import FileInputWrapper from "../common/FileInputWrapper/FileInputWrapper";
 
 export default function ReplyToTender(props) {
-  const [newImageSrc, setNewImageSrc] = useState(null);
-  const [border, setBorder] = useState("100px");
+  const [attachedImage, setAttachedImage] = useState(null);
+  const [border, setBorder] = useState(null);
   const [textArea, setTextArea] = useState("");
 
   const useStyles = makeStyles((theme) => {
@@ -28,8 +28,10 @@ export default function ReplyToTender(props) {
         "& .MuiBox-root": { maxWidth: "250px" },
       },
       message: {
+        "& textarea": { height: "100%" },
         "& .MuiInputBase-root": {
           paddingTop: border,
+          height: "280px",
         },
       },
     };
@@ -68,7 +70,7 @@ export default function ReplyToTender(props) {
       <Typography align="left">Reply to {props.to}</Typography>
 
       <div>
-        {newImageSrc && (
+        {attachedImage && (
           <div
             style={{
               position: "absolute",
@@ -79,8 +81,19 @@ export default function ReplyToTender(props) {
               padding: "40px 0 0 10px",
             }}
           >
-            <img width="300" src={newImageSrc} alt="user added media"></img>
-            <Button onClick={() => setNewImageSrc(null)}>Remove</Button>
+            <img
+              height="130"
+              src={attachedImage}
+              alt="user attached media"
+            ></img>
+            <Button
+              onClick={() => {
+                setAttachedImage(null);
+                setBorder(null);
+              }}
+            >
+              Remove
+            </Button>
           </div>
         )}
         <TextField
@@ -106,7 +119,8 @@ export default function ReplyToTender(props) {
       >
         <FileInputWrapper
           handleNewImageSrc={(img) => {
-            setNewImageSrc(img);
+            setAttachedImage(img);
+            setBorder(200);
           }}
         >
           <div>
