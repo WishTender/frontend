@@ -97,7 +97,7 @@ export default function ReplyToTender(props) {
       .catch((err) => {
         alert(err.message ? err.message : err);
       });
-    setReqStatus("error");
+    // setReqStatus("error");
     // fetchPatchJson(
     //   {
     //     message: data.message,
