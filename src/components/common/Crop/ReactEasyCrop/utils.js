@@ -15,7 +15,7 @@ export function base64StringtoFile(base64String, filename) {
   return new File([u8arr], filename, { type: mime });
 }
 
-async function getImage(imgSrc) {
+export async function getImage(imgSrc) {
   var img = new Image();
   const image = await new Promise((resolve) => {
     img.onload = function () {
@@ -47,6 +47,20 @@ export const getCroppedImg = async (imageSrc, crop, dimensions) => {
     canvas.width,
     canvas.height
   );
+
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => {
+      resolve(blob);
+    }, "image/" + ext);
+  });
+};
+export const blobUrlToBlob = async (imageSrc) => {
+  const image = await getImage(imageSrc);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  const ext = extractImageFileExtensionFromBase64(imageSrc);
+  ctx.drawImage(image, 0, 0);
 
   return new Promise((resolve) => {
     canvas.toBlob((blob) => {

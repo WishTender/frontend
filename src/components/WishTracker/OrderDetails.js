@@ -166,8 +166,42 @@ export default function OrderDetails({
                       <Typography variant="overline" display="block">
                         Your Thank You Note:
                       </Typography>
-
-                      {order.noteToTender.message}
+                      <div
+                        style={{
+                          float: "right",
+                          width: "80%",
+                          maxWidth: "400px",
+                        }}
+                      >
+                        {order.noteToTender.message && (
+                          <div
+                            style={{
+                              color: "white",
+                              background: "#0185a9",
+                              borderRadius: order.noteToTender.imageAttachment
+                                ? "20px 20px 0 0"
+                                : "20px 20px 0 20px",
+                              padding: "10px",
+                              marginTop: "20px",
+                              fontWeight: "700",
+                            }}
+                          >
+                            {order.noteToTender.message}
+                          </div>
+                        )}
+                        {order.noteToTender.imageAttachment && (
+                          <img
+                            style={{
+                              width: "100%",
+                              borderRadius: order.noteToTender.message
+                                ? "0 0 0 20px"
+                                : "20px 20px 0 20px",
+                            }}
+                            src={order.noteToTender.imageAttachment}
+                            alt="user attached imaged to thank you note"
+                          ></img>
+                        )}
+                      </div>
                     </>
                   ) : (
                     reply && (
