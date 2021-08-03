@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import {
+  getImage,
+  base64StringtoFile,
+  blobUrlToBlob,
+} from "../common/Crop/ReactEasyCrop/utils";
+import {
   Box,
   Button,
   IconButton,
@@ -45,23 +50,60 @@ export default function ReplyToTender(props) {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    if (
+      (!attachedImage && data.message === "") ||
+      (!attachedImage && !data.message)
+    )
+      return alert("Your message is empty. Please input a message or image.");
     setReqStatus("loading");
-    fetchPatchJson(
-      {
-        message: data.message,
-      },
+    // const blob = await blobUrlToBlob(attachedImage);
+    if (attachedImage) {
+      const blob = await fetch(attachedImage).then((r) => r.blob());
+      data.imageAttachment = blob;
+    }
+    const fd = new FormData();
+    const dataArray = Object.entries(data);
+    dataArray.forEach((datum) => fd.append(datum[0], datum[1]));
+    const headers = new Headers();
+    // headers.append("CSRF-Token", user.csrfToken);
+    fetch(
       `${process.env.REACT_APP_BASE_URL}/api/orders/reply/${props.order._id}`,
-      (res) => {
-        if (res.messageSent) {
-          setReqStatus("success");
+      {
+        credentials: "include",
+        method: "PATCH",
+        body: fd,
+        headers,
+      }
+    )
+      .then(async (res) => {
+        if (res.status >= 200 && res.status < 300) {
+          const json = await res.json();
+          if (json.messageSent || json.imageAttachment) {
+            setReqStatus("success");
 
-          props.setReply(null);
-          props.setRefreshOrders(true);
+            props.setReply(null);
+            props.setRefreshOrders(true);
+            return;
+          }
+        }
+        if (res.status >= 500 && res.status < 600) {
+          const text = await res.text();
+          alert(`Internal 500 Error: ${text}`);
         }
         setReqStatus("error");
-      }
-    );
+        return;
+      })
+      .catch((err) => {
+        alert(err.message ? err.message : err);
+      });
+    setReqStatus("error");
+    // fetchPatchJson(
+    //   {
+    //     message: data.message,
+    //   },
+    //   `${process.env.REACT_APP_BASE_URL}/api/orders/reply/${props.order._id}`,
+    // );
   };
   const { ref: messageRef, ...messageReg } = register("message");
 
@@ -131,7 +173,13 @@ export default function ReplyToTender(props) {
             </Tooltip>
           </div>
         </FileInputWrapper>
-        <Button onClick={() => props.setReply(null)} disableElevation>
+        <Button
+          onClick={() => {
+            props.setReply(null);
+            setAttachedImage(null);
+          }}
+          disableElevation
+        >
           Close
         </Button>
         <ProgressButton
