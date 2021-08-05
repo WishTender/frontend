@@ -116,8 +116,6 @@ const styles = (theme) => ({
 });
 
 function Wishlist(props) {
-  const [data, setData] = useState(["1", "2", "3", "4", "5", "6"]);
-
   function isTouchDevice() {
     return (
       "ontouchstart" in window ||
@@ -275,7 +273,7 @@ function Wishlist(props) {
   };
 
   return (
-    <div className="wishlist">
+    <div className="wishlist" style={{ paddingBottom: "6em" }}>
       {selectWish && props.isAuth && (
         <StyledDialog
           onClose={() => {

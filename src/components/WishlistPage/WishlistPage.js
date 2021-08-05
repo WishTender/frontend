@@ -159,7 +159,7 @@ function WishlistPage(props) {
     >
       <div
         style={{
-          height: "100%",
+          // height: "100%",
           position: "relative",
           display: "flex",
           flexDirection: "column",

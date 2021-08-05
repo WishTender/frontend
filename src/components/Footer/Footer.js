@@ -7,9 +7,15 @@ const useStyles = makeStyles((theme) => {
   return {
     footer: {
       "& a": { color: theme.palette.primary.dark, fontWeight: "bold" },
-      minHeight: "300px",
+      height: "fit-content",
+      padding: "40px 0 60px 0",
+      position: "relative",
+      marginTop: "auto",
+      bottom: "0",
+      width: "100%",
       display: "flex",
       flexWrap: "wrap",
+      justifyContent: "space-between",
       backgroundColor: theme.palette.primary.extraLight,
     },
     footer_section: {

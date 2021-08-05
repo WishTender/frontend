@@ -304,9 +304,9 @@ function App(props) {
                           </StyledDialog>
                         )}
                         <Switch>
-                          <Route path="/" exact>
+                          {/* <Route path="/" exact>
                             <LandingPageMenu />
-                          </Route>
+                          </Route> */}
                           <Route path="/">
                             <Menu />
                           </Route>
