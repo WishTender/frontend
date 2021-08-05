@@ -224,16 +224,20 @@ a {
 .hero_section_container {
   background: rgb(189, 201, 194);
 }
+.hero_section .bullet_points {
+  list-style-type: none;
+  font-size: 4.4vw;
+}
 .hero_section {
   position: relative;
   overflow: hidden;
   z-index: 900;
-  height: 130vw;
-  background: url("./images/happy-woman-holding-package_2.jpg") bottom center
-    no-repeat;
-  background-size: 170%;
-  background-position-y: 47vw;
-  background-position-x: -16vw;
+  height: 170vw;
+  background: url("./images/3-panel-mockup-vertical-web-optimized.png") bottom
+    center no-repeat;
+  /* background: url("./images/happy-woman-holding-package_2.jpg") bottom center * /
+    no-repeat; */
+  background-size: 100%;
 }
 
 /* .hero_section button,
@@ -257,8 +261,7 @@ a {
   /* background: #afefffd6; */
 }
 .hero_section .text h2 {
-  font-size: 9.8vw;
-  font-weight: lighter;
+  font-size: 6vw;
   margin-top: 0;
   letter-spacing: 0.45vw;
 }
@@ -284,20 +287,37 @@ a {
     font-size: 1.3rem;
   }
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 350px) {
   .hero_section {
-    /* z-index: 900; */
-    height: 48vw;
-    background: url("./images/happy-woman-holding-package_2.jpg");
-    background-size: cover;
-    background-position-x: 15vw;
+    /* position: relative;
+    overflow: hidden;
+    z-index: 900; */
+    height: 150vw;
+    /* background: url("./images/3-panel-mockup-vertical.png") bottom center
+      no-repeat;
+    /* background: url("./images/happy-woman-holding-package_2.jpg") bottom center * /
+      no-repeat; */
+    /* background-size: 100%; */
   }
+}
+@media only screen and (min-width: 450px) {
+  .hero_section {
+    height: 155vw;
+  }
+}
 
-  .hero_section button,
-  .hero_section .button {
-    font-size: 2vw;
-    color: #fff;
-    background-color: #02bff2;
+@media only screen and (min-width: 600px) {
+  .hero_section .bullet_points {
+    list-style-type: none;
+    font-size: 3vw;
+  }
+  .hero_section {
+    height: 66vw;
+    background: url("./images/3-panel-short-horizantal-web-optimized.png")
+      bottom center no-repeat;
+
+    /* background: url("./images/happy-woman-holding-package_2.jpg"); */
+    background-size: 100%;
   }
 
   .hero_section button:hover,
@@ -331,9 +351,21 @@ a {
   }
 }
 @media only screen and (min-width: 960px) {
-  .hero_section {
-    height: 38vw;
+  .hero_section .bullet_points {
+    list-style-type: none;
+    font-size: 2.2vw;
   }
+  .hero_section {
+    height: 45vw;
+    background: url("./images/3-panel-mockup-web-optimized.png") bottom center
+      no-repeat;
+
+    /* background: url("./images/happy-woman-holding-package_2.jpg"); */
+    background-size: 100%;
+  }
+  /* .hero_section {
+    height: 38vw;
+  } */
   .hero_section button,
   .hero_section .button {
     font-size: 1.3rem;
