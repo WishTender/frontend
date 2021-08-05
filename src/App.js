@@ -21,6 +21,7 @@ import {
 import "./myapp.css";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage/LandingPage";
+import Footer from "./components/Footer/Footer";
 import ThankYou from "./components/LandingPage/ThankYou";
 import Menu from "./components/nav/Menu/Menu.js";
 import Cart from "./components/Cart/Cart.js";
@@ -141,7 +142,7 @@ function App(props) {
         render={(props) => {
           return (
             <div>
-              <LandingPage signUp={false} />
+              <LandingPage signUp={true} />
             </div>
           );
         }}
@@ -303,18 +304,15 @@ function App(props) {
                           </StyledDialog>
                         )}
                         <Switch>
-                          <Route path="/" exact>
+                          {/* <Route path="/" exact>
                             <LandingPageMenu />
-                          </Route>
+                          </Route> */}
                           <Route path="/">
                             <Menu />
                           </Route>
                         </Switch>
                         {SwitchRoutes}
-                        <a href="files/terms.pdf">Terms and Conditions</a>
-                        <span style={{ float: "right" }}>
-                          Contact: support[at]wishtender[.]com
-                        </span>
+                        <Footer></Footer>
                       </RouteContext.Provider>
                     </NotificationContext.Provider>
                   </UserContext.Provider>

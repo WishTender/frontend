@@ -7,39 +7,52 @@ import { Link } from "react-router-dom";
 // import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
+const CallToAction = (props) => (
+  <>
+    {!props.signUp ? (
+      <Button
+        className={props.classes.gradient + " " + props.classes.margin}
+        style={{ fontWeight: 600, marginLeft: 0 }}
+        href={"https://landing.mailerlite.com/webforms/landing/k3y1m6"}
+        variant="contained"
+      >
+        Request Access
+      </Button>
+    ) : (
+      <Link to="/sign-up">
+        <Button
+          className={props.classes.gradient + " " + props.classes.margin}
+          style={{ fontWeight: 600, marginLeft: 0 }}
+          variant="contained"
+        >
+          Create Your Free Wishlist
+        </Button>
+      </Link>
+    )}
+  </>
+);
 const heroSection = (props) => {
   return (
     <div className="hero_section_container">
       <div className="hero_section">
-        <div className="triangle"></div>
-        <div className="text">
-          <h3>UNIVERSAL WISHLIST. SAFE SHIPPING.</h3>
+        {/* <div className="triangle"></div> */}
+        <div className="text" style={{ color: "white" }}>
+          <h3 style={{ color: "#1b1b1b" }}>
+            UNIVERSAL WISHLIST. PRIVACY FIRST.
+          </h3>
           <h2>
-            What you love. <br /> From your fans.
+            List any item. <br></br>Get funds from fans.
           </h2>
+          <ul className="bullet_points">
+            <li>✅ Get the cash for your gifts</li>
+            <li>✅ Handle the funds as you like</li>
+            <li>✅ Send photo thank-you messages</li>
+            <li>✅ Supports 34 countries and counting</li>
+          </ul>
           {/*Contact{" "}
           <a href="https://www.twitter.com/DashBarkHuss">@DashBarkHuss</a> on
           twitter for more information. */}
-          {!props.signUp ? (
-            <Button
-              className={props.classes.gradient + " " + props.classes.margin}
-              style={{ fontWeight: 600, marginLeft: 0 }}
-              href={"https://landing.mailerlite.com/webforms/landing/k3y1m6"}
-              variant="contained"
-            >
-              Get Early Access
-            </Button>
-          ) : (
-            <Link to="/sign-up">
-              <Button
-                className={props.classes.gradient + " " + props.classes.margin}
-                style={{ fontWeight: 600, marginLeft: 0 }}
-                variant="contained"
-              >
-                Create Your Free Wishlist
-              </Button>
-            </Link>
-          )}
+          <CallToAction {...props} />
         </div>
       </div>
     </div>
@@ -90,7 +103,7 @@ function fourPointExplanation() {
           </p>
         </Paper>
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      {/* <Grid item xs={12} sm={6} md={3}>
         <Paper className="point">
           <div className="icon">
             <img src="images/icon_integration.png" alt="integration icon" />
@@ -101,7 +114,33 @@ function fourPointExplanation() {
             to start from scratch.
           </p>
         </Paper>
+      </Grid> */}
+      <Grid item xs={12} sm={6} md={3}>
+        <Paper className="point">
+          <div className="icon">
+            <img
+              src="images/icon_no_judgement_web_optimized.png"
+              alt="no judgement icon"
+            />
+          </div>
+          <h3>Non-Judgemental</h3>
+          <p>
+            WishTender is built to help you no matter what content you create.
+          </p>
+        </Paper>
       </Grid>
+      {/* <Grid item xs={12} sm={6} md={3}>
+        <Paper className="point">
+          <div className="icon">
+            <img src="images/icon_integration.png" alt="integration icon" />
+          </div>
+          <h3>Customer First</h3>
+          <p>
+            Reach us easily. WishTender is built off customer feedback and
+            constantly improving.
+          </p>
+        </Paper>
+      </Grid> */}
     </Grid>
   );
 }
@@ -128,6 +167,7 @@ function LandingPage(props) {
             step of the way.
           </p>
         </Grid>
+        <CallToAction classes={classes} {...props} />
       </Grid>
     </div>
   );
