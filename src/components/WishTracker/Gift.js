@@ -21,6 +21,8 @@ const Gift = ({ orderId, gift }) => {
           color="primary"
           disableElevation
           href={gift.item.url}
+          rel="noopener"
+          target="_blank"
         >
           Purchase
         </Button>

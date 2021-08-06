@@ -46,7 +46,9 @@ export default function Footer() {
       </div>
       <div className={classes.footer_section}>
         <h2>Info</h2>
-        <a href="files/terms.pdf">Terms and Conditions</a>
+        <a target="_blank" href="files/terms.pdf">
+          Terms and Conditions
+        </a>
       </div>
       <div className={classes.footer_section}>
         <h2>Contact</h2>
