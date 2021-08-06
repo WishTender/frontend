@@ -68,6 +68,7 @@ export default function ResetPasswordForm(props) {
           ? {
               background: "#fff",
               height: "100%",
+              minHeight: "inherit",
               width: "100%",
               display: "flex",
               padding: "30px",

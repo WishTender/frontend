@@ -20,6 +20,7 @@ export default function ResetPassword() {
       display="flex"
       style={{
         height: "100%",
+        minHeight: "inherit",
         width: "100%",
         backgroundSize: "cover",
       }}

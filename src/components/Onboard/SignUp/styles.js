@@ -2,7 +2,7 @@ const styles = (theme) => {
   return {
     test: { color: "white" },
     "sign-up-wrapper": {
-      height: "100%",
+      height: theme.customViewSize,
       width: "100%",
       backgroundImage:
         "url('/images/background_graphic_gradient_optimized_for_web.png')",

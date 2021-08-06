@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { RouteContext } from "./contexts/RouteContext";
-import Test from "./components/WishlistPage/Test.js";
 
 import { CurrencyContext } from "./contexts/CurrencyContext";
 import { CountryContext } from "./contexts/CountryContext";
@@ -158,12 +157,13 @@ function App(props) {
           );
         }}
       />
+
       <Route path="/sign-up" exact>
         <SignUp />
       </Route>
-      <Route path="/email" exact>
+      {/* <Route path="/email" exact>
         <UpdateEmail />
-      </Route>
+      </Route> */}
       <Route path="/wishlist-setup">
         <SetUp />
       </Route>
@@ -176,12 +176,12 @@ function App(props) {
       <Route path="/login">
         <Login />
       </Route>
-      <Route path="/logout">
+      {/* <Route path="/logout">
         <Logout />
-      </Route>
-      <Route path="/test">
+      </Route> */}
+      {/* <Route path="/test">
         <Test />
-      </Route>
+      </Route> */}
       <Route
         path="/cart"
         render={(props) => {
@@ -303,15 +303,26 @@ function App(props) {
                             />
                           </StyledDialog>
                         )}
-                        <Switch>
-                          {/* <Route path="/" exact>
+                        <div
+                          style={{
+                            minHeight: "calc(100vh - 72px)",
+                            position: "relative",
+
+                            // start too low without this???
+                            // border: ".2px solid #9990",
+                            // height: "100%",
+                          }}
+                        >
+                          <Switch>
+                            {/* <Route path="/" exact>
                             <LandingPageMenu />
                           </Route> */}
-                          <Route path="/">
-                            <Menu />
-                          </Route>
-                        </Switch>
-                        {SwitchRoutes}
+                            <Route path="/">
+                              <Menu />
+                            </Route>
+                          </Switch>
+                          {SwitchRoutes}
+                        </div>
                         <Footer></Footer>
                       </RouteContext.Provider>
                     </NotificationContext.Provider>

@@ -63,6 +63,7 @@ export default withRouter(function Login(props) {
     <Box
       display="flex"
       style={{
+        minHeight: "inherit",
         height: "100%",
         width: "100%",
         backgroundImage:
@@ -84,6 +85,7 @@ export default withRouter(function Login(props) {
                 display: "flex",
                 padding: "30px",
                 opacity: ".88",
+                minHeight: "inherit",
                 flexDirection: "column",
                 justifyContent: "center",
               }
