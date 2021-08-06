@@ -1,13 +1,15 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../../../contexts/UserContext";
 
+import { LinearProgress } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
 import axios from "axios";
 import Search from "./Search.js";
 import filterOutSmallImages from "./filterImages";
 import WishForm from "./WishForm/WishForm";
 import useScreenSize from "../../../hooks/useScreenSize";
 import "./AddWish.css";
-import { makeStyles } from "@material-ui/core/styles";
 import StyledDialog from "../../common/StyledDialog/StyledDialog";
 import { Box } from "@material-ui/core";
 import ResponsiveDialogTitleSection from "../../common/StyledDialog/TopSections/ResponsiveTopTitleSection/ResponsiveDialogCloseAndTitleSection.js";
@@ -30,6 +32,36 @@ import ResponsiveDialogTitleSection from "../../common/StyledDialog/TopSections/
 //     });
 // };
 // import { fetchPostJson } from "../../../scripts/fetchHelper";
+
+const useStyles = makeStyles((theme) => {
+  return {
+    progressError: {
+      "& .MuiLinearProgress-bar": { backgroundColor: theme.palette.error.main },
+    },
+    progressSuccess: {
+      "& .MuiLinearProgress-bar": { backgroundColor: "greenyellow" },
+    },
+  };
+});
+function StyledProgressBar(props) {
+  const classes = useStyles(props);
+  const { status } = props;
+
+  return (
+    <LinearProgress
+      className={
+        status === "error"
+          ? classes.progressError
+          : status === "success"
+          ? classes.progressSuccess
+          : ""
+      }
+      color={status === "loading" ? "secondary" : "primary"}
+      variant={status === "loading" ? "indeterminate" : "determinate"}
+      value={100}
+    />
+  );
+}
 
 function AddWish1(props) {
   const { user } = useContext(UserContext);
@@ -62,6 +94,7 @@ function AddWish1(props) {
   const [filteredImages, setFilteredImages] = useState([]);
   const [url, setUrl] = useState(null);
   const [retrieved, setRetrieved] = useState(null);
+  const [status, setStatus] = useState(null);
   function filterAndSetImages(uniqueImages) {
     filterOutSmallImages(uniqueImages, 100).then((images) => {
       setFilteredImages(images);
@@ -92,6 +125,8 @@ function AddWish1(props) {
     //     console.log(err);
     //   });
     setUrl(url);
+    setStatus("loading");
+
     fetch(`${process.env.REACT_APP_BASE_URL}/api/wishes/productInfo?url=${url}`)
       .then(async (res) => {
         if (res.status >= 400 && res.status < 500) {
@@ -105,7 +140,10 @@ function AddWish1(props) {
           const images = info.imageSrcs;
           delete info.imageSrcs;
           setProductInfo(info);
-          if (info) setRetrieved("true");
+          if (info) {
+            setRetrieved("true");
+            setStatus("success");
+          }
 
           const uniqueImages = [...new Set(images)];
           filterAndSetImages(uniqueImages);
@@ -113,6 +151,7 @@ function AddWish1(props) {
       })
       .catch((err) => {
         console.log(err);
+        setStatus("error");
       });
   }
   const postWish = async (data) => {
@@ -134,14 +173,7 @@ function AddWish1(props) {
         if (response.status >= 200 && response.status < 300) {
           props.afterAddWish(data);
         }
-        setProductInfo({
-          price: "",
-          title: "",
-          currency: "",
-          ogImageSrcs: [],
-          imageSrcs: [],
-        });
-        setFilteredImages([]);
+        clearProduct();
       })
       .catch((err) => {
         console.log(err);
@@ -153,6 +185,9 @@ function AddWish1(props) {
     // );
   };
   const clearProduct = () => {
+    setStatus(null);
+
+    setRetrieved(false);
     setProductInfo({
       price: "",
       title: "",
@@ -178,6 +213,7 @@ function AddWish1(props) {
           width: screenSize === "sm" && "400px",
         }}
       >
+        {status && <StyledProgressBar status={status} />}
         <ResponsiveDialogTitleSection
           onClose={() => {
             clearProduct();
