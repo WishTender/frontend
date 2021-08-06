@@ -30,7 +30,15 @@ export default withRouter(function AccountSettings(props) {
   const { user, getUser, setUser } = useContext(UserContext);
 
   return (
-    <Container style={{ maxWidth: "750px" }}>
+    //collapsing margins, need display flex
+    <Container
+      style={{
+        maxWidth: "750px",
+        display: "flex",
+        justifyContent: "space-evenly",
+        flexDirection: "column",
+      }}
+    >
       <Paper style={{ marginTop: "7vw" }}>
         <StyledMenuItem
           href={paymentLink}

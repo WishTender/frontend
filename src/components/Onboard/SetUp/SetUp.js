@@ -122,6 +122,7 @@ export default withStyles(styles)(function Login(props) {
       <Box
         id="set-up-wrapper"
         display="flex"
+        style={{ minHeight: "inherit" }}
         className={classes[`set-up-wrapper${screenSize === "xs" ? "_xs" : ""}`]}
         flexDirection="column"
         height="100%"

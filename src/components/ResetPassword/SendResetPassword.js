@@ -45,6 +45,7 @@ export default withRouter(function SendResetPassword(props) {
       style={{
         height: "100%",
         width: "100%",
+        minHeight: "inherit",
         backgroundSize: "cover",
       }}
       height="100%"
@@ -61,6 +62,8 @@ export default withRouter(function SendResetPassword(props) {
                 width: "100%",
                 display: "flex",
                 padding: "30px",
+                minHeight: "inherit",
+
                 flexDirection: "column",
                 justifyContent: "center",
               }

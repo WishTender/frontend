@@ -47,6 +47,7 @@ const theme = createMuiTheme({
   shape: {
     borderRadius: 7,
   },
+  customViewSize: "calc(100vh - 72px)",
   // spacing: { spacing: 4 },
 });
 theme.overrides = {

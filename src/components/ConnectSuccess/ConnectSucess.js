@@ -5,7 +5,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 export default function CheckOutSuccess() {
   const userContext = useContext(UserContext);
-  const [activatedStatus, setActivatedStatus] = useState("");
+  const [activatedStatus, setActivatedStatus] = useState("activated");
   const [alias, setAlias] = useState("");
 
   useEffect(() => {

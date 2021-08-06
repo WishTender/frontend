@@ -55,68 +55,85 @@ function WishTracker(props) {
   }, [currentUser, getWishlist]);
 
   return (
-    <Container maxWidth="md" style={{ marginTop: "7vw", paddingBottom: "7vw" }}>
-      <WishlistContext.Provider value={{ wishlist, setWishlist, getWishlist }}>
-        {currentUser &&
-          (!smallScreen ? (
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Typography variant="h6" style={{ margin: "0 8px" }}>
-                Wish-Tracker
-              </Typography>
-              <Button
-                color="primary"
-                // component={Button}
-                style={{ fontWeight: "500" }}
-                // variant="outlined"
-                disableElevation
-                href={paymentLink}
+    // collapsing margin need display flex
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-evenly",
+      }}
+    >
+      <Container
+        maxWidth="md"
+        style={{
+          marginTop: "7vw",
+          paddingBottom: "7vw",
+        }}
+      >
+        <WishlistContext.Provider
+          value={{ wishlist, setWishlist, getWishlist }}
+        >
+          {currentUser &&
+            (!smallScreen ? (
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
               >
-                Payment Dashboard <RightIcon color="primary" />
-              </Button>
-            </Box>
-          ) : (
-            <Box
-              // display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Button
-                color="primary"
-                // component={Button}
-                style={{ fontWeight: "500" }}
-                // variant="outlined"
-                disableElevation
-                href={paymentLink}
+                <Typography variant="h6" style={{ margin: "0 8px" }}>
+                  Wish-Tracker
+                </Typography>
+                <Button
+                  color="primary"
+                  // component={Button}
+                  style={{ fontWeight: "500" }}
+                  // variant="outlined"
+                  disableElevation
+                  href={paymentLink}
+                >
+                  Payment Dashboard <RightIcon color="primary" />
+                </Button>
+              </Box>
+            ) : (
+              <Box
+                // display="flex"
+                alignItems="center"
+                justifyContent="space-between"
               >
-                Payment Dashboard <RightIcon color="primary" />
-              </Button>
+                <Button
+                  color="primary"
+                  // component={Button}
+                  style={{ fontWeight: "500" }}
+                  // variant="outlined"
+                  disableElevation
+                  href={paymentLink}
+                >
+                  Payment Dashboard <RightIcon color="primary" />
+                </Button>
 
-              <Typography variant="h6" style={{ margin: "0 8px" }}>
-                Wish-Tracker
-              </Typography>
-            </Box>
-          ))}
-        <Paper style={{ marginTop: "2vw" }}>
-          <List
-            component="nav"
-            aria-labelledby="wishes-granted-subheader"
-            subheader={
-              <ListSubheader
-                style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
-                component="div"
-                id="wishes-granted-subheader"
-              >
-                Transactions: {orders && orders.length}
-                {orders && (
-                  <span style={{ float: "right", display: "block" }}>
-                    New: {orders.filter((order) => order.seen === false).length}
-                  </span>
-                )}
-                {/* <Typography style={{ float: "left" }} display="inline">
+                <Typography variant="h6" style={{ margin: "0 8px" }}>
+                  Wish-Tracker
+                </Typography>
+              </Box>
+            ))}
+          <Paper style={{ marginTop: "2vw" }}>
+            <List
+              component="nav"
+              aria-labelledby="wishes-granted-subheader"
+              subheader={
+                <ListSubheader
+                  style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
+                  component="div"
+                  id="wishes-granted-subheader"
+                >
+                  Transactions: {orders && orders.length}
+                  {orders && (
+                    <span style={{ float: "right", display: "block" }}>
+                      New:{" "}
+                      {orders.filter((order) => order.seen === false).length}
+                    </span>
+                  )}
+                  {/* <Typography style={{ float: "left" }} display="inline">
               Transactions: {orders && orders.length}
               </Typography>
               <Typography
@@ -126,23 +143,24 @@ function WishTracker(props) {
               >
               {currentUser.email}
             </Typography> */}
-              </ListSubheader>
-            }
-          >
-            {orders &&
-              orders.map((order) => {
-                return (
-                  <DisplayOrder
-                    setRefreshOrders={setRefreshOrders}
-                    order={order}
-                    screen={smallScreen && "xs"}
-                  />
-                );
-              })}
-          </List>
-        </Paper>
-      </WishlistContext.Provider>
-    </Container>
+                </ListSubheader>
+              }
+            >
+              {orders &&
+                orders.map((order) => {
+                  return (
+                    <DisplayOrder
+                      setRefreshOrders={setRefreshOrders}
+                      order={order}
+                      screen={smallScreen && "xs"}
+                    />
+                  );
+                })}
+            </List>
+          </Paper>
+        </WishlistContext.Provider>
+      </Container>
+    </div>
   );
 }
 
