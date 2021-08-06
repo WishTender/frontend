@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { RouteContext } from "./contexts/RouteContext";
-import Test from "./components/WishlistPage/Test.js";
-import TestLayout from "./components/TestLayout.js";
 
 import { CurrencyContext } from "./contexts/CurrencyContext";
 import { CountryContext } from "./contexts/CountryContext";
@@ -159,9 +157,7 @@ function App(props) {
           );
         }}
       />
-      <Route path="/test" exact>
-        <TestLayout />
-      </Route>
+
       <Route path="/sign-up" exact>
         <SignUp />
       </Route>
