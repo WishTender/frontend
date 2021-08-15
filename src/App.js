@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { RouteContext } from "./contexts/RouteContext";
 
+import Extension from "./components/Extension/Extension";
 import { CurrencyContext } from "./contexts/CurrencyContext";
 import { CountryContext } from "./contexts/CountryContext";
 import { LocaleContext } from "./contexts/LocaleContext";
@@ -20,6 +21,7 @@ import {
 import "./myapp.css";
 import HomePage from "./components/HomePage";
 import LandingPage from "./components/LandingPage/LandingPage";
+import Dashboard from "./components/Dashboard/Dashboard";
 import Footer from "./components/Footer/Footer";
 import ThankYou from "./components/LandingPage/ThankYou";
 import Menu from "./components/nav/Menu/Menu.js";
@@ -158,6 +160,9 @@ function App(props) {
         }}
       />
 
+      <Route path="/extension" exact>
+        <Extension />
+      </Route>
       <Route path="/sign-up" exact>
         <SignUp />
       </Route>
@@ -212,6 +217,20 @@ function App(props) {
         path="/wish-tracker"
         render={(props) => {
           return <>{user ? <WishTracker /> : <Login />}</>;
+        }}
+      />
+      <Route
+        path="/admin"
+        render={(props) => {
+          return (
+            <>
+              {user.email === "dangerousdashie@gmail.com" ? (
+                <Dashboard />
+              ) : (
+                "Not authorized"
+              )}
+            </>
+          );
         }}
       />
       <Route path="/confirmation-email">
