@@ -98,7 +98,10 @@ export default function PriceInputs(props) {
         }
         labelWidth={38}
       />
-      <FormHelperText id="price-helper-text">{props.error}</FormHelperText>
+      <FormHelperText id="price-helper-text">
+        {props.error ||
+          "Don't forget to add to the total to cover shipping and tax."}
+      </FormHelperText>
     </FormControl>
   );
 }
