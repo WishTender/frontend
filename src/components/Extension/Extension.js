@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import React from "react";
 
 export default function Extension() {
@@ -5,21 +6,34 @@ export default function Extension() {
     <div
       style={{
         width: "100%",
-        maxWidth: "1100px",
         margin: "auto",
-        height: "100%",
-        maxHeight: "500px",
+        padding: "0 1em",
+        minHeight: "inherit",
+        // height: "100%",
+        // height: "500px",
+        justifyContent: "center",
         display: "flex",
-        justifyContent: "space-evenly",
         flexDirection: "column",
         alignItems: "center",
       }}
     >
-      <h1>Coming Soon! </h1>
+      <Button
+        style={{
+          margin: "1.5em 1em 1em 1em",
+          fontWeight: "bold",
+        }}
+        color="primary"
+        variant="contained"
+        href="https://chrome.google.com/webstore/detail/add-to-wishtender/khafbdpkfodbigppgcpmnokmbkhhmpfc"
+      >
+        Get the extension
+      </Button>
+
       <h2>
         Use our new chrome extension to add gifts to your wishlist while
         browsing online stores.
       </h2>
+
       <div
         style={{
           width: "100%",
@@ -30,12 +44,18 @@ export default function Extension() {
         }}
       >
         <img
+          style={{
+            maxWidth: "100%",
+          }}
           width="400"
           src="images/extension_1_web_optimized.png"
           alt="extension"
         />
         <img
           width="400"
+          style={{
+            maxWidth: "100%",
+          }}
           src="images/extension_2_web_optimized.png"
           alt="extension"
         />
