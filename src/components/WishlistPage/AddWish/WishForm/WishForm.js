@@ -91,6 +91,8 @@ export default function WishForm(props) {
   const { ref: itemNameRef, itemNameReg } = register("itemName");
   const { ref: priceRef, ...priceReg } = register("price", {
     validate: (value) => {
+      if (!value) return `Price must not be empty`;
+
       console.log("validation change from ", price, value, isValidPrice(value));
 
       const currency = currencyInfo(clientCurrency);
