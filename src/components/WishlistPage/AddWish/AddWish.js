@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../../../contexts/UserContext";
 
-import { LinearProgress } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
+import theme from "../../../theme";
 import axios from "axios";
 import Search from "./Search.js";
 import filterOutSmallImages from "./filterImages";
@@ -214,6 +214,7 @@ function AddWish1(props) {
         }}
       >
         {status && <StyledProgressBar status={status} />}
+
         <ResponsiveDialogTitleSection
           onClose={() => {
             clearProduct();
@@ -222,7 +223,29 @@ function AddWish1(props) {
         >
           Add A Wish
         </ResponsiveDialogTitleSection>
-
+        <div
+          style={{
+            height: "100%",
+            flexDirection: "column",
+            padding: "1em",
+            background: theme.palette.secondary.light,
+            width: screenSize === "sm" && "400px",
+          }}
+        >
+          Get the{" "}
+          <Button
+            style={{
+              display: "inline",
+            }}
+            disableElevation={true}
+            href="/extension"
+            variant="contained"
+            color="primary"
+          >
+            Add To WishTender{" "}
+          </Button>{" "}
+          Quick Button
+        </div>
         <Box className={classes.container}>
           <Box className={classes.input_container}>
             <Search submit={(e) => handleScrapeProduct(e)} />
