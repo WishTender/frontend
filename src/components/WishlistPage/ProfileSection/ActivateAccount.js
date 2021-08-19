@@ -3,7 +3,7 @@ import React from "react";
 import AnnouncementIcon from "@material-ui/icons/Announcement";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import useScreenSize from "../../../hooks/useScreenSize";
-export default function ActivateAccount() {
+export default function ActivateAccount(props) {
   const screenSize = useScreenSize({
     breakpoints: { xs: 0, sm: 600 },
     useStandard: false,
@@ -75,7 +75,11 @@ export default function ActivateAccount() {
           variant="contained"
           onClick={activate}
         >
-          {screenSize === "sm" && "Set Up Payments"}
+          {screenSize === "sm"
+            ? props.finish
+              ? "Finish Set Up"
+              : "Set Up Payments"
+            : ""}
           <ArrowForwardIosIcon color="primary" />
         </Button>
       </div>

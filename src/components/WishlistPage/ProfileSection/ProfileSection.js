@@ -194,7 +194,7 @@ function ProfileSection(props) {
         </div>
       )}
       {isAuth && !props.info.activated && !!wishlist.wishlistItems.length && (
-        <ActivateAccount />
+        <ActivateAccount finish={!!currentUser.stripeAccountInfo} />
       )}
     </div>
   );
