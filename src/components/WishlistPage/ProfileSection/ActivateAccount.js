@@ -3,7 +3,7 @@ import React from "react";
 import AnnouncementIcon from "@material-ui/icons/Announcement";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import useScreenSize from "../../../hooks/useScreenSize";
-export default function ActivateAccount() {
+export default function ActivateAccount(props) {
   const screenSize = useScreenSize({
     breakpoints: { xs: 0, sm: 600 },
     useStandard: false,
@@ -27,6 +27,12 @@ export default function ActivateAccount() {
         }
         const json = await response.json();
 
+        if (response.status === 409) {
+          alert(
+            json.message +
+              " Call or email dash if you get this alert 773-425-8000 or dash@wishtender.com so she can fix it."
+          );
+        }
         if (response.status >= 200 && response.status < 300) {
           return (window.location.href = json.onboardLink);
         }
@@ -51,7 +57,19 @@ export default function ActivateAccount() {
           gridArea: "1 / 1 / 2/ 1",
         }}
       />
-      Set up your account to receive funds.
+      {props.finish ? (
+        <>
+          <span>
+            <u>
+              <b>Something went wrong</b>
+            </u>
+            . Call/text Dash (773-425-8000) or try again.
+          </span>
+        </>
+      ) : (
+        "Set up your account to receive funds."
+      )}
+
       <div
         style={{
           gridArea: "2 / 2 / 2 / 3",
@@ -75,7 +93,11 @@ export default function ActivateAccount() {
           variant="contained"
           onClick={activate}
         >
-          {screenSize === "sm" && "Set Up Payments"}
+          {screenSize === "sm"
+            ? props.finish
+              ? "Finish Set Up"
+              : "Set Up Payments"
+            : ""}
           <ArrowForwardIosIcon color="primary" />
         </Button>
       </div>
