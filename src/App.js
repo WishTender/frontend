@@ -222,15 +222,7 @@ function App(props) {
       <Route
         path="/admin"
         render={(props) => {
-          return (
-            <>
-              {user.email === "dangerousdashie@gmail.com" ? (
-                <Dashboard />
-              ) : (
-                "Not authorized"
-              )}
-            </>
-          );
+          return <>{!user.admin ? <Dashboard /> : "Not authorized"}</>;
         }}
       />
       <Route path="/confirmation-email">
