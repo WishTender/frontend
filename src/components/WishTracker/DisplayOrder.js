@@ -144,7 +144,7 @@ const DisplayOrder = ({
                   }}
                 >
                   {(!order.noteToTender ||
-                    (order.noteToTender && !order.noteToTender.sent)) &&
+                    (order.noteToTender && !order.noteToTender.length)) &&
                     "No reply sent"}
                 </Typography>
               </div>
@@ -162,7 +162,7 @@ const DisplayOrder = ({
                 align="right"
                 primary={
                   (!order.noteToTender ||
-                    (order.noteToTender && !order.noteToTender.sent)) &&
+                    (order.noteToTender && !order.noteToTender.length)) &&
                   "No reply sent"
                 }
               />

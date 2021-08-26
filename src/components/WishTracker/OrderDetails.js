@@ -19,6 +19,81 @@ import {
   Collapse,
   Typography,
 } from "@material-ui/core";
+import { replace } from "lodash";
+
+const DisplayMessages = ({ notesToTender }) => {
+  if (notesToTender.length === undefined) {
+    return (
+      <>
+        <div
+          style={{
+            color: "white",
+            background: "#0185a9",
+            borderRadius: notesToTender.imageAttachment
+              ? "20px 20px 0 0"
+              : "20px 20px 0 20px",
+            padding: "10px",
+            marginTop: "20px",
+            fontWeight: "700",
+          }}
+        >
+          {notesToTender.message}
+        </div>
+        )}
+        {notesToTender.imageAttachment && (
+          <img
+            style={{
+              width: "100%",
+              borderRadius: notesToTender.message
+                ? "0 0 0 20px"
+                : "20px 20px 0 20px",
+            }}
+            src={notesToTender.imageAttachment}
+            alt="user attached imaged to thank you note"
+          ></img>
+        )}
+      </>
+    );
+  }
+  return (
+    <>
+      {notesToTender.map((note) => {
+        return (
+          <>
+            {note.message && (
+              <div
+                style={{
+                  color: "white",
+                  background: "#0185a9",
+                  borderRadius: note.imageAttachment
+                    ? "20px 20px 0 0"
+                    : "20px 20px 0 20px",
+                  padding: "10px",
+                  marginTop: "20px",
+                  fontWeight: "700",
+                }}
+              >
+                {note.message}
+              </div>
+            )}
+            {note.imageAttachment && (
+              <img
+                style={{
+                  width: "100%",
+                  borderRadius: note.message
+                    ? "0 0 0 20px"
+                    : "20px 20px 0 20px",
+                }}
+                src={note.imageAttachment}
+                alt="user attached imaged to thank you note"
+              ></img>
+            )}
+          </>
+        );
+      })}
+    </>
+  );
+};
 
 export default function OrderDetails({
   order,
@@ -70,7 +145,6 @@ export default function OrderDetails({
           </TableHead>
           <TableBody>
             {gifts}
-
             <TableRow
               style={
                 screen === "xs"
@@ -144,78 +218,60 @@ export default function OrderDetails({
                   "The tender didn't leave a note"
                 )}
                 <Box display="flex" justifyContent="flex-end">
-                  {!order.noteToTender && (
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      disableElevation
-                      disabled={!!reply}
-                      onClick={() => setReply(order)}
-                    >
-                      Reply
-                    </Button>
-                  )}
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    disableElevation
+                    // disabled={!!reply}
+                    onClick={() => {
+                      if (reply?._id === order._id) {
+                        setReply(null);
+                      } else {
+                        setReply(order);
+                      }
+                    }}
+                  >
+                    {!reply
+                      ? order.noteToTender
+                        ? "Reply Again"
+                        : "Reply"
+                      : "Close"}
+                  </Button>
                 </Box>
               </TableCell>
             </TableRow>
-            {(order.noteToTender || reply) && (
+            {reply && (
               <TableRow>
                 <TableCell colSpan={4}>
-                  {order.noteToTender ? (
-                    <>
-                      <Typography variant="overline" display="block">
-                        Your Thank You Note:
-                      </Typography>
-                      <div
-                        style={{
-                          float: "right",
-                          width: "80%",
-                          maxWidth: "400px",
-                        }}
-                      >
-                        {order.noteToTender.message && (
-                          <div
-                            style={{
-                              color: "white",
-                              background: "#0185a9",
-                              borderRadius: order.noteToTender.imageAttachment
-                                ? "20px 20px 0 0"
-                                : "20px 20px 0 20px",
-                              padding: "10px",
-                              marginTop: "20px",
-                              fontWeight: "700",
-                            }}
-                          >
-                            {order.noteToTender.message}
-                          </div>
-                        )}
-                        {order.noteToTender.imageAttachment && (
-                          <img
-                            style={{
-                              width: "100%",
-                              borderRadius: order.noteToTender.message
-                                ? "0 0 0 20px"
-                                : "20px 20px 0 20px",
-                            }}
-                            src={order.noteToTender.imageAttachment}
-                            alt="user attached imaged to thank you note"
-                          ></img>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    reply && (
-                      <ReplyToTender
-                        to={reply.fromLine}
-                        setReply={setReply}
-                        setRefreshOrders={setRefreshOrders}
-                        order={reply}
-                      />
-                    )
+                  {reply && (
+                    <ReplyToTender
+                      to={reply.fromLine}
+                      setReply={setReply}
+                      setRefreshOrders={setRefreshOrders}
+                      order={reply}
+                    />
                   )}
                 </TableCell>
               </TableRow>
             )}
+            <TableRow>
+              <TableCell colSpan={4}>
+                <Typography variant="overline" display="block">
+                  Your Thank You Notes:
+                </Typography>
+                <div
+                  style={{
+                    float: "right",
+                    width: "80%",
+                    maxWidth: "400px",
+                  }}
+                >
+                  <DisplayMessages
+                    notesToTender={order.noteToTender}
+                  ></DisplayMessages>
+                </div>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
