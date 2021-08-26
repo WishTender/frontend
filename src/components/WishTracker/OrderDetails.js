@@ -19,7 +19,6 @@ import {
   Collapse,
   Typography,
 } from "@material-ui/core";
-import { replace } from "lodash";
 
 const DisplayMessages = ({ notesToTender }) => {
   if (notesToTender.length === undefined) {
@@ -39,7 +38,6 @@ const DisplayMessages = ({ notesToTender }) => {
         >
           {notesToTender.message}
         </div>
-        )}
         {notesToTender.imageAttachment && (
           <img
             style={{
