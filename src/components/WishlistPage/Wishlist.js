@@ -1,6 +1,8 @@
 import React, { forwardRef, useState, useEffect, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import WishItem from "./WishItem";
+import { Route, withRouter } from "react-router-dom";
+
 import { Button, Container, Typography } from "@material-ui/core";
 import AddWish from "./AddWish/AddWish";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
@@ -115,7 +117,7 @@ const styles = (theme) => ({
   },
 });
 
-function Wishlist(props) {
+const Wishlist = withRouter((props) => {
   function isTouchDevice() {
     return (
       "ontouchstart" in window ||
@@ -126,9 +128,12 @@ function Wishlist(props) {
   const [activeId, setActiveId] = useState(null);
   const touch = isTouchDevice();
 
+  const params = new URLSearchParams(window.location.search);
   const customClasses = useCustomStyles(props);
   // const [updateOrder, setUpdateOrder] = useState(false);
-  const [selectWish, setSelectWish] = useState(null);
+  const [selectWish, setSelectWish] = useState(
+    props.items.find((i) => i._id === params.get("item")) || null
+  );
   const [addWishVisible, setAddWishVisible] = useState(false);
   const [textStoppedBouncing, setTextStoppedBouncing] = useState(false);
   const { currency: clientCurrency } = useContext(CurrencyContext);
@@ -178,6 +183,13 @@ function Wishlist(props) {
       })
     );
   }, [wishlist]);
+
+  useEffect(() => {
+    props.history.push(
+      `/dashiell${selectWish?._id ? `?item=${selectWish._id}` : ""}`
+    );
+    console.log(0);
+  }, [selectWish]);
 
   useEffect(() => {
     if (props.isAuth && !props?.items.length) {
@@ -469,6 +481,6 @@ function Wishlist(props) {
       )}
     </div>
   );
-}
+});
 
 export default withStyles(styles)(Wishlist);
