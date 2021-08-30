@@ -81,7 +81,11 @@ export default function MediaCard(props) {
       </CardActionArea>
       <div
         id={`share-card-${props.id}`}
-        style={{ position: "absolute", zIndex: 900, display: "none" }}
+        style={{
+          position: "absolute",
+          zIndex: 900,
+          display: "none",
+        }}
       >
         {/* {props.itemName ===
           "Rowdy Mermaid Kombucha Lion's Root (12 fl oz) - Instacart" && ( */}

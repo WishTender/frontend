@@ -13,21 +13,7 @@ export default function ShareCard(props) {
     breakpoints: { xs: 0, sm: 450 },
     useStandard: false,
   });
-  const handleClickAddAndShop = () => {
-    fetchPatchJson(
-      { itemId: props.item._id },
-      process.env.REACT_APP_BASE_URL + "/api/cart/add-to-cart",
-      console.log
-    );
-    props.onClose();
-  };
-  const handleClickAddAndCheckOut = () => {
-    fetchPatchJson(
-      { itemId: props.item._id },
-      process.env.REACT_APP_BASE_URL + "/api/cart/add-to-cart",
-      setCart
-    );
-  };
+
   return (
     // <StyledDialog1
     //   background="url(/images/background_bow_confetti-sm_optimized.png)"
@@ -52,13 +38,13 @@ export default function ShareCard(props) {
         style={{
           gap: "14px",
           width: 800,
-          height: 400,
+          height: 450,
           background: "url(/images/background_bow_confetti-sm_optimized.png)",
           // background: "url(/images/background_bow_confetti.png)",
-          backgroundSize: "100%",
+          backgroundSize: "110%",
           backgroundRepeat: "no-repeat",
-          backgroundPositionY: "-20px",
-          backgroundPositionX: "0px",
+          // backgroundPositionY: "-50px",
+          // backgroundPositionX: "-60px",
 
           maxHeight: "80%",
           padding:
@@ -68,30 +54,42 @@ export default function ShareCard(props) {
         }}
       >
         {cart && <Redirect to={{ pathname: `/cart`, props: { cart: cart } }} />}
-        {/* <Typography color="primary" variant="h5">
-          Add To Cart
-        </Typography> */}
+        <Typography
+          color="primary"
+          variant="h5"
+          style={{
+            background: "rgb(223 248 255)",
+            padding: " 5px 15px",
+            fontWeight: "bold",
+            borderRadius: "20px",
+          }}
+        >
+          Added to my wishlist
+        </Typography>
         <img
           style={{
-            width: "30%",
+            width: "28%",
             boxShadow: "20px 20px 30px grey",
             borderRadius: "4px",
-            margin: "20px",
+            margin: "0 0 20px 0",
           }}
           src={props.item.itemImage}
           alt="wish item"
         ></img>
         <Typography
+          variant="h6"
           style={{
             maxWidth: "300px",
             textAlign: "center",
             color: "rgba(0, 0, 0, 0.54)",
           }}
         >
-          {props.item.itemName}
+          {`${props.item.itemName.slice(0, 35)}${
+            props.item.itemName.length > 35 ? "..." : ""
+          }`}
         </Typography>
 
-        <Typography style={{ fontWeight: "600" }}>
+        <Typography variant="h5" style={{ fontWeight: "600" }}>
           <DisplayPrice2 priceObject={props.item.price} type="" />
         </Typography>
       </Box>
