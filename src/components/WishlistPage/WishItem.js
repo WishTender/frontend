@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -8,8 +8,11 @@ import DisplayPrice2 from "../common/DisplayPrice2";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import { Button } from "@material-ui/core";
 import html2canvas from "html2canvas"; // this is an edited version found here
-
+import ShareCard from "./ShareCard/ShareCard";
+import { WishlistContext } from "../../contexts/WishlistContext";
 export default function MediaCard(props) {
+  const { wishlist } = useContext(WishlistContext);
+
   return (
     <Card className="wish_item">
       <CardActionArea>
@@ -19,6 +22,7 @@ export default function MediaCard(props) {
             position: "relative",
             overflow: "hidden",
             paddingBottom: "100%",
+            background: "white",
           }}
         >
           <img
@@ -45,10 +49,15 @@ export default function MediaCard(props) {
             endIcon={<TwitterIcon />}
             onClick={(e) => {
               e.stopPropagation();
-              html2canvas(document.querySelector(`#item-card-${props.id}`), {
+              html2canvas(document.querySelector(`#share-card-${props.id}`), {
                 // allowTaint: true,
 
                 useCORS: true, //By passing this option in function Cross origin images will be rendered properly in the downloaded version of the PDF
+                onclone: function (clonedDoc) {
+                  clonedDoc.getElementById(
+                    `share-card-${props.id}`
+                  ).style.display = "block";
+                },
               })
                 .then((canvas) => {
                   var link = document.createElement("a");
@@ -70,6 +79,19 @@ export default function MediaCard(props) {
           </Button>
         )}
       </CardActionArea>
+      <div
+        id={`share-card-${props.id}`}
+        style={{ position: "absolute", zIndex: 900, display: "none" }}
+      >
+        {/* {props.itemName ===
+          "Rowdy Mermaid Kombucha Lion's Root (12 fl oz) - Instacart" && ( */}
+        <ShareCard
+          open={true}
+          onClose={() => {}}
+          item={wishlist.wishlistItems.find((i) => i._id === props.id)}
+        />
+        {/* )} */}
+      </div>
     </Card>
   );
 }
