@@ -202,12 +202,13 @@ const Wishlist = withRouter((props) => {
       return () => text.removeEventListener("animationend", handleAnimationEnd);
     }
   }, [props.isAuth, props?.items.length]);
-  const MyItem = forwardRef(({ item, id, ...props }, ref) => {
+  const MyItem = forwardRef(({ item, id, isAuth, ...props }, ref) => {
     return (
       <Grid
         {...props}
         ref={ref}
         key={item._id}
+        id={`item-card-${item._id}`}
         item
         xs={6}
         sm={4}
@@ -220,6 +221,8 @@ const Wishlist = withRouter((props) => {
         <div style={{ width: "100%" }} onClick={() => setSelectWish(item)}>
           <WishItem
             itemName={item.itemName}
+            isAuth={isAuth}
+            id={item._id}
             price={item.price}
             imageUrl={item.itemImage}
             currency={item.currency}
@@ -234,6 +237,7 @@ const Wishlist = withRouter((props) => {
       return (
         <Grid
           key={item._id}
+          id={`item-card-${item._id}`}
           item
           xs={6}
           sm={4}
@@ -246,7 +250,9 @@ const Wishlist = withRouter((props) => {
           <div style={{ width: "100%" }} onClick={() => setSelectWish(item)}>
             <WishItem
               itemName={item.itemName}
+              isAuth={true}
               price={item.price}
+              id={item._id}
               imageUrl={item.itemImage}
               currency={item.currency}
             />
@@ -274,6 +280,7 @@ const Wishlist = withRouter((props) => {
 
     return (
       <MyItem
+        isAuth={props.isAuth}
         item={item}
         ref={setNodeRef}
         style={style}
@@ -462,6 +469,7 @@ const Wishlist = withRouter((props) => {
                 return (
                   <MySortableItem
                     id={item.id}
+                    isAuth={props.isAuth}
                     key={index}
                     item={item}
                     isDragging={activeId === item}
