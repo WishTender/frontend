@@ -247,7 +247,14 @@ const Wishlist = withRouter((props) => {
           container
           spacing={2}
         >
-          <div style={{ width: "100%" }} onClick={() => setSelectWish(item)}>
+          <div
+            style={{ width: "100%" }}
+            onClick={() => {
+              console.log("wishitem");
+
+              setSelectWish(item);
+            }}
+          >
             <WishItem
               itemName={item.itemName}
               isAuth={true}
