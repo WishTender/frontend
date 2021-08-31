@@ -187,7 +187,7 @@ const Wishlist = withRouter((props) => {
 
   useEffect(() => {
     props.history.push(
-      `/dashiell${selectWish?._id ? `?item=${selectWish._id}` : ""}`
+      `/${props.handle}${selectWish?._id ? `?item=${selectWish._id}` : ""}`
     );
     console.log(0);
   }, [selectWish]);
