@@ -174,6 +174,7 @@ function WishlistPage(props) {
         {
           showWishlist && (
             <Wishlist
+              handle={aliasPath.toLowerCase()}
               isAuth={currentUser?.aliases.includes(alias._id) || false}
               id={
                 wishlist?._id || (alias?.wishlists[0] && alias.wishlists[0]._id)
