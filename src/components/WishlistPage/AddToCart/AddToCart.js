@@ -6,6 +6,7 @@ import StyledDialog from "../../common/StyledDialog/StyledDialog";
 import DialogClose from "../../common/StyledDialog/TopSections/TopSection/DialogClose";
 import theme from "../../../theme";
 import useScreenSize from "../../../hooks/useScreenSize";
+import DisplayPrice2 from "../../common/DisplayPrice2";
 export default function AddToCart(props) {
   const [cart, setCart] = useState(false);
   const screenSize = useScreenSize({
@@ -80,6 +81,19 @@ export default function AddToCart(props) {
             src={props.item.itemImage}
             alt="wish item"
           ></img>
+          <Typography
+            style={{
+              maxWidth: "300px",
+              textAlign: "center",
+              color: "rgba(0, 0, 0, 0.54)",
+            }}
+          >
+            {props.item.itemName}
+          </Typography>
+
+          <Typography style={{ fontWeight: "600" }}>
+            <DisplayPrice2 priceObject={props.item.price} type="" />
+          </Typography>
           <Button
             // disableElevation={true}
             variant="contained"

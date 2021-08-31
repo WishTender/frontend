@@ -82,6 +82,7 @@ export default function StyledDialog(props) {
       <Dialog
         scroll="body"
         open={props.open}
+        onClick={props.onClick || null}
         onClose={props.onClose} // when you click on the side
         aria-label={props.ariaLabel || "dialog"}
         className={dialogClasses.root}

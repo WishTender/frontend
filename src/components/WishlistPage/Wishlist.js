@@ -1,6 +1,9 @@
 import React, { forwardRef, useState, useEffect, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import WishItem from "./WishItem";
+import { Route, withRouter } from "react-router-dom";
+import TwitterIcon from "@material-ui/icons/Twitter";
+
 import { Button, Container, Typography } from "@material-ui/core";
 import AddWish from "./AddWish/AddWish";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
@@ -115,7 +118,7 @@ const styles = (theme) => ({
   },
 });
 
-function Wishlist(props) {
+const Wishlist = withRouter((props) => {
   function isTouchDevice() {
     return (
       "ontouchstart" in window ||
@@ -126,9 +129,12 @@ function Wishlist(props) {
   const [activeId, setActiveId] = useState(null);
   const touch = isTouchDevice();
 
+  const params = new URLSearchParams(window.location.search);
   const customClasses = useCustomStyles(props);
   // const [updateOrder, setUpdateOrder] = useState(false);
-  const [selectWish, setSelectWish] = useState(null);
+  const [selectWish, setSelectWish] = useState(
+    props.items.find((i) => i._id === params.get("item")) || null
+  );
   const [addWishVisible, setAddWishVisible] = useState(false);
   const [textStoppedBouncing, setTextStoppedBouncing] = useState(false);
   const { currency: clientCurrency } = useContext(CurrencyContext);
@@ -180,6 +186,13 @@ function Wishlist(props) {
   }, [wishlist]);
 
   useEffect(() => {
+    props.history.push(
+      `/dashiell${selectWish?._id ? `?item=${selectWish._id}` : ""}`
+    );
+    console.log(0);
+  }, [selectWish]);
+
+  useEffect(() => {
     if (props.isAuth && !props?.items.length) {
       const handleAnimationEnd = () => {
         setTextStoppedBouncing(true);
@@ -190,12 +203,13 @@ function Wishlist(props) {
       return () => text.removeEventListener("animationend", handleAnimationEnd);
     }
   }, [props.isAuth, props?.items.length]);
-  const MyItem = forwardRef(({ item, id, ...props }, ref) => {
+  const MyItem = forwardRef(({ item, id, isAuth, ...props }, ref) => {
     return (
       <Grid
         {...props}
         ref={ref}
         key={item._id}
+        id={`item-card-${item._id}`}
         item
         xs={6}
         sm={4}
@@ -208,6 +222,8 @@ function Wishlist(props) {
         <div style={{ width: "100%" }} onClick={() => setSelectWish(item)}>
           <WishItem
             itemName={item.itemName}
+            isAuth={isAuth}
+            id={item._id}
             price={item.price}
             imageUrl={item.itemImage}
             currency={item.currency}
@@ -222,6 +238,7 @@ function Wishlist(props) {
       return (
         <Grid
           key={item._id}
+          id={`item-card-${item._id}`}
           item
           xs={6}
           sm={4}
@@ -231,10 +248,19 @@ function Wishlist(props) {
           container
           spacing={2}
         >
-          <div style={{ width: "100%" }} onClick={() => setSelectWish(item)}>
+          <div
+            style={{ width: "100%" }}
+            onClick={() => {
+              console.log("wishitem");
+
+              setSelectWish(item);
+            }}
+          >
             <WishItem
               itemName={item.itemName}
+              isAuth={true}
               price={item.price}
+              id={item._id}
               imageUrl={item.itemImage}
               currency={item.currency}
             />
@@ -262,6 +288,7 @@ function Wishlist(props) {
 
     return (
       <MyItem
+        isAuth={props.isAuth}
         item={item}
         ref={setNodeRef}
         style={style}
@@ -310,6 +337,7 @@ function Wishlist(props) {
       )}
       <ArcherContainer style={{ display: "grid" }}>
         {/* //test */}
+
         <Container className={customClasses.wishlistWrapper1}>
           <Typography> Wishes: {props?.items?.length}</Typography>
           {props.isAuth && (
@@ -450,6 +478,7 @@ function Wishlist(props) {
                 return (
                   <MySortableItem
                     id={item.id}
+                    isAuth={props.isAuth}
                     key={index}
                     item={item}
                     isDragging={activeId === item}
@@ -469,6 +498,6 @@ function Wishlist(props) {
       )}
     </div>
   );
-}
+});
 
 export default withStyles(styles)(Wishlist);
