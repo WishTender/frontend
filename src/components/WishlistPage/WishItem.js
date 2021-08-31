@@ -11,6 +11,7 @@ import html2canvas from "html2canvas"; // this is an edited version found here
 import ShareCard from "./ShareCard/ShareCard";
 import { WishlistContext } from "../../contexts/WishlistContext";
 import { makeStyles } from "@material-ui/core/styles";
+import { useParams } from "react-router-dom";
 
 import StyledDialog from "../common/StyledDialog/StyledDialog";
 import DialogClose from "../common/StyledDialog/TopSections/TopSection/DialogClose";
@@ -22,14 +23,16 @@ const styles = makeStyles({
     },
   },
 });
-const tweetIntent = () => {
+const tweetIntent = (id, handle) => {
   window.open(
-    `https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.wishtender.com%2Fdashiell%3Fitem%3D60f46d52cb7331cb7389d91b&via=WishTender&text=I%20just%20added%20a%20new%20item%20to%20my%20wishlist.%20Buy%20it%20for%20me.`,
+    `https://twitter.com/intent/tweet?text=I%20just%20added%20a%20new%20item%20to%20my%20wishlist.%20%0a%0aBuy%20it%20for%20me%20here%3A%20https%3A//www.wishtender.com/${handle}%3Fitem%3D${id}%20via%20@WishTender%20`,
     "popup",
     "width=600,height=600"
   );
 };
 const HowToTweet = (props) => {
+  let { alias: aliasPath } = useParams();
+
   const [value, setValue] = useState(0);
   const classes = styles();
   return (
@@ -52,7 +55,7 @@ const HowToTweet = (props) => {
               <a class={classes.linkButton} onClick={props.downloadImage}>
                 Download
               </a>{" "}
-              a sharable image.
+              your sharable image.
             </p>
             <img
               width="250"
@@ -64,13 +67,16 @@ const HowToTweet = (props) => {
           </li>
           <li>
             Use this{" "}
-            <a class={classes.linkButton} onClick={tweetIntent}>
+            <a
+              class={classes.linkButton}
+              onClick={() => tweetIntent(props.id, aliasPath)}
+            >
               sample tweet
             </a>
             .
           </li>
           <li>
-            <p>Attach sharable image to the Tweet.</p>
+            <p>Attach your sharable image to the Tweet.</p>
             <img
               width="250"
               style={{ border: "1px solid grey", borderRadius: "4px" }}
@@ -85,7 +91,10 @@ const HowToTweet = (props) => {
         <ol>
           <li>
             Use this{" "}
-            <a class={classes.linkButton} onClick={tweetIntent}>
+            <a
+              class={classes.linkButton}
+              onClick={() => tweetIntent(props.id, aliasPath)}
+            >
               sample tweet
             </a>
             .
@@ -217,6 +226,9 @@ export default function MediaCard(props) {
               margin: "50px",
             }}
           >
+            <Typography color="primary" variant="h5">
+              Tweet
+            </Typography>
             <HowToTweet
               id={props.id}
               downloadImage={downloadImage}

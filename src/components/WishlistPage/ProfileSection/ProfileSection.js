@@ -10,8 +10,9 @@ import { fetchPatchImage, fetchPatchJson } from "../../../scripts/fetchHelper";
 import { Redirect } from "react-router-dom";
 import ActivateAccount from "./ActivateAccount";
 import { withRouter } from "react-router";
+import { Button } from "@material-ui/core";
+import Twitter from "@material-ui/icons/Twitter";
 const handleRoute = "/api/aliases?handle_lowercased=";
-
 /**
  * Renders a <ProfileSection /> component
  * @param  props
@@ -176,6 +177,28 @@ function ProfileSection(props) {
         handleUpdateWishlistMessage={handleUpdateWishlistMessage}
         isAuth={isAuth}
       ></EditableProfileInfo>
+      {props.isAuth && (
+        <Button
+          style={{
+            // float: "right",
+            position: "absolute",
+            bottom: "0vw",
+            right: "1vw",
+          }}
+          color="primary"
+          endIcon={<Twitter />}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.open(
+              `https://twitter.com/intent/tweet?text=You%20can%20buy%20a%20gift%20for%20me%20off%20my%20wishlist%20on%20@WishTender.%0a%0aWishlist%3A%20https%3A//www.wishtender.com/${handle}`,
+              "popup",
+              "width=600,height=600"
+            );
+          }}
+        >
+          Share
+        </Button>
+      )}
       {isAuth && (
         <div className="edit_profile_button__container">
           <UpdateProfileInfo

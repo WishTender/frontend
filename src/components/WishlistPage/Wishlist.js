@@ -2,6 +2,7 @@ import React, { forwardRef, useState, useEffect, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import WishItem from "./WishItem";
 import { Route, withRouter } from "react-router-dom";
+import TwitterIcon from "@material-ui/icons/Twitter";
 
 import { Button, Container, Typography } from "@material-ui/core";
 import AddWish from "./AddWish/AddWish";
@@ -336,6 +337,7 @@ const Wishlist = withRouter((props) => {
       )}
       <ArcherContainer style={{ display: "grid" }}>
         {/* //test */}
+
         <Container className={customClasses.wishlistWrapper1}>
           <Typography> Wishes: {props?.items?.length}</Typography>
           {props.isAuth && (
