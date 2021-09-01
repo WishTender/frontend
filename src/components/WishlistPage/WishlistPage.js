@@ -144,6 +144,7 @@ function WishlistPage(props) {
 
   const showWishlist =
     (alias && alias.activated) ||
+    currentUser?.admin ||
     (alias &&
       currentUser?.aliases.includes(alias._id) &&
       currentUser !== undefined);
@@ -171,8 +172,18 @@ function WishlistPage(props) {
             info={alias}
           />
         )}
+        {alias &&
+          !alias.activated &&
+          !currentUser?.aliases.includes(alias?._id) &&
+          !currentUser.admin &&
+          "This user hasn't activated their wishlist."}
+        {alias &&
+          !alias.activated &&
+          !currentUser?.aliases.includes(alias?._id) &&
+          currentUser.admin &&
+          "This user hasn't activated their wishlist. You can see the wishlist because you are an admin."}
         {
-          showWishlist && (
+          showWishlist && wishlist && alias && (
             <Wishlist
               handle={aliasPath.toLowerCase()}
               isAuth={currentUser?.aliases.includes(alias._id) || false}
@@ -197,10 +208,6 @@ function WishlistPage(props) {
           )
           // ))
         }
-        {alias &&
-          !alias.activated &&
-          !currentUser?.aliases.includes(alias?._id) &&
-          "This user hasn't activated their wishlist."}
       </div>
     </WishlistContext.Provider>
   );
