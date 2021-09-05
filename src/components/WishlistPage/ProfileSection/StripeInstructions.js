@@ -37,16 +37,16 @@ export default withRouter(function StripeInstructions(props) {
       .then(async (response) => {
         if (response.status === 500) {
           let responseText = await response.text();
-          throw new Error(responseText);
+          alert(responseText);
+          return;
         }
         const json = await response.json();
 
         if (response.status === 409) {
-          return props.history.push("/connect-success");
+          return "/connect-success";
         }
         if (response.status >= 200 && response.status < 300) {
           return json.onboardLink;
-          // newWindow ? window.open(json.onboardLink, "popup", "width=800,height=800"): (window.location.href = json.onboardLink);
         }
       })
       .catch(console.log);
@@ -154,8 +154,14 @@ export default withRouter(function StripeInstructions(props) {
             {/* target="_blank"  */}
             <Button
               onClick={async () => {
+                var redirectWindow = window.open(
+                  "/redirecting",
+                  "popup",
+                  "width=800,height=800"
+                );
+
                 const link = await getLink();
-                window.open(link, "popup", "width=800,height=800");
+                redirectWindow.location = link;
               }}
               color="secondary"
               variant="contained"
@@ -194,11 +200,16 @@ export default withRouter(function StripeInstructions(props) {
             padding: "2em",
           }}
         >
-          {/* target="_blank"  */}
           <Button
             onClick={async () => {
+              var redirectWindow = window.open(
+                "/redirecting",
+                "popup",
+                "width=800,height=800"
+              );
+
               const link = await getLink();
-              window.open(link, "popup", "width=800,height=800");
+              redirectWindow.location = link;
             }}
             color="secondary"
             variant="contained"

@@ -144,6 +144,12 @@ function App(props) {
           return <StripeInstructions></StripeInstructions>;
         }}
       />
+      <Route
+        path="/redirecting"
+        render={(props) => {
+          return <h1>Redirecting...</h1>;
+        }}
+      />
 
       <Route
         path="/"
