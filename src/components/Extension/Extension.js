@@ -60,6 +60,24 @@ export default function Extension() {
           alt="extension"
         />
       </div>
+      <p style={{ margin: "7vw 9vw 0 9vw" }}>
+        Add items directly from any only store without navigating to WishTender.
+        With the <i>Add To WishTender Chrome</i> extension, a button will appear
+        on your Chrome browser that allows you to add items to your wishlist
+        within any online store you're browsing. No need to navigate to
+        WishTender to add gifts.
+      </p>
+      <Button
+        style={{
+          margin: "1em 1em 1em 1em",
+          fontWeight: "bold",
+        }}
+        color="primary"
+        variant="contained"
+        href="https://chrome.google.com/webstore/detail/add-to-wishtender/khafbdpkfodbigppgcpmnokmbkhhmpfc"
+      >
+        Get the extension
+      </Button>
     </div>
   );
 }

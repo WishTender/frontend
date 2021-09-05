@@ -232,19 +232,22 @@ function AddWish1(props) {
             width: screenSize === "sm" && "400px",
           }}
         >
-          Get the{" "}
-          <Button
-            style={{
-              display: "inline",
-            }}
-            disableElevation={true}
-            href="/extension"
-            variant="contained"
-            color="primary"
-          >
-            Add To WishTender{" "}
-          </Button>{" "}
-          Quick Button
+          Want to add wishes faster?
+          <div style={{ padding: ".5em 0 0 0" }}>
+            Get the{" "}
+            <Button
+              style={{
+                display: "inline",
+              }}
+              disableElevation={true}
+              href="/extension"
+              variant="contained"
+              color="primary"
+            >
+              Add To WishTender{" "}
+            </Button>{" "}
+            Quick Button
+          </div>
         </div>
         <Box className={classes.container}>
           <Box className={classes.input_container}>

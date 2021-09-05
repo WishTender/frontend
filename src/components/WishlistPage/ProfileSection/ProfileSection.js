@@ -177,7 +177,7 @@ function ProfileSection(props) {
         handleUpdateWishlistMessage={handleUpdateWishlistMessage}
         isAuth={isAuth}
       ></EditableProfileInfo>
-      {props.isAuth && (
+      {props.isAuth && props.info.activated && (
         <Button
           style={{
             // float: "right",
@@ -216,7 +216,7 @@ function ProfileSection(props) {
           ></UpdateProfileInfo>
         </div>
       )}
-      {isAuth && !props.info.activated && !!wishlist.wishlistItems.length && (
+      {isAuth && !props.info.activated && (
         <ActivateAccount finish={!!currentUser.stripeAccountInfo} />
       )}
     </div>
