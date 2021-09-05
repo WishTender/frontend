@@ -22,11 +22,11 @@ export default withRouter(function StripeInstructions(props) {
   };
   useEffect(video, []);
 
-  const activate = (newWindow) => {
+  const getLink = async (newWindow) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     // send the country code to the server where we will also detect the browser's preferred language located in the acceptsLanguages request header
-    fetch(
+    const link = await fetch(
       process.env.REACT_APP_BASE_URL + "/api/connectAccount/createConnect",
       {
         credentials: "include",
@@ -42,15 +42,15 @@ export default withRouter(function StripeInstructions(props) {
         const json = await response.json();
 
         if (response.status === 409) {
-          props.history.push("/connect-success");
+          return props.history.push("/connect-success");
         }
         if (response.status >= 200 && response.status < 300) {
-          return newWindow
-            ? window.open(json.onboardLink, "popup", "width=800,height=800")
-            : (window.location.href = json.onboardLink);
+          return json.onboardLink;
+          // newWindow ? window.open(json.onboardLink, "popup", "width=800,height=800"): (window.location.href = json.onboardLink);
         }
       })
       .catch(console.log);
+    return link;
   };
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -78,7 +78,7 @@ export default withRouter(function StripeInstructions(props) {
           Back To Wishlist
         </Button>
         <Typography variant="h5" color="error">
-          Import instructions for those in the <u>adult industry</u>:
+          Important instructions for those in the <u>adult industry</u>:
         </Typography>
         <hr />
         <div
@@ -91,7 +91,10 @@ export default withRouter(function StripeInstructions(props) {
           }}
         >
           <Button
-            onClick={() => activate(false)}
+            onClick={async () => {
+              const link = await getLink();
+              return (window.location.href = link);
+            }}
             endIcon={<ArrowForwardIos color="primary"></ArrowForwardIos>}
             color="primary"
           >
@@ -150,7 +153,10 @@ export default withRouter(function StripeInstructions(props) {
           >
             {/* target="_blank"  */}
             <Button
-              onClick={() => activate(true)}
+              onClick={async () => {
+                const link = await getLink();
+                window.open(link, "popup", "width=800,height=800");
+              }}
               color="secondary"
               variant="contained"
               endIcon={<OpenInNewIcon color="primary"></OpenInNewIcon>}
@@ -190,7 +196,10 @@ export default withRouter(function StripeInstructions(props) {
         >
           {/* target="_blank"  */}
           <Button
-            onClick={() => activate(true)}
+            onClick={async () => {
+              const link = await getLink();
+              window.open(link, "popup", "width=800,height=800");
+            }}
             color="secondary"
             variant="contained"
             endIcon={<OpenInNewIcon color="primary"></OpenInNewIcon>}
