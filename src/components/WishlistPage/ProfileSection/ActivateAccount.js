@@ -1,43 +1,17 @@
 import { Box, Button } from "@material-ui/core";
 import React from "react";
+import { withRouter } from "react-router";
+
 import AnnouncementIcon from "@material-ui/icons/Announcement";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import useScreenSize from "../../../hooks/useScreenSize";
-export default function ActivateAccount(props) {
+export default withRouter(function ActivateAccount(props) {
   const screenSize = useScreenSize({
     breakpoints: { xs: 0, sm: 600 },
     useStandard: false,
   });
   const activate = (data) => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    // send the country code to the server where we will also detect the browser's preferred language located in the acceptsLanguages request header
-    fetch(
-      process.env.REACT_APP_BASE_URL + "/api/connectAccount/createConnect",
-      {
-        credentials: "include",
-        method: "POST",
-        headers,
-      }
-    )
-      .then(async (response) => {
-        if (response.status === 500) {
-          let responseText = await response.text();
-          throw new Error(responseText);
-        }
-        const json = await response.json();
-
-        if (response.status === 409) {
-          alert(
-            json.message +
-              " Call or email dash if you get this alert 773-425-8000 or dash@wishtender.com so she can fix it."
-          );
-        }
-        if (response.status >= 200 && response.status < 300) {
-          return (window.location.href = json.onboardLink);
-        }
-      })
-      .catch(console.log);
+    props.history.push("/stripe_instructions");
   };
   return (
     <Box
@@ -57,18 +31,9 @@ export default function ActivateAccount(props) {
           gridArea: "1 / 1 / 2/ 1",
         }}
       />
-      {props.finish ? (
-        <>
-          <span>
-            <u>
-              <b>Something went wrong</b>
-            </u>
-            . Call/text Dash (773-425-8000) or try again.
-          </span>
-        </>
-      ) : (
-        "Set up your account to receive funds."
-      )}
+      {props.finish
+        ? "Finish setting up your account to receive funds. You have more steps to complete your payment setup."
+        : "Set up your account to receive funds."}
 
       <div
         style={{
@@ -103,4 +68,4 @@ export default function ActivateAccount(props) {
       </div>
     </Box>
   );
-}
+});

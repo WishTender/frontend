@@ -51,6 +51,7 @@ import SendResetPassword from "./components/ResetPassword/SendResetPassword";
 import ResetPassword from "./components/ResetPassword/ResetLinkFlow/ResetPassword";
 import UpdateEmail from "./components/AccountSettings/UpdateEmail";
 import LandingPageMenu from "./components/LandingPage/LandingPageMenu";
+import StripeInstructions from "./components/WishlistPage/ProfileSection/StripeInstructions";
 
 function App(props) {
   const { getUser } = useContext(UserContext);
@@ -134,6 +135,19 @@ function App(props) {
               <WishlistPage user={user} />
             </div>
           );
+        }}
+      />
+
+      <Route
+        path="/stripe_instructions"
+        render={(props) => {
+          return <StripeInstructions></StripeInstructions>;
+        }}
+      />
+      <Route
+        path="/redirecting"
+        render={(props) => {
+          return <h1>Redirecting...</h1>;
         }}
       />
 
