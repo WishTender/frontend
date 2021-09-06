@@ -10,7 +10,12 @@ import theme from "../../../theme";
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos";
 import { withRouter } from "react-router";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+
 export default withRouter(function StripeInstructions(props) {
+  const isMobile =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    navigator.msMaxTouchPoints > 0;
   const { user } = useContext(UserContext);
   const theme = useTheme();
   const video = () => {
@@ -154,14 +159,20 @@ export default withRouter(function StripeInstructions(props) {
             {/* target="_blank"  */}
             <Button
               onClick={async () => {
-                var redirectWindow = window.open(
-                  "/redirecting",
-                  "popup",
-                  "width=800,height=800"
-                );
+                let redirectWindow;
+                if (!isMobile)
+                  redirectWindow = window.open(
+                    "/redirecting",
+                    "popup",
+                    "width=800,height=800"
+                  );
 
                 const link = await getLink();
-                redirectWindow.location = link;
+                if (isMobile) {
+                  return (window.location.href = link);
+                } else {
+                  return (redirectWindow.location = link);
+                }
               }}
               color="secondary"
               variant="contained"
@@ -202,14 +213,20 @@ export default withRouter(function StripeInstructions(props) {
         >
           <Button
             onClick={async () => {
-              var redirectWindow = window.open(
-                "/redirecting",
-                "popup",
-                "width=800,height=800"
-              );
+              let redirectWindow;
+              if (!isMobile)
+                redirectWindow = window.open(
+                  "/redirecting",
+                  "popup",
+                  "width=800,height=800"
+                );
 
               const link = await getLink();
-              redirectWindow.location = link;
+              if (isMobile) {
+                return (window.location.href = link);
+              } else {
+                return (redirectWindow.location = link);
+              }
             }}
             color="secondary"
             variant="contained"
