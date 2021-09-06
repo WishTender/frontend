@@ -13,9 +13,9 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 
 export default withRouter(function StripeInstructions(props) {
   const isMobile =
-    "ontouchstart" in window ||
-    navigator.maxTouchPoints > 0 ||
-    navigator.msMaxTouchPoints > 0;
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
   const { user } = useContext(UserContext);
   const theme = useTheme();
   const video = () => {
