@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { Button, Tooltip, Typography } from "@material-ui/core";
 import FileCopy from "@material-ui/icons/FileCopy";
@@ -10,12 +10,14 @@ import theme from "../../../theme";
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos";
 import { withRouter } from "react-router";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import Snackbar from "@material-ui/core/Snackbar";
 
 export default withRouter(function StripeInstructions(props) {
   const isMobile =
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     );
+  const [open, setOpen] = useState(false);
   const { user } = useContext(UserContext);
   const theme = useTheme();
   const video = () => {
@@ -59,6 +61,16 @@ export default withRouter(function StripeInstructions(props) {
   };
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        message="Copied to clipboard"
+        key={"copied"}
+        autoHideDuration={2300}
+      />
       <div
         style={{
           width: "600px",
@@ -136,14 +148,27 @@ export default withRouter(function StripeInstructions(props) {
                 style={{ color: theme.palette.primary.dark, fontSize: "1.5em" }}
               >
                 <i>
-                  <b>
+                  <b id="description_example">
                     This account is to receive gifts on my gift registry on
                     wishtender.com
                   </b>
                 </i>
               </span>{" "}
               <Tooltip title="copy to clip board">
-                <FileCopy fontSize="small" />
+                <FileCopy
+                  onClick={(id) => {
+                    var r = document.createRange();
+                    r.selectNode(
+                      document.getElementById("description_example")
+                    );
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(r);
+                    document.execCommand("copy");
+                    window.getSelection().removeAllRanges();
+                    setOpen(true);
+                  }}
+                  fontSize="small"
+                />
               </Tooltip>
             </p>
           </p>
