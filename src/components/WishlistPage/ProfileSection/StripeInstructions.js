@@ -92,6 +92,7 @@ export default withRouter(function StripeInstructions(props) {
           }}
           startIcon={<ArrowBackIosIcon />}
         >
+          {" "}
           Back To Wishlist
         </Button>
         <Typography variant="h5" color="error">
