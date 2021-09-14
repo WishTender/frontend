@@ -175,12 +175,12 @@ function WishlistPage(props) {
         {alias &&
           !alias.activated &&
           !currentUser?.aliases.includes(alias?._id) &&
-          !currentUser.admin &&
+          !currentUser?.admin &&
           "This user hasn't activated their wishlist."}
         {alias &&
           !alias.activated &&
           !currentUser?.aliases.includes(alias?._id) &&
-          currentUser.admin &&
+          currentUser?.admin &&
           "This user hasn't activated their wishlist. You can see the wishlist because you are an admin."}
         {
           showWishlist && wishlist && alias && (
