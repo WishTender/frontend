@@ -4,10 +4,6 @@ import { Link } from "react-router-dom";
 import AccountIcon from "@material-ui/icons/AccountBox";
 import PopUpMenu from "../../common/PopUpMenu/PopUpMenu";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Fab from "@material-ui/core/Fab";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Zoom from "@material-ui/core/Zoom";
 import { UserContext } from "../../../contexts/UserContext";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import SignupButton from "../SignupButton/SignupButton";
@@ -44,37 +40,6 @@ const styles = (theme) => ({
     flexGrow: 1,
   },
 });
-
-function ScrollTop(props) {
-  const { children } = props;
-  const classes = useCustomStyles(props);
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 100,
-  });
-
-  const handleClick = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector(
-      "#back-to-top-anchor"
-    );
-
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  };
-
-  return (
-    <Zoom in={trigger}>
-      <div
-        onClick={handleClick}
-        role="presentation"
-        className={`back_to_top ${classes.root}`}
-      >
-        {children}
-      </div>
-    </Zoom>
-  );
-}
 
 function BackToTop(props) {
   const { user } = useContext(UserContext);
@@ -226,14 +191,6 @@ function BackToTop(props) {
           )}
         </Toolbar>
       </AppBar>
-
-      <div id="back-to-top-anchor" />
-      {/* appbar end */}
-      <ScrollTop {...props}>
-        <Fab color="primary" size="small" aria-label="scroll back to top">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </ScrollTop>
     </React.Fragment>
   );
 }
