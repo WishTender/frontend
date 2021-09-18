@@ -5,6 +5,7 @@ import { LocaleContext } from "../../contexts/LocaleContext";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 import EmptyCart from "./EmptyCart";
 import { Box, Typography } from "@material-ui/core";
+import { KeyboardReturnOutlined } from "@material-ui/icons";
 export default function AllCarts() {
   const [cart, setCart] = useState(null);
   const [exchangeRates, setExchangeRates] = useState(null);
@@ -13,7 +14,17 @@ export default function AllCarts() {
   const localeContext = useContext(LocaleContext);
 
   useEffect(() => {
-    if (clientCurrency && clientCurrency !== "noConversion" && !exchangeRates) {
+    if (!cart) return;
+    const anyAliasCartIsNotInUSD = !!Object.values(cart.aliasCarts).filter(
+      (aliasCart) => aliasCart.alias.currency !== "USD"
+    ).length;
+
+    //clientCurrency !== "noConversion" is this even necessary here? is the exchange rate used for anything outside of converting the message length?
+    if (
+      clientCurrency &&
+      (anyAliasCartIsNotInUSD || clientCurrency !== "noConversion") &&
+      !exchangeRates
+    ) {
       const fetchData = async () => {
         const response = await fetch(
           `${process.env.REACT_APP_BASE_URL}/api/exchange/all?base=${clientCurrency}`
