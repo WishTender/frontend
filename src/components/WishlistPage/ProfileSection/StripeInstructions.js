@@ -9,14 +9,10 @@ import { UserContext } from "../../../contexts/UserContext";
 import theme from "../../../theme";
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos";
 import { withRouter } from "react-router";
-import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+// import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import Snackbar from "@material-ui/core/Snackbar";
 
 export default withRouter(function StripeInstructions(props) {
-  const isMobile =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
   const [open, setOpen] = useState(false);
   const { user } = useContext(UserContext);
   const theme = useTheme();
@@ -28,6 +24,45 @@ export default withRouter(function StripeInstructions(props) {
     };
   };
   useEffect(video, []);
+  const sendConfirmationEmail = () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    fetch(process.env.REACT_APP_BASE_URL + "/api/confirmation/resend", {
+      credentials: "include",
+
+      method: "POST",
+      body: JSON.stringify({ email: user.email }),
+      headers,
+    }).then(async (res) => {
+      if (res.status >= 400 && res.status < 600) {
+        const json = await res.json();
+        return alert("Error: " + json.message);
+      }
+      return props.history.push(
+        "/confirmation-email?email=" +
+          user.email +
+          "&continue=setting%20up%20payments"
+      );
+    });
+  };
+  const gotItButton = (
+    <Button
+      onClick={async () => {
+        if (!user.confirmed) {
+          return sendConfirmationEmail();
+        }
+
+        const link = await getLink();
+
+        return (window.location.href = link);
+      }}
+      color="secondary"
+      variant="contained"
+      endIcon={<ArrowForwardIos color="primary"></ArrowForwardIos>}
+    >
+      Got it. Open Payment Setup
+    </Button>
+  );
 
   const getLink = async (newWindow) => {
     const headers = new Headers();
@@ -110,6 +145,9 @@ export default withRouter(function StripeInstructions(props) {
         >
           <Button
             onClick={async () => {
+              if (!user.confirmed) {
+                return sendConfirmationEmail();
+              }
               const link = await getLink();
               return (window.location.href = link);
             }}
@@ -183,29 +221,7 @@ export default withRouter(function StripeInstructions(props) {
             }}
           >
             {/* target="_blank"  */}
-            <Button
-              onClick={async () => {
-                let redirectWindow;
-                if (!isMobile)
-                  redirectWindow = window.open(
-                    "/redirecting",
-                    "popup",
-                    "width=800,height=800"
-                  );
-
-                const link = await getLink();
-                if (isMobile) {
-                  return (window.location.href = link);
-                } else {
-                  return (redirectWindow.location = link);
-                }
-              }}
-              color="secondary"
-              variant="contained"
-              endIcon={<OpenInNewIcon color="primary"></OpenInNewIcon>}
-            >
-              Got it. Open Payment Setup
-            </Button>
+            {gotItButton}
           </div>
           <video
             id="demo"
@@ -237,29 +253,7 @@ export default withRouter(function StripeInstructions(props) {
             padding: "2em",
           }}
         >
-          <Button
-            onClick={async () => {
-              let redirectWindow;
-              if (!isMobile)
-                redirectWindow = window.open(
-                  "/redirecting",
-                  "popup",
-                  "width=800,height=800"
-                );
-
-              const link = await getLink();
-              if (isMobile) {
-                return (window.location.href = link);
-              } else {
-                return (redirectWindow.location = link);
-              }
-            }}
-            color="secondary"
-            variant="contained"
-            endIcon={<OpenInNewIcon color="primary"></OpenInNewIcon>}
-          >
-            Got it. Open Payment Setup
-          </Button>
+          {gotItButton}
         </div>
         <hr />
         <h2>Why do I need to do this?</h2>
