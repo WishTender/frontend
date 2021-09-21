@@ -19,6 +19,7 @@ export default withRouter(
     const [message, setMessage] = useState(null);
     const url = new URLSearchParams(window.location.search);
     const email = url.get("email");
+    const toContinue = url.get("continue");
     const send = () => {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
@@ -65,23 +66,32 @@ export default withRouter(
         maxWidth="sm"
         className={classes[`container${screenSize === "xs" ? "_xs" : ""}`]}
       >
-        <img
-          style={{
-            position: "relative",
-            width: "60vw",
-            maxWidth: "280px",
-            left: "-6%",
-          }}
-          alt="mail graphic"
-          src="images/mail_graphic.png"
-        ></img>
+        {!toContinue && (
+          <img
+            style={{
+              position: "relative",
+              width: "60vw",
+              maxWidth: "280px",
+              left: "-6%",
+            }}
+            alt="mail graphic"
+            src="images/mail_graphic.png"
+          ></img>
+        )}
         {/* <div> */}
         <Typography
           variant="h4"
           align="center"
           className={classes[`text1${screenSize === "xs" ? "_xs" : ""}`]}
         >
-          Confirm your email.
+          {toContinue ? (
+            <p style={{ fontSize: ".6em" }}>
+              To continue {toContinue} you must complete the email confirmation
+              process.
+            </p>
+          ) : (
+            "Confirm your email."
+          )}
         </Typography>
         <Typography
           className={classes[`text2${screenSize === "xs" ? "_xs" : ""}`]}
@@ -99,7 +109,8 @@ export default withRouter(
           align="center"
           className={classes[`text2${screenSize === "xs" ? "_xs" : ""}`]}
         >
-          Check your email and click the confirmation link to continue.
+          Check your email, click the confirmation, and follow instructions to
+          continue.
         </Typography>
         {/* </div> */}
         <Button

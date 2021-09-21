@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Box, Button, Typography, Container } from "@material-ui/core";
+import { UserContext } from "../../../contexts/UserContext";
 
 export default function ConfirmEmail() {
+  const { user, setUser, getUser } = useContext(UserContext);
+
   const [message, setMessage] = useState(null);
   const [success, setSuccess] = useState(null);
   const [expired, setExpired] = useState(null);
@@ -42,7 +45,21 @@ export default function ConfirmEmail() {
         if (res.status === 410) setExpired(true);
         setMessage(json.message);
       }
-      if (res.status === 200) setSuccess(true);
+      if (res.status === 200) {
+        const updatedUser = await getUser();
+        setUser(updatedUser);
+        if (!user.aliases.length) {
+          setSuccess("/wishlist-setup");
+        } else {
+          const res = await fetch(
+            `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${user._id}`,
+            { credentials: "include" }
+          );
+
+          const json = await res.json();
+          setSuccess("/" + json.handle);
+        }
+      }
     });
   };
 
@@ -105,7 +122,7 @@ export default function ConfirmEmail() {
                 Confirm
               </Button>
             </Box>
-            {success ? <Redirect to={`/wishlist-setup`} /> : ""}
+            {success ? <Redirect to={success} /> : ""}
             {message && message}
           </>
         ) : (
@@ -135,7 +152,7 @@ export default function ConfirmEmail() {
                 Resend Confirmation Email
               </Button>
             </Box>
-            {success ? <Redirect to={`/wishlist-setup`} /> : ""}
+            {success ? <Redirect to={success} /> : ""}
             {message && message}
           </>
         )}
