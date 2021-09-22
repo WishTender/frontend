@@ -31,8 +31,32 @@ export default withRouter(function Login(props) {
       headers,
     })
       .then(async (res) => {
-        if (res.status === 429) {
+        if (res.status >= 400 && res.status < 600) {
           const json = await res.json();
+          if (json.message === "User account not confirmed.") {
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            return fetch(
+              process.env.REACT_APP_BASE_URL + "/api/confirmation/resend",
+              {
+                credentials: "include",
+
+                method: "POST",
+                body: JSON.stringify({ email: data.email }),
+                headers,
+              }
+            ).then(async (res) => {
+              if (res.status >= 400 && res.status < 600) {
+                const json = await res.json();
+                return alert("Error: " + json.message);
+              }
+              return props.history.push(
+                "/confirmation-email?email=" +
+                  data.email +
+                  "&continue=logging%20in"
+              );
+            });
+          }
 
           alert(json.message);
 

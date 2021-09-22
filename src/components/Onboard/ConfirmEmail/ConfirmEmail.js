@@ -46,9 +46,26 @@ export default function ConfirmEmail() {
         setMessage(json.message);
       }
       if (res.status === 200) {
+        if (!user) {
+          const updatedUser = await getUser();
+          setUser(updatedUser);
+
+          if (!updatedUser.aliases || !updatedUser.aliases.length) {
+            setSuccess("/wishlist-setup");
+          } else {
+            const res = await fetch(
+              `${process.env.REACT_APP_BASE_URL}/api/aliases?user=${updatedUser._id}`,
+              { credentials: "include" }
+            );
+
+            const json = await res.json();
+            setSuccess("/" + json.handle);
+          }
+          return;
+        }
         const updatedUser = await getUser();
         setUser(updatedUser);
-        if (!user.aliases.length) {
+        if ((user && !user.aliases) || (user && !user.aliases.length)) {
           setSuccess("/wishlist-setup");
         } else {
           const res = await fetch(
