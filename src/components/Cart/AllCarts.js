@@ -8,23 +8,34 @@ import { Box, Typography } from "@material-ui/core";
 import { KeyboardReturnOutlined } from "@material-ui/icons";
 export default function AllCarts() {
   const [cart, setCart] = useState(null);
+  const [useRates, setUseRates] = useState(null);
   const [exchangeRates, setExchangeRates] = useState(null);
   const { getCart } = useContext(CartContext);
   const { currency: clientCurrency } = useContext(CurrencyContext);
   const localeContext = useContext(LocaleContext);
 
   useEffect(() => {
-    if (!cart) return;
+    //set useRates
+
+    if (clientCurrency === null) return undefined;
+    if (cart === null) return undefined;
+    // need rates for messages
     const anyAliasCartIsNotInUSD = !!Object.values(cart.aliasCarts).filter(
       (aliasCart) => aliasCart.alias.currency !== "USD"
     ).length;
 
-    //clientCurrency !== "noConversion" is this even necessary here? is the exchange rate used for anything outside of converting the message length?
-    if (
-      clientCurrency &&
-      (anyAliasCartIsNotInUSD || clientCurrency !== "noConversion") &&
-      !exchangeRates
-    ) {
+    // need rates for cart--- should it also be if the alias currency is different than the client?
+    const convertCart = clientCurrency !== "noConversion";
+
+    //could also add don't convert if allaliascarts are the same as the client
+
+    setUseRates(convertCart || anyAliasCartIsNotInUSD);
+  }, [clientCurrency, cart, useRates]);
+
+  useEffect(() => {
+    if (!useRates) return;
+
+    if (!exchangeRates) {
       const fetchData = async () => {
         const response = await fetch(
           `${process.env.REACT_APP_BASE_URL}/api/exchange/all?base=${clientCurrency}`
@@ -36,21 +47,38 @@ export default function AllCarts() {
 
       fetchData();
     }
-  }, [clientCurrency, cart]);
+  }, [clientCurrency, exchangeRates, useRates]);
 
   useEffect(() => {
-    if (
-      (!cart && exchangeRates) ||
-      (!cart && clientCurrency === "noConversion")
-    ) {
-      (async () => {
-        setCart(await getCart(clientCurrency, localeContext, exchangeRates));
-      })();
-    }
-  }, [cart, clientCurrency, exchangeRates, getCart, localeContext]);
+    const fetchData = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/api/exchange/all?base=${clientCurrency}`
+      );
+
+      const rates = await response.json();
+      setExchangeRates(rates.rates);
+    };
+
+    fetchData();
+  }, [clientCurrency]);
+
+  useEffect(() => {
+    // get and convert cart
+    (async () => {
+      const newCart = await getCart(
+        clientCurrency,
+        localeContext,
+        exchangeRates
+      );
+      setCart(newCart);
+    })();
+  }, [clientCurrency, exchangeRates, getCart, localeContext]);
+
   return (
     <CartContext.Provider value={{ cart, setCart, getCart }}>
       {cart &&
+        useRates !== null &&
+        ((useRates && exchangeRates) || !useRates) &&
         (cart.aliasCarts && Object.values(cart.aliasCarts).length ? (
           <>
             <Box

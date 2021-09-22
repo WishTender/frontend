@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import WishItem from "./WishItem";
 import { Route, withRouter } from "react-router-dom";
 import TwitterIcon from "@material-ui/icons/Twitter";
-
+import TuneIcon from "@material-ui/icons/Tune";
 import { Button, Container, Typography } from "@material-ui/core";
 import AddWish from "./AddWish/AddWish";
 import StyledDialog from "../common/StyledDialog/StyledDialog";
@@ -340,6 +340,7 @@ const Wishlist = withRouter((props) => {
 
         <Container className={customClasses.wishlistWrapper1}>
           <Typography> Wishes: {props?.items?.length}</Typography>
+          {/* {!props.isAuth && <TuneIcon></TuneIcon>} */}
           {props.isAuth && (
             <div className="wrapper add_a_wish">
               <AddWish
@@ -492,9 +493,11 @@ const Wishlist = withRouter((props) => {
           </DragOverlay>
         </DndContext>
       ) : (
-        <Grid container spacing={2}>
-          {innerGrid}
-        </Grid>
+        <>
+          <Grid container spacing={2}>
+            {innerGrid}
+          </Grid>
+        </>
       )}
     </div>
   );
